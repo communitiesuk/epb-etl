@@ -1,7 +1,7 @@
 require "pg"
 
 class Database
-  def initialize(host, user, password)
+  def initialize(user, password, host)
     @connection = PG.connect(:host => host, :user => user, :password => password)
   end
 
