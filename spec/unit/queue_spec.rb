@@ -2,11 +2,17 @@ require "queue"
 
 describe Queue do
   let!(:queue) do
-    Queue.new("ETL", "eu-west-2")
+    Queue.new(ENV["SQS_QUEUE"], ENV["SQS_REGION"])
+  end
+
+  it 'can clean up' do
+    queue.get_message(10).each do |message|
+      queue.delete_message(message.receipt_handle)
+    end
   end
 
   context "creating messages" do
-    it 'can grab a SQS bucket' do
+    it 'can grab a SQS queue' do
       expect(queue).to be_a(Queue)
     end
 
