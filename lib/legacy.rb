@@ -1,7 +1,13 @@
 require "oci8"
 
 class Legacy
-  def initialize(host, user, password)
-    @connection = OCI8.new(user, password, host)
+  def initialize(user, password, host)
+    string = user+"/"+password+"@"+host
+
+    @connection = OCI8.new(string)
+  end
+
+  def query(sql)
+    @result = @connection.exec sql
   end
 end
