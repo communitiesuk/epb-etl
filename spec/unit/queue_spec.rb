@@ -1,7 +1,6 @@
 require "queue"
-require "pry"
 
-describe "Queue" do
+describe Queue do
   let!(:queue) do
     Queue.new("ETL", "eu-west-2")
   end

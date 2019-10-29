@@ -10,3 +10,7 @@ gem "aws-sdk"
 gem "rspec"
 
 gem "pry"
+
+gem "pg"
+
+gem "ruby-oci8"
