@@ -8,6 +8,6 @@ class Legacy
   end
 
   def query(sql)
-    @result = @connection.exec sql
+    @connection.exec(sql)
   end
 end
