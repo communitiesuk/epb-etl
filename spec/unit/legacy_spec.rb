@@ -1,7 +1,7 @@
 require "legacy"
 
 describe Legacy do
-  let!(:db) do
+  let(:db) do
     Legacy.new(ENV["ORACLE_USER"], ENV["ORACLE_PASSWORD"], ENV["ORACLE_HOST"])
   end
 

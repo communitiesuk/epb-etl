@@ -1,7 +1,7 @@
 require "queue"
 
 describe Queue do
-  let!(:queue) do
+  let(:queue) do
     Queue.new(ENV["SQS_QUEUE"], ENV["SQS_REGION"])
   end
 

@@ -1,7 +1,7 @@
 require "database"
 
 describe Database do
-  let!(:db) do
+  let(:db) do
     Database.new(ENV["POSTGRES_USER"], ENV["POSTGRES_PASSWORD"], ENV["POSTGRES_HOST"])
   end
 
