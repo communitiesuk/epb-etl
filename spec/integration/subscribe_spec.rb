@@ -13,14 +13,20 @@ describe "Subscribe" do
 
   let(:queue) do
     Queue.new(ENV["SQS_QUEUE"], ENV["SQS_REGION"])
-    end
+  end
 
   let(:create_message) do
     cursor = legacy.query("SELECT * FROM HCR.HCR_ADDRESSES WHERE ROWNUM <= 1")
 
     row = cursor.fetch
 
-    queue.add_message(row.to_json)
+    data = {}
+
+    cursor.column_metadata.each_with_index do |column, index|
+      data[column.name] = row[index] unless row[index].nil?
+    end
+
+    queue.add_message(data.to_json)
   end
 
   let(:get_message) do
