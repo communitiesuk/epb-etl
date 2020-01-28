@@ -14,3 +14,5 @@ gem "pry"
 gem "pg"
 
 gem "ruby-oci8"
+
+gem "zeitwerk", "~> 2.2"

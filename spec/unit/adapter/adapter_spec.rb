@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'adapter/adapter'
-
 class UnimplementedDummyAdapter < Adapter::Adapter
 
 end

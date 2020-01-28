@@ -805,6 +805,7 @@ GEM
       rspec-support (~> 3.9.0)
     rspec-support (3.9.0)
     ruby-oci8 (2.2.7)
+    zeitwerk (2.2.2)
 
 PLATFORMS
   ruby
@@ -815,6 +816,7 @@ DEPENDENCIES
   pry
   rspec
   ruby-oci8
+  zeitwerk (~> 2.2)
 
 BUNDLED WITH
-   2.1.0.pre.2
+   2.1.4
