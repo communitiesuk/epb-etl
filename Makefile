@@ -1,6 +1,6 @@
+.PHONY: build install test
 SHELL=/bin/bash
 
-.PHONY: install
 install: install_oic_darwin
 	@echo "-> Done installing"
 
@@ -29,7 +29,6 @@ create_bundler_image:
 		-f bundler.Dockerfile \
 		- < bundler.Dockerfile 1>/dev/null
 
-.PHONY: build
 build: build_bundler_layer
 	@echo "-> Building lambda package"
 
@@ -38,9 +37,12 @@ build_bundler_layer: install_oic_linux
 	@cd vendor/bundle-linux/ && \
 		zip -r ../../dist/bundler-layer.zip ./ 1>/dev/null
 
-.PHONY: test
-test: install
-	@echo "-> Running tests" && \
+test:
+	@echo "-> Testing $(shell uname)"
+	@make test_$(shell uname | tr '[:upper:]' '[:lower:]')
+
+test_darwin: install
+	@echo "-> Running tests (Darwin)" && \
 		BUNDLE_PATH="vendor/bundle-darwin" \
 		bundle exec rspec
 
