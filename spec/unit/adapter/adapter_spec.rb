@@ -2,11 +2,11 @@
 
 require 'adapter/adapter'
 
-class UnimplementedDummyAdapter < Adapter
+class UnimplementedDummyAdapter < Adapter::Adapter
 
 end
 
-describe Adapter do
+describe Adapter::Adapter do
   context 'does not implement read()' do
     it 'raises a standard error' do
       adapter = UnimplementedDummyAdapter.new
