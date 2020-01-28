@@ -43,3 +43,11 @@ test: install
 	@echo "-> Running tests" && \
 		BUNDLE_PATH="vendor/bundle-darwin" \
 		bundle exec rspec
+
+test_linux: install_oic_linux
+	@echo "-> Running tests (Linux)" && \
+		docker run \
+		--env LD_LIBRARY_PATH=/app/vendor/oracle/Linux/instantclient_12_2 \
+		--env BUNDLE_PATH=/app/vendor/bundle-linux \
+		--rm -v "$(shell pwd)":/app -w /app bundler:2.1.4 \
+		bundle exec rspec
