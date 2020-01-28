@@ -2,7 +2,7 @@ SHELL=/bin/bash
 
 .PHONY: install
 install: install_oic_darwin
-	@echo "-> Done"
+	@echo "-> Done installing"
 
 install_oic_darwin:
 	@echo "-> Install headers for ruby-oic8 (Darwin)" && \
@@ -37,3 +37,9 @@ build_bundler_layer: install_oic_linux
 	@echo "-> Building lambda bundler layer"
 	@cd vendor/bundle-linux/ && \
 		zip -r ../../dist/bundler-layer.zip ./ 1>/dev/null
+
+.PHONY: test
+test: install
+	@echo "-> Running tests" && \
+		BUNDLE_PATH="vendor/bundle-darwin" \
+		bundle exec rspec
