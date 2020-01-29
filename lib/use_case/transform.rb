@@ -8,7 +8,11 @@ module UseCase
 
     def execute
       if @request.body.nil? || @request.body.empty?
-        raise Errors::Transform::RequestInvalid.new, 'Empty event body'
+        raise Errors::RequestWithoutBody
+      end
+
+      if @request.configuration.nil? || @request.configuration.empty?
+        raise Errors::RequestWithoutConfiguration
       end
     end
   end

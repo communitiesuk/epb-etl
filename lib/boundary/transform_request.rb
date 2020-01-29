@@ -2,10 +2,11 @@
 
 module Boundary
   class TransformRequest
-    attr_reader :body
+    attr_reader :body, :configuration
 
-    def initialize(body = nil)
+    def initialize(body = nil, configuration = nil)
       @body = body
+      @configuration = configuration
     end
   end
 end

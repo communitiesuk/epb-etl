@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Errors
-  module Transform
-    class RequestInvalid < StandardError; end
-  end
+  class RequestInvalid < StandardError; end
+  class RequestWithoutBody < Errors::RequestInvalid; end
+  class RequestWithoutConfiguration < Errors::RequestInvalid; end
 end
