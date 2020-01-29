@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class Handler
-  def self.process(event:, context:)
+  def initialize; end
+
+  def process(event:)
+
     true
   end
 end

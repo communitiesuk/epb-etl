@@ -1,10 +1,11 @@
 require 'rspec'
 
 describe Handler do
-  context 'when invoking processor with event and context' do
+  context 'when invoking processor with event' do
     it 'does not raise an error' do
       expect do
-        described_class.process(event: {}, context: {})
+        handler = described_class.new
+        handler.process(event: {})
       end.not_to raise_error
     end
   end

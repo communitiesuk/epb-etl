@@ -7,5 +7,6 @@ loader.push_dir("#{__dir__}")
 loader.setup
 
 def handler(event:, context:)
-  Handler.process event: event, context: context
+  handler = Handler.new
+  handler.process event: event
 end
