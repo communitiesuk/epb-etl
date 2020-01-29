@@ -7,6 +7,12 @@ module UseCase
     end
 
     def execute
+      validate
+    end
+
+    private
+
+    def validate
       if @request.body.nil? || @request.body.empty?
         raise Errors::RequestWithoutBody
       end
