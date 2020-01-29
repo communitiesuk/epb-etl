@@ -2,6 +2,8 @@ module UseCase
   class Base
     def initialize(request)
       @request = request
+
+      validate
     end
 
     private

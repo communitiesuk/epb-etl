@@ -9,10 +9,8 @@ describe 'Acceptance::Load' do
 
       request = Boundary::LoadRequest.new event['Records'][0]['body']
 
-      load = UseCase::Load.new request
-
       expect do
-        load.execute
+        UseCase::Load.new request
       end.to raise_error instance_of Errors::RequestWithoutBody
     end
   end
@@ -24,10 +22,8 @@ describe 'Acceptance::Load' do
 
       request = Boundary::LoadRequest.new event['Records'][0]['body'], configuration
 
-      load = UseCase::Load.new request
-
       expect do
-        load.execute
+        UseCase::Load.new request
       end.to raise_error instance_of Errors::RequestWithoutConfiguration
     end
   end

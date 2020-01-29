@@ -9,10 +9,8 @@ describe 'Acceptance::Extract' do
 
       request = Boundary::ExtractRequest.new event['Records'][0]['body']
 
-      extract = UseCase::Extract.new request
-
       expect do
-        extract.execute
+        UseCase::Extract.new request
       end.to raise_error instance_of Errors::RequestWithoutBody
     end
   end
@@ -24,10 +22,8 @@ describe 'Acceptance::Extract' do
 
       request = Boundary::ExtractRequest.new event['Records'][0]['body'], configuration
 
-      extract = UseCase::Extract.new request
-
       expect do
-        extract.execute
+        UseCase::Extract.new request
       end.to raise_error instance_of Errors::RequestWithoutConfiguration
     end
   end

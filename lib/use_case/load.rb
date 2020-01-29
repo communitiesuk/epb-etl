@@ -2,8 +2,6 @@
 
 module UseCase
   class Load < UseCase::Base
-    def execute
-      validate
-    end
+    def execute; end
   end
 end

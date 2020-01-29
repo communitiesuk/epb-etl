@@ -9,10 +9,8 @@ describe 'Acceptance::Transform' do
 
       request = Boundary::TransformRequest.new event['Records'][0]['body']
 
-      transform = UseCase::Transform.new request
-
       expect do
-        transform.execute
+        UseCase::Transform.new request
       end.to raise_error instance_of Errors::RequestWithoutBody
     end
   end
@@ -24,10 +22,8 @@ describe 'Acceptance::Transform' do
 
       request = Boundary::TransformRequest.new event['Records'][0]['body'], configuration
 
-      transform = UseCase::Transform.new request
-
       expect do
-        transform.execute
+        UseCase::Transform.new request
       end.to raise_error instance_of Errors::RequestWithoutConfiguration
     end
   end
