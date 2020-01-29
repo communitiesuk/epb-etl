@@ -20,7 +20,8 @@ describe 'Acceptance::Transform' do
       event = JSON.parse File.open('spec/events/sqs-event.json').read
       configuration = {}
 
-      request = Boundary::TransformRequest.new event['Records'][0]['body'], configuration
+      request = Boundary::TransformRequest.new event['Records'][0]['body'],
+                                               configuration
 
       expect do
         UseCase::Transform.new request

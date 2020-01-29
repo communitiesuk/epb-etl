@@ -20,7 +20,8 @@ describe 'Acceptance::Extract' do
       event = JSON.parse File.open('spec/events/sqs-event.json').read
       configuration = {}
 
-      request = Boundary::ExtractRequest.new event['Records'][0]['body'], configuration
+      request = Boundary::ExtractRequest.new event['Records'][0]['body'],
+                                             configuration
 
       expect do
         UseCase::Extract.new request

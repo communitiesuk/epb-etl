@@ -20,7 +20,8 @@ describe 'Acceptance::Load' do
       event = JSON.parse File.open('spec/events/sqs-event.json').read
       configuration = {}
 
-      request = Boundary::LoadRequest.new event['Records'][0]['body'], configuration
+      request = Boundary::LoadRequest.new event['Records'][0]['body'],
+                                          configuration
 
       expect do
         UseCase::Load.new request
