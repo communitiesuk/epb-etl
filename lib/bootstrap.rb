@@ -6,7 +6,7 @@ loader = Zeitwerk::Loader.new
 loader.push_dir("#{__dir__}")
 loader.setup
 
-def handler(event:, context:)
+def handler(message:, context:)
   handler = Handler.new
-  handler.process event: event
+  handler.process message: message
 end

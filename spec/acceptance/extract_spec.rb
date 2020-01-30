@@ -5,12 +5,13 @@ require 'json'
 describe 'Acceptance::Extract' do
   context 'when no data is supplied in the event body' do
     it 'raises an error' do
-      event = JSON.parse File.open('spec/events/sqs-empty-event.json').read
+      message = JSON.parse File.open('spec/messages/sqs-empty-message.json').read
 
-      request = Boundary::ExtractRequest.new event['Records'][0]['body']
+      ENV['ETL_STAGE'] = 'extract'
 
       expect do
-        UseCase::Extract.new request
+        handler = Handler.new
+        handler.process message: message
       end.to raise_error instance_of Errors::RequestWithoutBody
     end
   end
