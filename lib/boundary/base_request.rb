@@ -2,11 +2,10 @@
 
 module Boundary
   class BaseRequest
-    attr_reader :body, :configuration
+    attr_reader :body
 
-    def initialize(body = nil, configuration = nil)
+    def initialize(body = nil)
       @body = body
-      @configuration = configuration
     end
   end
 end
