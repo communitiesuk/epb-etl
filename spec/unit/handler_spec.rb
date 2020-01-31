@@ -13,4 +13,17 @@ describe Handler do
       end.not_to raise_error
     end
   end
+
+  context 'when invoking processor without configuring a stage' do
+    it 'raises an error' do
+      ENV['ETL_STAGE'] = ''
+
+      expect do
+        handler = described_class.new
+        handler.process(message: {
+            Records: []
+        })
+      end.to raise_error instance_of Errors::EtlStageInvalid
+    end
+  end
 end
