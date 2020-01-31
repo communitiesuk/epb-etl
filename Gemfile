@@ -3,6 +3,7 @@
 source 'https://rubygems.org' do
   group :test do
     gem 'rspec', '~>3.0'
+    gem 'webmock', '~> 3.8'
   end
 
   gem 'zeitwerk', '~> 2.2'
