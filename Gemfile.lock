@@ -33,7 +33,7 @@ PLATFORMS
 
 DEPENDENCIES
   rspec (~> 3.0)!
-  webmock (~> 3.8)
+  webmock (~> 3.8)!
   zeitwerk (~> 2.2)!
 
 BUNDLED WITH
