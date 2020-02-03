@@ -8,15 +8,17 @@ class Handler
 
     etl_stage = ENV['ETL_STAGE'].capitalize
 
-    if etl_stage.empty?
-      raise Errors::EtlStageInvalid
-    end
+    use_case_constant = UseCase.const_get(etl_stage)
 
     normalised_message['Records'].each do |event|
       request = Boundary.const_get(etl_stage + 'Request').new event['body']
-      use_case = UseCase.const_get(etl_stage).new request
+      use_case = use_case_constant.new request
 
       use_case.execute
     end
+
+  rescue NameError
+    raise Errors::EtlStageInvalid
   end
 end
+
