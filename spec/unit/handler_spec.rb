@@ -9,9 +9,11 @@ describe Handler do
 
       expect do
         handler = described_class.new
-        handler.process(message: {
-                          Records: []
-                        })
+        handler.process(
+          message: {
+            Records: []
+          }
+        )
       end.not_to raise_error
     end
   end
@@ -22,9 +24,11 @@ describe Handler do
 
       expect do
         handler = described_class.new
-        handler.process(message: {
-                          Records: []
-                        })
+        handler.process(
+            message: {
+                Records: []
+            }
+        )
       end.to raise_error instance_of Errors::EtlStageInvalid
     end
   end
@@ -35,9 +39,11 @@ describe Handler do
 
       expect do
         handler = described_class.new
-        handler.process(message: {
-            Records: []
-        })
+        handler.process(
+            message: {
+                Records: []
+            }
+        )
       end.to raise_error instance_of Errors::EtlStageInvalid
     end
   end

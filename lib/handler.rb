@@ -16,9 +16,7 @@ class Handler
 
       use_case.execute
     end
-
   rescue NameError
     raise Errors::EtlStageInvalid
   end
 end
-

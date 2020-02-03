@@ -1,4 +1,4 @@
-require 'rspec'
+# frozen_string_literal: true
 
 require 'json'
 
@@ -24,17 +24,17 @@ describe 'Acceptance::Load' do
         ENV['ETL_STAGE'] = 'load'
 
         http_stub = stub_request(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST000000')
-                        .to_return(body: JSON.generate({message: 'ok'}), status: 200)
+                    .to_return(body: JSON.generate(message: 'ok'), status: 200)
 
         handler = Handler.new
         handler.process message: message
 
         expect(WebMock).to have_requested(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST000000')
-                               .with(body: JSON.generate({
-                                                             firstName: "Joe",
-                                                             lastName: "Testerton",
-                                                             dateOfBirth: "1985-11-25",
-                                                         }))
+          .with(body: JSON.generate(
+            firstName: 'Joe',
+            lastName: 'Testerton',
+            dateOfBirth: '1985-11-25'
+          ))
 
         remove_request_stub(http_stub)
       end

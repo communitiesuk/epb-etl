@@ -3,7 +3,7 @@
 require 'zeitwerk'
 
 loader = Zeitwerk::Loader.new
-loader.push_dir("#{__dir__}")
+loader.push_dir(__dir__.to_s)
 loader.setup
 
 def handler(message:, context:)
