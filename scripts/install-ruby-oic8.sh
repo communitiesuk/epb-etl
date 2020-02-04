@@ -17,7 +17,7 @@ Linux: https://www.oracle.com/database/technologies/instant-client/linux-x86-64-
 
 Download and put the instant client (light) zipfile at ./vendor/oracle/$OS/oic.zip
 Download and put the sdk zipfile at ./vendor/oracle/$OS/osdk.zip
-Download and put the sdk zipfile at ./vendor/oracle/$OS/osqlplus.zip
+Download and put the sql plus zipfile at ./vendor/oracle/$OS/osqlplus.zip
 
 EOF
     exit 127
