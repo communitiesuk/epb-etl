@@ -1,0 +1,125 @@
+{
+  "Records": [
+    {
+      "messageId": "19dd0b57-b21e-4ac1-bd88-01bbb068cb78",
+      "receiptHandle": "MessageReceiptHandle",
+      "body": {
+        "configuration": {
+          "rules": [
+            {
+              "from": ["data", "ASSESSOR", "FIRST_NAME"],
+              "to": ["data", "firstName"]
+            },
+            {
+              "from": ["data", "ASSESSOR", "SURNAME"],
+              "to": ["data", "lastName"]
+            },
+            {
+              "from": ["data", "ASSESSOR", "DATE_OF_BIRTH"],
+              "to": ["data", "dateOfBirth"]
+            },
+            {
+              "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
+              "to": ["data", "schemeId"]
+            },
+            {
+              "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
+              "to": ["data", "schemeAssessorId"]
+            }
+          ]
+        },
+        "data": {
+          "ASSESSOR": {
+            "ASSESSOR_KEY": 89030012,
+            "ACTIVE_IND": "N",
+            "ASSESSOR_ID": "TEST000000",
+            "BASE_POSTCODE_LOCATION": "S1 1DA",
+            "ADDRESS1": "Green House",
+            "ADDRESS2": "89 Street",
+            "ADDRESS3": null,
+            "POST_TOWN": "Sheffield",
+            "POSTCODE": "S1 2HE",
+            "COMPANY_NAME": "Test Ltd",
+            "EMAIL": "test@example.com",
+            "COMPANY_FAX": null,
+            "TELEPHONE": "07777777777",
+            "COMPANY_WEBSITE": "www.example.com",
+            "DATE_OF_BIRTH": "1980-11-01 00:00:00.000000",
+            "FIRST_NAME": "Joe",
+            "NAME_PREFIX": "Mr",
+            "NAME_SUFFIX": null,
+            "SURNAME": "Testerton",
+            "DELETED_IN_UPLOAD": 123456,
+            "ORGANISATION_KEY": 444,
+            "FIRST_NAME_PHONIC": "JM",
+            "SURNAME_PHONIC": "TN",
+            "ASSESSOR_LOCATION": [
+              1234,
+              1234,
+              [
+                746745,
+                523646,
+                null
+              ],
+              null,
+              null
+            ],
+            "MIDDLE_NAMES": "Not Applicable",
+            "DISPLAY_NAME": null,
+            "COMPANY_REG_NO": null,
+            "COMPANY_ADDR1": "Example address",
+            "COMPANY_ADDR2": "Long Street",
+            "COMPANY_ADDR3": null,
+            "COMPANY_TOWN": "Sheffield",
+            "COMPANY_POSTCODE": "S1 1DA",
+            "COMPANY_TELEPHONE": "07000 678901",
+            "COMPANY_EMAIL": "test@example.com",
+            "UPI": null,
+            "ORGANISATION": {
+              "ORGANISATION_KEY": 2,
+              "ORGANISATION_CODE": 1,
+              "ORGANISATION_STATUS_CODE": 1,
+              "CREATION_DATE": "2008-04-25 16:14:46",
+              "TEST_IND": "N",
+              "REGISTERED_NAME": "Services Ltd",
+              "ADDR1": "Energy Centre",
+              "ADDR2": "Uphill",
+              "ADDR3": null,
+              "TOWN": "Reading",
+              "COUNTY": null,
+              "POSTCODE": "RG6 6UR",
+              "WEBSITE": "www.example.co.uk",
+              "EMAIL": "support@example.co.uk ",
+              "TELEPHONE": "01980 123456",
+              "FAX": "01999 123456",
+              "INVOICE_IND": "Y",
+              "CREATED_BY_CONTACT_KEY": 11117,
+              "LAST_UPDATE_DATE": null,
+              "LAST_UPDATED_BY_CONTACT_KEY": null,
+              "INVOICE_FAO": "Accounts team",
+              "INVOICE_ADDR1": "Limited Systems",
+              "INVOICE_ADDR2": "example address",
+              "INVOICE_ADDR3": "test street",
+              "INVOICE_TOWN": "Leeds",
+              "INVOICE_COUNTY": "Leeds",
+              "INVOICE_POSTCODE": "LS2 9JT",
+              "INVOICE_EMAIL": "test@example.com",
+              "PURCHASE_ORDER_NO": null
+            }
+          }
+        }
+      },
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "SentTimestamp": "1523232000000",
+        "SenderId": "123456789012",
+        "ApproximateFirstReceiveTimestamp": "1523232000001"
+      },
+      "messageAttributes": {},
+      "md5OfBody": "7b270e59b47ff90a553787216d55d91d",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:eu-west-2:123456789012:MyQueue",
+      "awsRegion": "eu-west-2"
+    }
+  ]
+}
