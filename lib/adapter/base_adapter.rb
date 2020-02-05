@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Adapter
-  class Adapter
+  class BaseAdapter
     def read
       raise StandardError.new, 'Adapter does not implement read()'
     end
