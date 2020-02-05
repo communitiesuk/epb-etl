@@ -7,11 +7,39 @@
         "data": {
           "firstName": "Joe",
           "lastName": "Testerton",
-          "dateOfBirth": "1985-11-25"
+          "dateOfBirth": "1980-11-01 00:00:00.000000"
         },
-        "endpoint": {
-          "method": "put",
-          "uri": "http://test-endpoint/api/schemes/1/assessors/TEST000000"
+        "configuration": {
+          "endpoint": {
+            "method": "put",
+            "uri": "http://test-endpoint/api/schemes/1/assessors/TEST000000",
+            "params": {
+              "schemeId": 444,
+              "schemeAssessorId": "TEST000000"
+            }
+          },
+          "rules": [
+            {
+              "from": ["data", "ASSESSOR", "FIRST_NAME"],
+              "to": ["data", "firstName"]
+            },
+            {
+              "from": ["data", "ASSESSOR", "SURNAME"],
+              "to": ["data", "lastName"]
+            },
+            {
+              "from": ["data", "ASSESSOR", "DATE_OF_BIRTH"],
+              "to": ["data", "dateOfBirth"]
+            },
+            {
+              "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
+              "to": ["configuration", "endpoint", "params", "schemeId"]
+            },
+            {
+              "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
+              "to": ["configuration", "endpoint", "params", "schemeAssessorId"]
+            }
+          ]
         }
       },
       "attributes": {

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class UnimplementedDummyAdapter < Adapter::Adapter
+class UnimplementedDummyAdapter < Adapter::BaseAdapter
 end
 
-describe Adapter::Adapter do
+describe Adapter::BaseAdapter do
   context 'does not implement read()' do
     it 'raises a standard error' do
       adapter = UnimplementedDummyAdapter.new

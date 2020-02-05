@@ -2,15 +2,41 @@
 
 module UseCase
   class Transform < UseCase::Base
+    def initialize(request, container)
+      @message_gateway = container.fetch_object :message_gateway
+
+      super
+    end
     def execute
-      response = {}
+      response = JSON.parse(
+        {
+          configuration: @request.body['configuration']
+        }.to_json
+      )
+
       rules = @request.body['configuration']['rules']
 
       rules.each do |rule|
-        response[rule['to'].last] = @request.body.dig(*rule['from'])
+        bury(response, *rule['to'], @request.body.dig(*rule['from']))
       end
 
-      response
+      @message_gateway.write(response)
+    end
+
+    private
+
+    def bury(hash, *args)
+      if args.count < 2
+        raise ArgumentError.new("2 or more arguments required")
+      elsif args.count == 2
+        hash[args[0]] = args[1]
+      else
+        arg = args.shift
+        hash[arg] = {} unless hash[arg]
+        bury(hash[arg], *args) unless args.empty?
+      end
+
+      hash
     end
   end
 end

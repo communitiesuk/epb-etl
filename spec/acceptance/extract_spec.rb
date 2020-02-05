@@ -12,7 +12,7 @@ describe 'Acceptance::Extract' do
       ENV['ETL_STAGE'] = 'extract'
 
       expect do
-        handler = Handler.new
+        handler = Handler.new Container.new
         handler.process message: message
       end.to raise_error instance_of Errors::RequestWithoutBody
     end

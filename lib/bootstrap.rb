@@ -7,6 +7,7 @@ loader.push_dir(__dir__.to_s)
 loader.setup
 
 def handler(message:, context:)
-  handler = Handler.new
+  @container = Container.new
+  handler = Handler.new(@container)
   handler.process message: message
 end

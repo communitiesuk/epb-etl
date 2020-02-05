@@ -5,6 +5,10 @@
       "receiptHandle": "MessageReceiptHandle",
       "body": {
         "configuration": {
+          "endpoint": {
+            "uri": "http://test-endpoint/api/schemes/1/assessors/TEST000000",
+            "method": "put"
+          },
           "rules": [
             {
               "from": ["data", "ASSESSOR", "FIRST_NAME"],
@@ -20,11 +24,11 @@
             },
             {
               "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
-              "to": ["data", "schemeId"]
+              "to": ["configuration", "endpoint", "params", "schemeId"]
             },
             {
               "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
-              "to": ["data", "schemeAssessorId"]
+              "to": ["configuration", "endpoint", "params", "schemeAssessorId"]
             }
           ]
         },

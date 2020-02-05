@@ -10,9 +10,11 @@ describe UseCase::Load do
             "lastName": 'Testerton',
             "dateOfBirth": '1985-11-25'
           },
-          "endpoint": {
-            "method": 'put',
-            "uri": 'http://test-endpoint/api/schemes/1/assessors/TEST000000'
+          "configuration": {
+            "endpoint": {
+              "method": 'put',
+              "uri": 'http://test-endpoint/api/schemes/1/assessors/TEST000000'
+            }
           }
         }
       ).to_json
@@ -32,7 +34,7 @@ describe UseCase::Load do
 
     it 'sends data to the API endpoint' do
       request = Request.new
-      load = described_class.new request
+      load = described_class.new(request, nil)
       response = load.execute
 
       expect(response.code).to eq '200'
