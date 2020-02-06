@@ -1,11 +1,13 @@
 class Container
-  def initialize
-    sqs_adapter = Adapter::SqsAdapter.new
-    message_gateway = Gateway::MessageGateway.new(sqs_adapter: sqs_adapter)
+  def initialize(bootstrap = true)
+    @objects = {}
 
-    @objects = {
-        message_gateway: message_gateway
-    }
+    if bootstrap
+      sqs_adapter = Adapter::SqsAdapter.new
+      message_gateway = Gateway::MessageGateway.new(sqs_adapter: sqs_adapter)
+
+      @objects[:message_gateway] =  message_gateway
+    end
   end
 
   def fetch_object(key)
