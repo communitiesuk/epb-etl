@@ -2,6 +2,14 @@
 
 module UseCase
   class Extract < UseCase::Base
-    def execute; end
+    def initialize(request, container)
+      @message_gateway = container.fetch_object :message_gateway
+      @database_gateway = container.fetch_object :database_gateway
+
+      super
+    end
+    def execute
+      'asdfasdf'
+    end
   end
 end
