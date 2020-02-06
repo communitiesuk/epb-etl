@@ -8,6 +8,7 @@ module UseCase
 
       super
     end
+
     def execute
       response = JSON.parse(
           {

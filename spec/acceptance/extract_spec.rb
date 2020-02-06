@@ -72,7 +72,6 @@ describe 'Acceptance::Extract' do
       container.set_object(:database_gateway, database_gateway)
 
       handler = Handler.new(container)
-
       handler.process message: message
 
       expected_extract_output = JSON.parse File.open('spec/messages/sqs-message-extract-output.json').read
@@ -81,8 +80,9 @@ describe 'Acceptance::Extract' do
     end
   end
 
+
     context "when data is supplied in the event body" do
-      it 'extracts the data' do
+      it 'extracts the data, leaving array as seen in database' do
         message = JSON.parse File.open('spec/messages/sqs-message-extract-input.json').read
         message['Records'][0]['body']['configuration']['extract']['queries']['ASSESSOR']['multiple'] = true
 
@@ -103,6 +103,8 @@ describe 'Acceptance::Extract' do
         handler.process message: message
 
         expected_extract_output = JSON.parse File.open('spec/messages/sqs-message-extract-output.json').read
+        expected_extract_output['Records'][0]['body']['configuration']['extract']['queries']['ASSESSOR']['multiple'] = true
+        expected_extract_output['Records'][0]['body']['data']['ASSESSOR'] = JSON.parse([{'FIRST_NAME': 'Joe'}].to_json)
 
         expect(sqs_adapter.read).to eq(expected_extract_output)
       end
