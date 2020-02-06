@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe UseCase::Load do
-  class Request
+  class LoadRequestStub
     def body
       JSON.parse (
         {
@@ -21,7 +21,7 @@ describe UseCase::Load do
     end
   end
 
-  context 'when making a request' do
+  context 'when making an api request' do
     before do
       stub_request(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST000000')
         .with(body: JSON.generate(
@@ -33,7 +33,7 @@ describe UseCase::Load do
     end
 
     it 'sends data to the API endpoint' do
-      request = Request.new
+      request = LoadRequestStub.new
       load = described_class.new(request, nil)
       response = load.execute
 
