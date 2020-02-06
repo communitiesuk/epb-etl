@@ -10,7 +10,7 @@ class Handler
 
     etl_stage = ENV['ETL_STAGE'].capitalize
 
-    use_case_constant = UseCase.const_get(etl_stage) #Load
+    use_case_constant = UseCase.const_get(etl_stage)
 
     normalised_message['Records'].each do |event|
       request = Boundary.const_get(etl_stage + 'Request').new event['body']
