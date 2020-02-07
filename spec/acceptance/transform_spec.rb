@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-require 'rspec'
-
-require 'json'
-require 'aws-sdk-sqs'
-
 class SqsAdapterFake
   def read
     JSON.parse ({

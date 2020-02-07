@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
-
 class OracleAdapterFake
   def initialize(data)
     @data = data

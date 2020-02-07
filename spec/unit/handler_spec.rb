@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rspec'
-
 describe Handler do
   context 'when invoking processor with event' do
     it 'does not raise an error' do

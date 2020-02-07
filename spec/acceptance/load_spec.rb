@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
-
 describe 'Acceptance::Load' do
   context 'when no data is supplied in the event body' do
     it 'raises an error' do
