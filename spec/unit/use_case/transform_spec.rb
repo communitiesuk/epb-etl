@@ -14,26 +14,27 @@ describe UseCase::Transform do
   class TransformRequestStub
     def body
       JSON.parse(
-      {
-        "configuration": {
-          "endpoint": {
-            "uri": 'http://test-endpoint/api/schemes/1/assessors/TEST000000',
-            "method": 'put'
+        {
+          "configuration": {
+            "endpoint": {
+              "uri": 'http://test-endpoint/api/schemes/1/assessors/TEST000000',
+              "method": 'put'
+            },
+            "rules": [
+              {
+                "from": %w[data ASSESSOR FIRST_NAME],
+                "to": %w[data firstName]
+              }
+            ]
           },
-          "rules": [
-            {
-              "from": %w[data ASSESSOR FIRST_NAME],
-              "to": %w[data firstName]
+          "data": {
+            "ASSESSOR": {
+              "FIRST_NAME": 'Joe'
             }
-          ]
-        },
-        "data": {
-          "ASSESSOR": {
-            "FIRST_NAME": 'Joe'
           }
         }
-      }
-        .to_json)
+          .to_json
+      )
     end
   end
 

@@ -2,7 +2,7 @@
 
 module UseCase
   class Base
-    def initialize(request, container)
+    def initialize(request, _container)
       @request = request
 
       validate

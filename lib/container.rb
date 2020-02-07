@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Container
   def initialize(bootstrap = true)
     @objects = {}
@@ -6,7 +8,7 @@ class Container
       sqs_adapter = Adapter::SqsAdapter.new
       message_gateway = Gateway::MessageGateway.new(sqs_adapter: sqs_adapter)
 
-      @objects[:message_gateway] =  message_gateway
+      @objects[:message_gateway] = message_gateway
     end
   end
 

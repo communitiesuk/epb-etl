@@ -7,6 +7,7 @@ module UseCase
 
       super
     end
+
     def execute
       response = JSON.parse(
         {
@@ -27,7 +28,7 @@ module UseCase
 
     def bury(hash, *args)
       if args.count < 2
-        raise ArgumentError.new("2 or more arguments required")
+        raise ArgumentError, '2 or more arguments required'
       elsif args.count == 2
         hash[args[0]] = args[1]
       else

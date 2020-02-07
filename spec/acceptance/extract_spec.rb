@@ -7,7 +7,7 @@ class OracleAdapterFake
     @data = data
   end
 
-  def read(query)
+  def read(_query)
     @data
   end
 end
@@ -15,24 +15,24 @@ end
 class SqsAdapterFake
   def read
     JSON.parse ({
-        "Records": [
-            {
-                "messageId": "19dd0b57-b21e-4ac1-bd88-01bbb068cb78",
-                "receiptHandle": "MessageReceiptHandle",
-                "body": @data,
-                "attributes": {
-                    "ApproximateReceiveCount": "1",
-                    "SentTimestamp": "1523232000000",
-                    "SenderId": "123456789012",
-                    "ApproximateFirstReceiveTimestamp": "1523232000001"
-                },
-                "messageAttributes": {},
-                "md5OfBody": "7b270e59b47ff90a553787216d55d91d",
-                "eventSource": "aws:sqs",
-                "eventSourceARN": "arn:aws:sqs:eu-west-2:123456789012:MyQueue",
-                "awsRegion": "eu-west-2"
-            }
-        ]
+      "Records": [
+        {
+          "messageId": '19dd0b57-b21e-4ac1-bd88-01bbb068cb78',
+          "receiptHandle": 'MessageReceiptHandle',
+          "body": @data,
+          "attributes": {
+            "ApproximateReceiveCount": '1',
+            "SentTimestamp": '1523232000000',
+            "SenderId": '123456789012',
+            "ApproximateFirstReceiveTimestamp": '1523232000001'
+          },
+          "messageAttributes": {},
+          "md5OfBody": '7b270e59b47ff90a553787216d55d91d',
+          "eventSource": 'aws:sqs',
+          "eventSourceARN": 'arn:aws:sqs:eu-west-2:123456789012:MyQueue',
+          "awsRegion": 'eu-west-2'
+        }
+      ]
     }.to_json)
   end
 
@@ -55,13 +55,13 @@ describe 'Acceptance::Extract' do
     end
   end
 
-  context "when data is supplied in the event body" do
+  context 'when data is supplied in the event body' do
     it 'extracts the data' do
       message = JSON.parse File.open('spec/messages/sqs-message-extract-input.json').read
 
       ENV['ETL_STAGE'] = 'extract'
 
-      oracle_adapter = OracleAdapterFake.new([{'FIRST_NAME': 'Joe'}])
+      oracle_adapter = OracleAdapterFake.new([{ 'FIRST_NAME': 'Joe' }])
       sqs_adapter = SqsAdapterFake.new
 
       message_gateway = Gateway::MessageGateway.new(sqs_adapter)
@@ -80,33 +80,32 @@ describe 'Acceptance::Extract' do
     end
   end
 
+  context 'when data is supplied in the event body' do
+    it 'extracts the data, leaving array as seen in database' do
+      message = JSON.parse File.open('spec/messages/sqs-message-extract-input.json').read
+      message['Records'][0]['body']['configuration']['extract']['queries']['ASSESSOR']['multiple'] = true
 
-    context "when data is supplied in the event body" do
-      it 'extracts the data, leaving array as seen in database' do
-        message = JSON.parse File.open('spec/messages/sqs-message-extract-input.json').read
-        message['Records'][0]['body']['configuration']['extract']['queries']['ASSESSOR']['multiple'] = true
+      ENV['ETL_STAGE'] = 'extract'
 
-        ENV['ETL_STAGE'] = 'extract'
+      oracle_adapter = OracleAdapterFake.new([{ 'FIRST_NAME': 'Joe' }])
+      sqs_adapter = SqsAdapterFake.new
 
-        oracle_adapter = OracleAdapterFake.new([{'FIRST_NAME': 'Joe'}])
-        sqs_adapter = SqsAdapterFake.new
+      message_gateway = Gateway::MessageGateway.new(sqs_adapter)
+      database_gateway = Gateway::DatabaseGateway.new(oracle_adapter)
 
-        message_gateway = Gateway::MessageGateway.new(sqs_adapter)
-        database_gateway = Gateway::DatabaseGateway.new(oracle_adapter)
+      container = Container.new
+      container.set_object(:message_gateway, message_gateway)
+      container.set_object(:database_gateway, database_gateway)
 
-        container = Container.new
-        container.set_object(:message_gateway, message_gateway)
-        container.set_object(:database_gateway, database_gateway)
+      handler = Handler.new(container)
 
-        handler = Handler.new(container)
+      handler.process message: message
 
-        handler.process message: message
+      expected_extract_output = JSON.parse File.open('spec/messages/sqs-message-extract-output.json').read
+      expected_extract_output['Records'][0]['body']['configuration']['extract']['queries']['ASSESSOR']['multiple'] = true
+      expected_extract_output['Records'][0]['body']['data']['ASSESSOR'] = JSON.parse([{ 'FIRST_NAME': 'Joe' }].to_json)
 
-        expected_extract_output = JSON.parse File.open('spec/messages/sqs-message-extract-output.json').read
-        expected_extract_output['Records'][0]['body']['configuration']['extract']['queries']['ASSESSOR']['multiple'] = true
-        expected_extract_output['Records'][0]['body']['data']['ASSESSOR'] = JSON.parse([{'FIRST_NAME': 'Joe'}].to_json)
-
-        expect(sqs_adapter.read).to eq(expected_extract_output)
-      end
+      expect(sqs_adapter.read).to eq(expected_extract_output)
+    end
   end
 end

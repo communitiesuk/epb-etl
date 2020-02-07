@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Gateway
   class MessageGateway
     def initialize(adapter)

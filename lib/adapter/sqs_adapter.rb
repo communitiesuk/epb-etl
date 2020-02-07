@@ -1,11 +1,9 @@
+# frozen_string_literal: true
+
 module Adapter
   class SqsAdapter < Adapter::BaseAdapter
-    def read
+    def read; end
 
-    end
-
-    def write
-
-    end
+    def write; end
   end
 end

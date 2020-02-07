@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Gateway
   class DatabaseGateway
     def initialize(adapter)
@@ -7,9 +9,7 @@ module Gateway
     def read(query)
       result = @adapter.read(query['query'])
 
-      if result && !query['multiple']
-        return result[0]
-      end
+      return result[0] if result && !query['multiple']
 
       result
     end

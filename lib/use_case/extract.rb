@@ -11,11 +11,11 @@ module UseCase
 
     def execute
       response = JSON.parse(
-          {
-              configuration: @request.body['configuration'],
-              data: {
-              }
-          }.to_json
+        {
+          configuration: @request.body['configuration'],
+          data: {
+          }
+        }.to_json
       )
 
       queries = @request.body['configuration']['extract']['queries']
