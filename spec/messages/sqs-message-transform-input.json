@@ -5,6 +5,14 @@
       "receiptHandle": "MessageReceiptHandle",
       "body": {
         "configuration": {
+          "extract": {
+            "queries": {
+              "ASSESSOR": {
+                "query": "SELECT * FROM assessors WHERE ASSESSOR_KEY = 'TEST000000'",
+                "multiple": false
+              }
+            }
+          },
           "endpoint": {
             "uri": "http://test-endpoint/api/schemes/1/assessors/TEST000000",
             "method": "put"
@@ -78,38 +86,7 @@
             "COMPANY_POSTCODE": "S1 1DA",
             "COMPANY_TELEPHONE": "07000 678901",
             "COMPANY_EMAIL": "test@example.com",
-            "UPI": null,
-            "ORGANISATION": {
-              "ORGANISATION_KEY": 2,
-              "ORGANISATION_CODE": 1,
-              "ORGANISATION_STATUS_CODE": 1,
-              "CREATION_DATE": "2008-04-25 16:14:46",
-              "TEST_IND": "N",
-              "REGISTERED_NAME": "Services Ltd",
-              "ADDR1": "Energy Centre",
-              "ADDR2": "Uphill",
-              "ADDR3": null,
-              "TOWN": "Reading",
-              "COUNTY": null,
-              "POSTCODE": "RG6 6UR",
-              "WEBSITE": "www.example.co.uk",
-              "EMAIL": "support@example.co.uk ",
-              "TELEPHONE": "01980 123456",
-              "FAX": "01999 123456",
-              "INVOICE_IND": "Y",
-              "CREATED_BY_CONTACT_KEY": 11117,
-              "LAST_UPDATE_DATE": null,
-              "LAST_UPDATED_BY_CONTACT_KEY": null,
-              "INVOICE_FAO": "Accounts team",
-              "INVOICE_ADDR1": "Limited Systems",
-              "INVOICE_ADDR2": "example address",
-              "INVOICE_ADDR3": "test street",
-              "INVOICE_TOWN": "Leeds",
-              "INVOICE_COUNTY": "Leeds",
-              "INVOICE_POSTCODE": "LS2 9JT",
-              "INVOICE_EMAIL": "test@example.com",
-              "PURCHASE_ORDER_NO": null
-            }
+            "UPI": null
           }
         }
       },

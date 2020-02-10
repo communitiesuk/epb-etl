@@ -8,7 +8,7 @@
           "extract": {
             "queries": {
               "ASSESSOR": {
-                "query": "SELECT FIRST_NAME FROM assessors",
+                "query": "SELECT * FROM assessors WHERE ASSESSOR_KEY = 'TEST000000'",
                 "multiple": false
               }
             }
