@@ -39,5 +39,33 @@ describe Gateway::DatabaseGateway do
         ASSESSOR_KEY: 'TEST000000'
       )
     end
+
+    it 'returns multiple results of a query' do
+      oracle_adapter = OracleAdapterFake.new(
+        [
+          {
+            "ASSESSOR_LOCATION": [
+              1234,
+              1234,
+              [
+                746_745,
+                523_646,
+                nil
+              ],
+              nil,
+              nil
+            ]
+          }
+        ]
+      )
+
+      database_gateway = Gateway::DatabaseGateway.new(oracle_adapter)
+      response = database_gateway.read(
+        'query' => "SELECT * FROM postcodes WHERE ASSESSOR_KEY = 'TEST000000'",
+        'multiple' => true
+      )
+
+      expect(response).to eq([{ ASSESSOR_LOCATION: [1234, 1234, [746745, 523646, nil], nil, nil] }])
+    end
   end
 end
