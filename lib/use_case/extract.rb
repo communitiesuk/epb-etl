@@ -23,6 +23,7 @@ module UseCase
       queries.each do |key, query|
         response['data'][key] = @database_gateway.read(query)
       end
+
       @message_gateway.write(response)
     end
   end

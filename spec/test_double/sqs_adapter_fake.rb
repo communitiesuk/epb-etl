@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SqsAdapterFake
   def read
     JSON.parse(
