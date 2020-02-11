@@ -2,16 +2,16 @@
 
 module Gateway
   class MessageGateway
-    def initialize(adapter)
-      @adapter = adapter
+    def initialize(sqs_adapter)
+      @sqs_adapter = sqs_adapter
     end
 
     def read
-      @adapter.read
+      @sqs_adapter.read
     end
 
     def write(data)
-      @adapter.write(data)
+      @sqs_adapter.write(data)
     end
   end
 end

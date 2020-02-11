@@ -2,12 +2,12 @@
 
 module Gateway
   class DatabaseGateway
-    def initialize(adapter)
-      @adapter = adapter
+    def initialize(oracle_adapter)
+      @oracle_adapter = oracle_adapter
     end
 
     def read(query)
-      result = @adapter.read(query['query'])
+      result = @oracle_adapter.read(query['query'])
 
       return result[0] if result && !query['multiple']
 
