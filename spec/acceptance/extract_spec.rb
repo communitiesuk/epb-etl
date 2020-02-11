@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
 describe 'Acceptance::Extract' do
-  context 'when no data is supplied in the event body' do
+  context 'when no data is supplied in the message body' do
     it 'raises an error' do
-      message = JSON.parse File.open('spec/messages/sqs-empty-message.json').read
+      event = JSON.parse File.open('spec/event/sqs-empty-message.json').read
 
       ENV['ETL_STAGE'] = 'extract'
 
       expect do
         handler = Handler.new Container.new
-        handler.process message: message
+        handler.process event: event
       end.to raise_error instance_of Errors::RequestWithoutBody
     end
   end
 
-  context 'when data is supplied in the event body' do
+  context 'when data is supplied in the message body' do
     let(:oracle_adapter) do
       OracleAdapterFake.new [
         {
@@ -68,7 +68,7 @@ describe 'Acceptance::Extract' do
     end
 
     it 'extracts the data' do
-      message = JSON.parse File.open('spec/messages/sqs-message-extract-input.json').read
+      event = JSON.parse File.open('spec/event/sqs-message-extract-input.json').read
 
       ENV['ETL_STAGE'] = 'extract'
 
@@ -82,9 +82,9 @@ describe 'Acceptance::Extract' do
       container.set_object(:database_gateway, database_gateway)
 
       handler = Handler.new(container)
-      handler.process message: message
+      handler.process event: event
 
-      expected_extract_output = JSON.parse File.open('spec/messages/sqs-message-transform-input.json').read
+      expected_extract_output = JSON.parse File.open('spec/event/sqs-message-transform-input.json').read
 
       expect(sqs_adapter.read).to eq(expected_extract_output)
     end

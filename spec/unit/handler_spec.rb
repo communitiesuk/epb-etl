@@ -8,7 +8,7 @@ describe Handler do
       expect do
         handler = described_class.new Container.new
         handler.process(
-          message: {
+          event: {
             Records: []
           }
         )
@@ -23,7 +23,7 @@ describe Handler do
       expect do
         handler = described_class.new Container.new
         handler.process(
-          message: {
+          event: {
             Records: []
           }
         )
@@ -38,7 +38,7 @@ describe Handler do
       expect do
         handler = described_class.new Container.new
         handler.process(
-          message: {
+          event: {
             Records: []
           }
         )

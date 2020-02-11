@@ -1,23 +1,23 @@
 # frozen_string_literal: true
 
 describe 'Acceptance::Load' do
-  context 'when no data is supplied in the event body' do
+  context 'when no data is supplied in the message body' do
     it 'raises an error' do
-      message = JSON.parse File.open('spec/messages/sqs-empty-message.json').read
+      event = JSON.parse File.open('spec/event/sqs-empty-message.json').read
 
       ENV['ETL_STAGE'] = 'load'
 
       expect do
         handler = Handler.new Container.new
-        handler.process message: message
+        handler.process event: event
       end.to raise_error instance_of Errors::RequestWithoutBody
     end
   end
 
-  context 'when data is supplied' do
+  context 'when data is supplied in the message body' do
     context 'when all required data is present' do
       it 'sends the data to the endpoint' do
-        message = JSON.parse File.open('spec/messages/sqs-message-load-input.json').read
+        event = JSON.parse File.open('spec/event/sqs-message-load-input.json').read
 
         ENV['ETL_STAGE'] = 'load'
 
@@ -25,7 +25,7 @@ describe 'Acceptance::Load' do
                     .to_return(body: JSON.generate(message: 'ok'), status: 200)
 
         handler = Handler.new Container.new
-        handler.process message: message
+        handler.process event: event
 
         expect(WebMock).to have_requested(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST000000')
           .with(body: JSON.generate(
