@@ -7,4 +7,7 @@ module Errors
 
   class EtlStage < StandardError; end
   class EtlStageInvalid < Errors::EtlStage; end
+
+  class Result < StandardError; end
+  class ResultEmpty < Errors::Result; end
 end
