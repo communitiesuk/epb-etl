@@ -6,8 +6,8 @@ module Gateway
       @sqs_adapter = sqs_adapter
     end
 
-    def read
-      @sqs_adapter.read
+    def read(body)
+      body
     end
 
     def write(data)

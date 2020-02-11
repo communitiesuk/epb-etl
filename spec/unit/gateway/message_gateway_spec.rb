@@ -3,12 +3,9 @@
 describe Gateway::MessageGateway do
   context 'when reading from the adapter' do
     it 'returns the message' do
-      sqs_adapter = SqsAdapterFake.new
+      class SqsAdapterDummy; end
 
-      message_gateway = Gateway::MessageGateway.new(sqs_adapter)
-      response = message_gateway.read
-
-      expect(response).to eq(
+      body = {
         'Records' => [
           {
             'attributes' => {
@@ -27,12 +24,16 @@ describe Gateway::MessageGateway do
             'receiptHandle' => 'MessageReceiptHandle'
           }
         ]
-      )
+      }
+
+      message_gateway = Gateway::MessageGateway.new(SqsAdapterDummy.new)
+      response = message_gateway.read(body)
+
+      expect(response).to eq(body)
     end
 
     it 'modifies the message' do
       sqs_adapter = SqsAdapterFake.new
-
       message_gateway = Gateway::MessageGateway.new(sqs_adapter)
       response = message_gateway.write('Testy testington')
 
