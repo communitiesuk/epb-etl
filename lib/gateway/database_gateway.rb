@@ -11,9 +11,7 @@ module Gateway
 
       raise Errors::ResultEmpty if result.nil?
 
-      return result[0] if result && !query['multiple']
-
-      result
+      result && !query['multiple'] ? result[0] : result
     end
   end
 end
