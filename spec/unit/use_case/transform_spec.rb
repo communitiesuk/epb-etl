@@ -1,16 +1,6 @@
 # frozen_string_literal: true
 
 describe UseCase::Transform do
-  class MessageGatewayFake
-    def read
-      @data
-    end
-
-    def write(data)
-      @data = data
-    end
-  end
-
   class TransformRequestStub
     def body
       JSON.parse(

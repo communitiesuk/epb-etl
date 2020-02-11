@@ -19,16 +19,6 @@ describe UseCase::Extract do
     end
   end
 
-  class MessageGatewayFake
-    def read
-      @data
-    end
-
-    def write(data)
-      @data = data
-    end
-  end
-
   class ExtractRequestStub
     def body
       JSON.parse(
