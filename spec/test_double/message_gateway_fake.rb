@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MessageGatewayFake
   def initialize(data = nil)
     @data = data
