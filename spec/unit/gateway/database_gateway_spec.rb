@@ -67,5 +67,17 @@ describe Gateway::DatabaseGateway do
 
       expect(response).to eq([{ ASSESSOR_LOCATION: [1234, 1234, [746745, 523646, nil], nil, nil] }])
     end
+
+
+    it 'raises an error if there is no result' do
+      oracle_adapter = OracleAdapterFake.new(nil)
+
+      database_gateway = Gateway::DatabaseGateway.new(oracle_adapter)
+
+      expect { database_gateway.read(
+        'query' => "SELECT * FROM postcodes WHERE ASSESSOR_KEY = 'TEST000000'",
+        'multiple' => true
+      ) }.to raise_exception('There are no results for this query')
+    end
   end
 end

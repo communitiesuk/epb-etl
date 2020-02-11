@@ -9,6 +9,8 @@ module Gateway
     def read(query)
       result = @oracle_adapter.read(query['query'])
 
+      raise StandardError.new, 'There are no results for this query' if result == nil
+
       return result[0] if result && !query['multiple']
 
       result
