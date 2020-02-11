@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class SqsAdapterFake
+  def initialize(data = nil)
+    @data = data
+  end
+
   def read
     JSON.parse(
       {
