@@ -1,15 +1,5 @@
 # frozen_string_literal: true
 
-class OracleAdapterFake
-  def initialize(data)
-    @data = data
-  end
-
-  def read(_query)
-    @data
-  end
-end
-
 describe 'Acceptance::Extract' do
   context 'when no data is supplied in the event body' do
     it 'raises an error' do
