@@ -14,5 +14,16 @@ describe Adapter::SqsAdapter do
         end.to raise_error an_instance_of ArgumentError
       end
     end
+
+    context 'when the body of the message is invalid' do
+      it 'raises an argument error' do
+        sqs_client = Aws::SQS::Client.new(region: ENV['AWS_SQS_REGION'], stub_responses: true)
+        sqs_adapter = Adapter::SqsAdapter.new(sqs_client)
+
+        expect do
+          sqs_adapter.write(queue_url, nil)
+        end.to raise_error an_instance_of ArgumentError
+      end
+    end
   end
 end
