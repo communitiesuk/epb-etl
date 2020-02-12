@@ -25,5 +25,15 @@ describe Adapter::SqsAdapter do
         end.to raise_error an_instance_of ArgumentError
       end
     end
+
+    context 'when the queue URL and message body is valid' do
+      it 'successfully sends a message' do
+        sqs_client = Aws::SQS::Client.new(region: ENV['AWS_SQS_REGION'], stub_responses: true)
+        sqs_adapter = Adapter::SqsAdapter.new(sqs_client)
+
+        response = sqs_adapter.write(queue_url, 'body')
+        expect(response.successful?).to be_truthy
+      end
+    end
   end
 end
