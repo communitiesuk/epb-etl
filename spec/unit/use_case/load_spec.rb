@@ -11,9 +11,11 @@ describe UseCase::Load do
             "dateOfBirth": '1985-11-25'
           },
           "configuration": {
-            "endpoint": {
-              "method": 'put',
-              "uri": 'http://test-endpoint/api/schemes/1/assessors/TEST000000'
+            "load": {
+              "endpoint": {
+                "method": 'put',
+                "uri": 'http://test-endpoint/api/schemes/1/assessors/TEST000000'
+              }
             }
           }
         }.to_json

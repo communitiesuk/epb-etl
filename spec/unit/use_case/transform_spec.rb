@@ -6,16 +6,20 @@ describe UseCase::Transform do
       JSON.parse(
         {
           "configuration": {
-            "endpoint": {
-              "uri": 'http://test-endpoint/api/schemes/1/assessors/TEST000000',
-              "method": 'put'
-            },
-            "rules": [
-              {
-                "from": %w[data ASSESSOR FIRST_NAME],
-                "to": %w[data firstName]
+            "load": {
+              "endpoint": {
+                "uri": 'http://test-endpoint/api/schemes/1/assessors/TEST000000',
+                "method": 'put'
               }
-            ]
+            },
+            transform: {
+              "rules": [
+                {
+                  "from": %w[data ASSESSOR FIRST_NAME],
+                  "to": %w[data firstName]
+                }
+              ]
+            }
           },
           "data": {
             "ASSESSOR": {
@@ -39,17 +43,20 @@ describe UseCase::Transform do
 
       expect(response).to eq(JSON.parse({
         "configuration": {
-          "endpoint": {
-            "uri": 'http://test-endpoint/api/schemes/1/assessors/TEST000000',
-            "method": 'put'
-          },
-          "rules": [
-            {
-              "from": %w[data ASSESSOR FIRST_NAME],
-              "to": %w[data firstName]
+          "load": {
+            "endpoint": {
+              "uri": 'http://test-endpoint/api/schemes/1/assessors/TEST000000',
+              "method": 'put'
             }
-          ]
-
+          },
+          "transform": {
+            "rules": [
+              {
+                "from": %w[data ASSESSOR FIRST_NAME],
+                "to": %w[data firstName]
+              }
+            ]
+          }
         },
         "data": {
           "firstName": 'Joe'

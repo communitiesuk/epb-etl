@@ -13,32 +13,36 @@
               }
             }
           },
-          "endpoint": {
-            "uri": "http://test-endpoint/api/schemes/1/assessors/TEST000000",
-            "method": "put"
+          "transform": {
+            "rules": [
+              {
+                "from": ["data", "ASSESSOR", "FIRST_NAME"],
+                "to": ["data", "firstName"]
+              },
+              {
+                "from": ["data", "ASSESSOR", "SURNAME"],
+                "to": ["data", "lastName"]
+              },
+              {
+                "from": ["data", "ASSESSOR", "DATE_OF_BIRTH"],
+                "to": ["data", "dateOfBirth"]
+              },
+              {
+                "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
+                "to": ["configuration", "load", "endpoint", "params", "schemeId"]
+              },
+              {
+                "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
+                "to": ["configuration", "load", "endpoint", "params", "schemeAssessorId"]
+              }
+            ]
           },
-          "rules": [
-            {
-              "from": ["data", "ASSESSOR", "FIRST_NAME"],
-              "to": ["data", "firstName"]
-            },
-            {
-              "from": ["data", "ASSESSOR", "SURNAME"],
-              "to": ["data", "lastName"]
-            },
-            {
-              "from": ["data", "ASSESSOR", "DATE_OF_BIRTH"],
-              "to": ["data", "dateOfBirth"]
-            },
-            {
-              "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
-              "to": ["configuration", "endpoint", "params", "schemeId"]
-            },
-            {
-              "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
-              "to": ["configuration", "endpoint", "params", "schemeAssessorId"]
+          "load": {
+            "endpoint": {
+              "uri": "http://test-endpoint/api/schemes/1/assessors/TEST000000",
+              "method": "put"
             }
-          ]
+          }
         },
         "data": {
           "ASSESSOR": {

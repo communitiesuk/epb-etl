@@ -10,14 +10,6 @@
           "dateOfBirth": "1980-11-01 00:00:00.000000"
         },
         "configuration": {
-          "endpoint": {
-            "method": "put",
-            "uri": "http://test-endpoint/api/schemes/1/assessors/TEST000000",
-            "params": {
-              "schemeId": 444,
-              "schemeAssessorId": "TEST000000"
-            }
-          },
           "extract": {
             "queries": {
               "ASSESSOR": {
@@ -26,28 +18,40 @@
               }
             }
           },
-          "rules": [
-            {
-              "from": ["data", "ASSESSOR", "FIRST_NAME"],
-              "to": ["data", "firstName"]
-            },
-            {
-              "from": ["data", "ASSESSOR", "SURNAME"],
-              "to": ["data", "lastName"]
-            },
-            {
-              "from": ["data", "ASSESSOR", "DATE_OF_BIRTH"],
-              "to": ["data", "dateOfBirth"]
-            },
-            {
-              "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
-              "to": ["configuration", "endpoint", "params", "schemeId"]
-            },
-            {
-              "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
-              "to": ["configuration", "endpoint", "params", "schemeAssessorId"]
+          "transform": {
+            "rules": [
+              {
+                "from": ["data", "ASSESSOR", "FIRST_NAME"],
+                "to": ["data", "firstName"]
+              },
+              {
+                "from": ["data", "ASSESSOR", "SURNAME"],
+                "to": ["data", "lastName"]
+              },
+              {
+                "from": ["data", "ASSESSOR", "DATE_OF_BIRTH"],
+                "to": ["data", "dateOfBirth"]
+              },
+              {
+                "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
+                "to": ["configuration", "load", "endpoint", "params", "schemeId"]
+              },
+              {
+                "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
+                "to": ["configuration", "load", "endpoint", "params", "schemeAssessorId"]
+              }
+            ]
+          },
+          "load": {
+            "endpoint": {
+              "method": "put",
+              "uri": "http://test-endpoint/api/schemes/1/assessors/TEST000000",
+              "params": {
+                "schemeId": 444,
+                "schemeAssessorId": "TEST000000"
+              }
             }
-          ]
+          }
         }
       },
       "attributes": {

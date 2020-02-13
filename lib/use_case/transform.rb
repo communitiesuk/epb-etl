@@ -15,7 +15,7 @@ module UseCase
         }.to_json
       )
 
-      rules = @request.body['configuration']['rules']
+      rules = @request.body['configuration']['transform']['rules']
 
       rules.each do |rule|
         bury(response, *rule['to'], @request.body.dig(*rule['from']))
