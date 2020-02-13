@@ -10,4 +10,8 @@ module Errors
 
   class Result < StandardError; end
   class ResultEmpty < Errors::Result; end
+
+  class SqsClient < StandardError; end
+  class SqsClientHasInvalidQueueUrl < Errors::SqsClient; end
+  class SqsClientWithoutMessageBody < Errors::SqsClient; end
 end

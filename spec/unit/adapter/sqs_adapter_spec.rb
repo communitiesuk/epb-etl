@@ -8,13 +8,13 @@ describe Adapter::SqsAdapter do
 
     context 'when the queue URL is invalid' do
       it 'raises an argument error' do
-        expect { sqs_adapter.write('', 'body') }.to raise_error an_instance_of ArgumentError
+        expect { sqs_adapter.write('', 'body') }.to raise_error an_instance_of Errors::SqsClientHasInvalidQueueUrl
       end
     end
 
     context 'when the body of the message is invalid' do
       it 'raises an argument error' do
-        expect { sqs_adapter.write(queue_url, nil) }.to raise_error an_instance_of ArgumentError
+        expect { sqs_adapter.write(queue_url, nil) }.to raise_error an_instance_of Errors::SqsClientWithoutMessageBody
       end
     end
 
