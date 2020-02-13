@@ -15,13 +15,14 @@ module UseCase
         }.to_json
       )
 
+      queue_url = @request.body['configuration']['load']['queue_url']
       rules = @request.body['configuration']['transform']['rules']
 
       rules.each do |rule|
         bury(response, *rule['to'], @request.body.dig(*rule['from']))
       end
 
-      @message_gateway.write(response)
+      @message_gateway.write(queue_url, response)
     end
 
     private

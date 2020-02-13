@@ -18,13 +18,14 @@ module UseCase
         }.to_json
       )
 
+      queue_url = @request.body['configuration']['transform']['queue_url']
       queries = @request.body['configuration']['extract']['queries']
 
       queries.each do |key, query|
         response['data'][key] = @database_gateway.read(query)
       end
 
-      @message_gateway.write(response)
+      @message_gateway.write(queue_url, response)
     end
   end
 end

@@ -23,29 +23,34 @@ describe UseCase::Extract do
     def body
       JSON.parse(
         {
-          "configuration": {
-            "endpoint": {
-              "uri": 'http://test-endpoint/api/schemes/1/assessors/TEST000000',
-              "method": 'put'
-            },
-            "rules": [
-              {
-                "from": %w[data ASSESSOR FIRST_NAME],
-                "to": %w[data firstName]
-              }
-            ],
-            "extract": {
-              "queries": {
-                "ASSESSOR": {
-                  "query": "SELECT * FROM assessors WHERE ASSESSOR_KEY = 'TEST000000'",
-                  "multiple": false
+          'configuration': {
+            'extract': {
+              'queries': {
+                'ASSESSOR': {
+                  'query': 'SELECT * FROM assessors WHERE ASSESSOR_KEY = \'TEST000000\'',
+                  'multiple': false
                 }
+              }
+            },
+            'transform': {
+              'queue_url': 'https://sqs.eu-west-2.amazonaws.com/1234567890/transform',
+              'rules': [
+                {
+                  'from': %w[data ASSESSOR FIRST_NAME],
+                  'to': %w[data firstName]
+                }
+              ]
+            },
+            'load': {
+              'endpoint': {
+                'uri': 'http://test-endpoint/api/schemes/1/assessors/TEST000000',
+                'method': 'put'
               }
             }
           },
-          "data": {
-            "ASSESSOR": {
-              "FIRST_NAME": 'Joe'
+          'data': {
+            'ASSESSOR': {
+              'FIRST_NAME': 'Joe'
             }
           }
         }.to_json
@@ -65,26 +70,31 @@ describe UseCase::Extract do
       response = extract.execute
 
       expect(response).to eq(JSON.parse({
-        'configuration' => {
-          'endpoint' => {
-            'method' => 'put',
-            'uri' => 'http://test-endpoint/api/schemes/1/assessors/TEST000000'
-          },
-          'extract' => {
-            'queries' => {
-              'ASSESSOR' => {
-                'multiple' => false,
-                'query' => "SELECT * FROM assessors WHERE ASSESSOR_KEY = 'TEST000000'"
+        configuration: {
+          extract: {
+            queries: {
+              ASSESSOR: {
+                multiple: false,
+                query: 'SELECT * FROM assessors WHERE ASSESSOR_KEY = \'TEST000000\''
               }
             }
           },
-          'rules' => [{
-            'from' => %w[data ASSESSOR FIRST_NAME],
-            'to' => %w[data firstName]
-          }]
+          transform: {
+            queue_url: 'https://sqs.eu-west-2.amazonaws.com/1234567890/transform',
+            rules: [{
+              from: %w[data ASSESSOR FIRST_NAME],
+              to: %w[data firstName]
+            }]
+          },
+          load: {
+            endpoint: {
+              method: 'put',
+              uri: 'http://test-endpoint/api/schemes/1/assessors/TEST000000'
+            }
+          }
         },
-        'data' => {
-          'ASSESSOR' => {
+        data: {
+          ASSESSOR: {
             DATE_OF_BIRTH: '1980-11-01 00:00:00.000000',
             FIRST_NAME: 'Joe',
             SURNAME: 'Testerton'

@@ -5,9 +5,10 @@ describe Gateway::MessageGateway do
     it 'modifies the message' do
       sqs_adapter = SqsAdapterFake.new
       message_gateway = Gateway::MessageGateway.new(sqs_adapter)
-      response = message_gateway.write('Testy testington')
+      queue_url = 'https://sqs.eu-west-2.amazonaws.com/1234567890/test'
+      response = message_gateway.write(queue_url, 'something')
 
-      expect(response).to eq('Testy testington')
+      expect(response).to eq('something')
     end
   end
 end

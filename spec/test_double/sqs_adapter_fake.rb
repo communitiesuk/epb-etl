@@ -30,7 +30,7 @@ class SqsAdapterFake
     )
   end
 
-  def write(data)
+  def write(_queue_url, data)
     @data = data
   end
 end

@@ -6,8 +6,8 @@ module Gateway
       @sqs_adapter = sqs_adapter
     end
 
-    def write(data)
-      @sqs_adapter.write(data)
+    def write(queue_url, data)
+      @sqs_adapter.write(queue_url, data)
     end
   end
 end
