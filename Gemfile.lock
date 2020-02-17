@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/communitiesuk/epb-auth-tools
-  revision: 87c9e96bfc4a16c3b5c33ca4e46836780954f9aa
+  revision: c2b5d0dfcb37bc3f0cf641b1af15d4e5e3fef9c6
   branch: master
   specs:
     epb_auth_tools (0.0.0)
@@ -13,8 +13,8 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     aws-eventstream (1.0.3)
-    aws-partitions (1.272.0)
-    aws-sdk-core (3.90.0)
+    aws-partitions (1.273.0)
+    aws-sdk-core (3.90.1)
       aws-eventstream (~> 1.0, >= 1.0.2)
       aws-partitions (~> 1, >= 1.239.0)
       aws-sigv4 (~> 1.1)
