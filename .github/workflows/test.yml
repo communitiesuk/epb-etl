@@ -20,7 +20,7 @@ jobs:
         run: gem install bundler -v '2.1.4'
 
       - name: Install dependencies
-        run: bundle install
+        run: bundle install --without staging
 
       - name: Test
-        run: bundle exec rspec
+        run: bundle exec rspec --exclude-pattern "**/integration/*_spec.rb"
