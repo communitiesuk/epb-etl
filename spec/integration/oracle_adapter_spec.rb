@@ -25,7 +25,7 @@ describe 'Integration::OracleAdapter' do
 
     until @oracle_has_started
       begin
-        conn = OCI8.new('sys', 'Oradoc_db1', '//localhost:1521/ORCLCDB.LOCALDOMAIN', :SYSDBA)
+        conn = OCI8.new 'sys', 'Oradoc_db1', '//localhost:1521/ORCLCDB.LOCALDOMAIN', :SYSDBA
 
         conn.exec 'create table rates (actual varchar(10), word varchar(8), score integer)'
         conn.exec "insert into rates values ('1', 'one', 25)"
@@ -48,12 +48,12 @@ describe 'Integration::OracleAdapter' do
   context 'when connecting to the Oracle database' do
     it 'does not raise an error' do
       expect do
-        Adapter::OracleAdapter.new OCI8.new 'sys', 'Oradoc_db1', '//localhost:1521/ORCLCDB.LOCALDOMAIN', :SYSDBA
+        Adapter::OracleAdapter.new OCI8.new 'sys/Oradoc_db1@//localhost:1521/ORCLCDB.LOCALDOMAIN as sysdba'
       end.not_to raise_error
     end
 
     it 'can select from a table' do
-      oracle = OCI8.new 'sys', 'Oradoc_db1', '//localhost:1521/ORCLCDB.LOCALDOMAIN', :SYSDBA
+      oracle = OCI8.new 'sys/Oradoc_db1@//localhost:1521/ORCLCDB.LOCALDOMAIN as sysdba'
       oracle_adapter = Adapter::OracleAdapter.new oracle
       response = oracle_adapter.read('SELECT * FROM rates').first
 
