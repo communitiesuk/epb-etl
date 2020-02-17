@@ -39,7 +39,7 @@ describe UseCase::Load do
       load = described_class.new(request, nil)
       response = load.execute
 
-      expect(response.code).to eq '200'
+      expect(response.status).to eq 200
     end
   end
 end

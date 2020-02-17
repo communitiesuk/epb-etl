@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'epb_auth_tools'
+
 module UseCase
   class Load < UseCase::Base
     def execute
@@ -9,9 +11,16 @@ module UseCase
       req = Net::HTTP.const_get(method.capitalize).new(uri.path)
       req['Content-Length'] = body.length
 
-      Net::HTTP.start(uri.host, uri.port) do |http|
-        http.request req, body
-      end
+      http_client = Auth::HttpClient.new ENV['EPB_AUTH_CLIENT_ID'],
+                                         ENV['EPB_AUTH_CLIENT_SECRET'],
+                                         ENV['EPB_AUTH_SERVER'],
+                                         ENV['EPB_API_URL'],
+                                         OAuth2::Client
+
+      http_client.request method, uri.path, body: body, headers: {
+        'Content-Length' => body.length.to_s,
+        'Content-Type' => 'application/json'
+      }
     end
   end
 end
