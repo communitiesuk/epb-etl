@@ -7,5 +7,7 @@ source 'https://rubygems.org' do
   end
 
   gem 'aws-sdk-sqs', '~> 1.23'
+  gem 'docker-api', '~> 1.34'
+  gem 'ruby-oci8', '~> 2.2'
   gem 'zeitwerk', '~> 2.2'
 end
