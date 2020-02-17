@@ -11,6 +11,8 @@ source 'https://rubygems.org' do
   end
 
   gem 'aws-sdk-sqs', '~> 1.23'
+  gem 'epb_auth_tools',
+      git: 'https://github.com/communitiesuk/epb-auth-tools', branch: 'master'
   gem 'docker-api', '~> 1.34'
   gem 'zeitwerk', '~> 2.2'
 end
