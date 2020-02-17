@@ -8,7 +8,7 @@ describe 'Acceptance::Extract' do
       ENV['ETL_STAGE'] = 'extract'
 
       expect do
-        handler = Handler.new Container.new
+        handler = Handler.new Container.new false
         handler.process event: event
       end.to raise_error instance_of Errors::RequestWithoutBody
     end
@@ -77,7 +77,7 @@ describe 'Acceptance::Extract' do
       message_gateway = Gateway::MessageGateway.new(sqs_adapter)
       database_gateway = Gateway::DatabaseGateway.new(oracle_adapter)
 
-      container = Container.new
+      container = Container.new false
       container.set_object(:message_gateway, message_gateway)
       container.set_object(:database_gateway, database_gateway)
 

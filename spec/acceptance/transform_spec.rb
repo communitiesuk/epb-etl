@@ -8,7 +8,7 @@ describe 'Acceptance::Transform' do
       ENV['ETL_STAGE'] = 'transform'
 
       expect do
-        handler = Handler.new Container.new
+        handler = Handler.new Container.new false
         handler.process event: event
       end.to raise_error instance_of Errors::RequestWithoutBody
     end
@@ -23,7 +23,7 @@ describe 'Acceptance::Transform' do
 
         sqs_adapter = SqsAdapterFake.new
         message_gateway = Gateway::MessageGateway.new(sqs_adapter)
-        container = Container.new
+        container = Container.new false
         container.set_object(:message_gateway, message_gateway)
         handler = Handler.new(container)
         handler.process event: event

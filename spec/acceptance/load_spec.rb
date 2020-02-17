@@ -8,7 +8,7 @@ describe 'Acceptance::Load' do
       ENV['ETL_STAGE'] = 'load'
 
       expect do
-        handler = Handler.new Container.new
+        handler = Handler.new Container.new false
         handler.process event: event
       end.to raise_error instance_of Errors::RequestWithoutBody
     end
@@ -24,7 +24,7 @@ describe 'Acceptance::Load' do
         http_stub = stub_request(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST000000')
                     .to_return(body: JSON.generate(message: 'ok'), status: 200)
 
-        handler = Handler.new Container.new
+        handler = Handler.new Container.new false
         handler.process event: event
 
         expect(WebMock).to have_requested(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST000000')

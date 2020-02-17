@@ -5,7 +5,8 @@ class Container
     @objects = {}
 
     if bootstrap
-      sqs_adapter = Adapter::SqsAdapter.new
+      sqs_client = Aws::SQS::Client.new
+      sqs_adapter = Adapter::SqsAdapter.new sqs_client
       message_gateway = Gateway::MessageGateway.new(sqs_adapter: sqs_adapter)
 
       @objects[:message_gateway] = message_gateway

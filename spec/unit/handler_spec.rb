@@ -6,7 +6,7 @@ describe Handler do
       ENV['ETL_STAGE'] = 'extract'
 
       expect do
-        handler = described_class.new Container.new
+        handler = described_class.new Container.new false
         handler.process(
           event: {
             Records: []
@@ -21,7 +21,7 @@ describe Handler do
       ENV['ETL_STAGE'] = ''
 
       expect do
-        handler = described_class.new Container.new
+        handler = described_class.new Container.new false
         handler.process(
           event: {
             Records: []
@@ -36,7 +36,7 @@ describe Handler do
       ENV['ETL_STAGE'] = 'asdf'
 
       expect do
-        handler = described_class.new Container.new
+        handler = described_class.new Container.new false
         handler.process(
           event: {
             Records: []
