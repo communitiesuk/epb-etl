@@ -23,4 +23,4 @@ jobs:
         run: bundle install --without staging
 
       - name: Test
-        run: bundle exec rspec --exclude-pattern "**/integration/*_spec.rb"
+        run: bundle exec rspec --exclude-pattern "**/integration/**/*_spec.rb"
