@@ -20,8 +20,8 @@ describe 'E2E::Etl' do
     until @oracle_has_started
       begin
         conn = OCI8.new 'sys', 'Oradoc_db1', '//localhost:1521/ORCLCDB.LOCALDOMAIN', :SYSDBA
-        conn.exec 'create table ASSESSORS (FIRST_NAME varchar(20), SURNAME varchar(20), DATE_OF_BIRTH varchar(30), ASSESSOR_ID varchar(20))'
-        conn.exec "insert into ASSESSORS values ('Joe', 'Testerton', '1980-11-01 00:00:00.000000', 'TEST000000')"
+        conn.exec 'create table ASSESSORS (FIRST_NAME varchar(20), SURNAME varchar(20), DATE_OF_BIRTH varchar(30), ASSESSOR_ID varchar(20), ORGANISATION_KEY integer)'
+        conn.exec "insert into ASSESSORS values ('Joe', 'Testerton', '1980-11-01 00:00:00.000000', 'TEST000000', 144)"
         conn.commit
         @oracle_has_started = true
       rescue OCIError

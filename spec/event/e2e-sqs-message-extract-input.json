@@ -32,6 +32,17 @@
                 }
               },
               {
+                "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
+                "to": ["configuration", "load", "endpoint", "params", "schemeId"],
+                "convert": {
+                  "type": "map",
+                  "map": {
+                    "142": 2,
+                    "144": 3
+                  }
+                }
+              },
+              {
                 "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
                 "to": ["configuration", "load", "endpoint", "params", "schemeAssessorId"]
               }
