@@ -43,6 +43,8 @@ describe 'Integration::OracleAdapter' do
    after :context do
     @container.kill
     @container.stop
+    @container.delete(:force => true)
+    Docker::Volume.prune
    end
 
   context 'when connecting to the Oracle database' do
