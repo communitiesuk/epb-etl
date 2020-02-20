@@ -7,7 +7,7 @@
         "data": {
           "firstName": "Joe",
           "lastName": "Testerton",
-          "dateOfBirth": "1980-11-01 00:00:00.000000"
+          "dateOfBirth": "1980-11-01"
         },
         "configuration": {
           "extract": {
@@ -30,7 +30,11 @@
               },
               {
                 "from": ["data", "ASSESSOR", "DATE_OF_BIRTH"],
-                "to": ["data", "dateOfBirth"]
+                "to": ["data", "dateOfBirth"],
+                "convert": {
+                  "type": "dateFormat",
+                  "format": "%Y-%m-%d"
+                }
               },
               {
                 "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],

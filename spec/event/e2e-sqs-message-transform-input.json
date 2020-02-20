@@ -25,7 +25,11 @@
               },
               {
                 "from": ["data", "ASSESSOR", "DATE_OF_BIRTH"],
-                "to": ["data", "dateOfBirth"]
+                "to": ["data", "dateOfBirth"],
+                "convert": {
+                  "type": "dateFormat",
+                  "format": "%Y-%m-%d"
+                }
               },
               {
                 "from": ["data", "ASSESSOR", "ASSESSOR_ID"],

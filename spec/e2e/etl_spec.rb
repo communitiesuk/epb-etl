@@ -85,7 +85,7 @@ describe 'E2E::Etl' do
                              .with(body: JSON.generate(
                                  firstName: 'Joe',
                                  lastName: 'Testerton',
-                                 dateOfBirth: '1980-11-01 00:00:00.000000'
+                                 dateOfBirth: '1980-11-01'
                              ))
 
       remove_request_stub(http_stub)

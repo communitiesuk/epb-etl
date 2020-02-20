@@ -19,6 +19,10 @@ module UseCase
       rules = @request.body['configuration']['transform']['rules']
 
       rules.each do |rule|
+        if rule['to'].include? 'dateOfBirth'
+          @request.body['data']['ASSESSOR']["DATE_OF_BIRTH"] = convert_date_format(rule)
+        end
+
         bury(response, *rule['to'], @request.body.dig(*rule['from']))
       end
 
@@ -26,6 +30,12 @@ module UseCase
     end
 
     private
+
+    def convert_date_format(rule)
+      data_of_birth = @request.body['data']['ASSESSOR']["DATE_OF_BIRTH"]
+      date_format = rule['convert']['format']
+      Date.parse(data_of_birth).strftime(date_format)
+    end
 
     def bury(hash, *args)
       if args.count < 2
