@@ -1,22 +1,30 @@
 # frozen_string_literal: true
+
 require 'docker'
 require 'ruby-oci8'
+
 WebMock.allow_net_connect!
+
 describe 'E2E::Etl' do
   before :context do
     @container = nil
+
     @config = {
-        Image: 'store/oracle/database-enterprise:12.2.0.1',
-        ExposedPorts: { '1521/tcp' => {} },
-        HostConfig: {
-            PortBindings: {
-                '1521/tcp' => [{ 'HostPort': '1521', 'HostIp': 'localhost' }]
-            }
+      Image: 'store/oracle/database-enterprise:12.2.0.1',
+      ExposedPorts: { '1521/tcp' => {} },
+      HostConfig: {
+        PortBindings: {
+          '1521/tcp' => [{ 'HostPort': '1521', 'HostIp': 'localhost' }]
         }
+      }
     }
+
     @container = Docker::Container.create @config
+
     @container.start
+
     @oracle_has_started = false
+
     until @oracle_has_started
       begin
         conn = OCI8.new 'sys', 'Oradoc_db1', '//localhost:1521/ORCLCDB.LOCALDOMAIN', :SYSDBA
@@ -46,47 +54,38 @@ describe 'E2E::Etl' do
     @container.kill
     @container.stop
     @container.delete(force: true)
-    Docker::Volume.prune
+    Docker::Volume.prune; sleep 1
   end
 
   context 'when data is supplied' do
-    it 'passes through the extract stage'do
+    it 'sends data to a given endpoint in the correct format' do
       ENV['ETL_STAGE'] = 'extract'
-
       extract_event = JSON.parse File.open('spec/event/e2e-sqs-message-extract-input.json').read
       expected_extract_output = JSON.parse File.open('spec/event/e2e-sqs-message-transform-input.json').read
 
       @handler.process event: extract_event
 
       expect(@sqs_adapter.read).to eq(expected_extract_output)
-    end
 
-    it 'passes through the transform stage'do
       ENV['ETL_STAGE'] = 'transform'
-
-      transform_event = JSON.parse File.open('spec/event/e2e-sqs-message-transform-input.json').read
       expected_transform_output = JSON.parse File.open('spec/event/e2e-sqs-message-load-input.json').read
 
-      @handler.process event: transform_event
+      @handler.process event: @sqs_adapter.read
 
       expect(@sqs_adapter.read).to eq(expected_transform_output)
-    end
 
-    it 'send data to the endpoint'do
       ENV['ETL_STAGE'] = 'load'
-
       http_stub = stub_request(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST000000')
-                      .to_return(body: JSON.generate(message: 'ok'), status: 200)
-      load_event = JSON.parse File.open('spec/event/e2e-sqs-message-load-input.json').read
+                  .to_return(body: JSON.generate(message: 'ok'), status: 200)
 
-      @handler.process event: load_event
+      @handler.process event: @sqs_adapter.read
 
       expect(WebMock).to have_requested(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST000000')
-                             .with(body: JSON.generate(
-                                 firstName: 'Joe',
-                                 lastName: 'Testerton',
-                                 dateOfBirth: '1980-11-01'
-                             ))
+        .with(body: JSON.generate(
+          firstName: 'Joe',
+          lastName: 'Testerton',
+          dateOfBirth: '1980-11-01'
+        ))
 
       remove_request_stub(http_stub)
     end
