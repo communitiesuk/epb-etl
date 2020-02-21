@@ -5,7 +5,7 @@ require 'ruby-oci8'
 
 WebMock.allow_net_connect!
 
-describe 'E2E::Etl' do
+describe 'E2E::Etl', order: :defined do
   before :context do
     @container = nil
 
@@ -58,7 +58,7 @@ describe 'E2E::Etl' do
   end
 
   context 'when data is supplied' do
-    it 'sends data to a given endpoint in the correct format' do
+    it 'extracts the data from the database' do
       ENV['ETL_STAGE'] = 'extract'
       extract_event = JSON.parse File.open('spec/event/e2e-sqs-message-extract-input.json').read
       expected_extract_output = JSON.parse File.open('spec/event/e2e-sqs-message-transform-input.json').read
@@ -66,14 +66,18 @@ describe 'E2E::Etl' do
       @handler.process event: extract_event
 
       expect(@sqs_adapter.read).to eq(expected_extract_output)
+    end
 
+    it 'transforms the data to the correct format' do
       ENV['ETL_STAGE'] = 'transform'
       expected_transform_output = JSON.parse File.open('spec/event/e2e-sqs-message-load-input.json').read
 
       @handler.process event: @sqs_adapter.read
 
       expect(@sqs_adapter.read).to eq(expected_transform_output)
+    end
 
+    it 'sends the data to the endpoint in the correct format' do
       ENV['ETL_STAGE'] = 'load'
       http_stub = stub_request(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST000000')
                   .to_return(body: JSON.generate(message: 'ok'), status: 200)
