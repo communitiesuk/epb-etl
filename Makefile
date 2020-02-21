@@ -44,7 +44,7 @@ test:
 test_darwin: install
 	@echo "-> Running tests (Darwin)" && \
 		BUNDLE_PATH="vendor/bundle-darwin" \
-		bundle exec rspec
+		bundle exec rspec --order defined
 
 test_linux: install_oic_linux
 	@echo "-> Running tests (Linux)" && \
