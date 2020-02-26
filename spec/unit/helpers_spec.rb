@@ -12,7 +12,7 @@ describe Helpers::Transform do
 
   context 'when transforming a value to another in a map' do
     it 'outputs the expected value from the map' do
-      output = described_class.map(100, {
+      output = described_class.map('100', {
           100 => '101'
       })
 
@@ -25,6 +25,14 @@ describe Helpers::Transform do
       })
 
       expect(output).to eq '5000'
+    end
+
+    it 'outputs the expected value when the key is an integer but the input is keyed on strings' do
+      output = described_class.map('100', {
+          '100' => 800
+      })
+
+      expect(output).to eq 800
     end
   end
 end

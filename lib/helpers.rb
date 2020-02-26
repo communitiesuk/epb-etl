@@ -5,7 +5,7 @@ module Helpers
     end
 
     def self.map(key, input_map)
-      input_map[key].nil? ? input_map[key.to_sym] : input_map[key]
+      JSON.parse(JSON.generate(input_map))[key.to_s]
     end
   end
 end
