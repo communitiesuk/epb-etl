@@ -9,4 +9,22 @@ describe Helpers::Transform do
       expect(output_date).to eq '1985-10-15'
     end
   end
+
+  context 'when transforming a value to another in a map' do
+    it 'outputs the expected value from the map' do
+      output = described_class.map(100, {
+          100 => '101'
+      })
+
+      expect(output).to eq '101'
+    end
+
+    it 'outputs the expected value from the map when the map has a symbol' do
+      output = described_class.map('test_sym', {
+          test_sym: '5000'
+      })
+
+      expect(output).to eq '5000'
+    end
+  end
 end
