@@ -38,7 +38,7 @@
               },
               {
                 "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
-                "to": ["configuration", "load", "endpoint", "params", "schemeId"],
+                "to": ["configuration", "load", "endpoint", "params", "scheme_id"],
                 "convert": {
                   "type": "map",
                   "args": [{
@@ -49,7 +49,7 @@
               },
               {
                 "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
-                "to": ["configuration", "load", "endpoint", "params", "schemeAssessorId"]
+                "to": ["configuration", "load", "endpoint", "params", "scheme_assessor_id"]
               }
             ]
           },
@@ -58,8 +58,8 @@
               "method": "put",
               "uri": "http://test-endpoint/api/schemes/1/assessors/TEST000000",
               "params": {
-                "schemeId": 3,
-                "schemeAssessorId": "TEST000000"
+                "scheme_id": 3,
+                "scheme_assessor_id": "TEST000000"
               }
             }
           }

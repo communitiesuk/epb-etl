@@ -33,7 +33,7 @@
               },
               {
                 "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
-                "to": ["configuration", "load", "endpoint", "params", "schemeId"],
+                "to": ["configuration", "load", "endpoint", "params", "scheme_id"],
                 "convert": {
                   "type": "map",
                   "args": [{
@@ -44,7 +44,7 @@
               },
               {
                 "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
-                "to": ["configuration", "load", "endpoint", "params", "schemeAssessorId"]
+                "to": ["configuration", "load", "endpoint", "params", "scheme_assessor_id"]
               }
             ]
           },
