@@ -32,13 +32,20 @@
                 "from": ["data", "ASSESSOR", "DATE_OF_BIRTH"],
                 "to": ["data", "dateOfBirth"],
                 "convert": {
-                  "type": "dateFormat",
-                  "format": "%Y-%m-%d"
+                  "type": "date_format",
+                  "args": ["%Y-%m-%d"]
                 }
               },
               {
                 "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
-                "to": ["configuration", "load", "endpoint", "params", "schemeId"]
+                "to": ["configuration", "load", "endpoint", "params", "schemeId"],
+                "convert": {
+                  "type": "map",
+                  "args": [{
+                    "142": 2,
+                    "144": 3
+                  }]
+                }
               },
               {
                 "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
@@ -51,7 +58,7 @@
               "method": "put",
               "uri": "http://test-endpoint/api/schemes/1/assessors/TEST000000",
               "params": {
-                "schemeId": 444,
+                "schemeId": 3,
                 "schemeAssessorId": "TEST000000"
               }
             }

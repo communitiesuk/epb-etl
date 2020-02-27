@@ -27,13 +27,20 @@
                 "from": ["data", "ASSESSOR", "DATE_OF_BIRTH"],
                 "to": ["data", "dateOfBirth"],
                 "convert": {
-                  "type": "dateFormat",
-                  "format": "%Y-%m-%d"
+                  "type": "date_format",
+                  "args": ["%Y-%m-%d"]
                 }
               },
               {
                 "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
-                "to": ["configuration", "load", "endpoint", "params", "schemeId"]
+                "to": ["configuration", "load", "endpoint", "params", "schemeId"],
+                "convert": {
+                  "type": "map",
+                  "args": [{
+                    "142": 2,
+                    "144": 3
+                  }]
+                }
               },
               {
                 "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
@@ -70,7 +77,7 @@
             "NAME_SUFFIX": null,
             "SURNAME": "Testerton",
             "DELETED_IN_UPLOAD": 123456,
-            "ORGANISATION_KEY": 444,
+            "ORGANISATION_KEY": 144,
             "FIRST_NAME_PHONIC": "JM",
             "SURNAME_PHONIC": "TN",
             "ASSESSOR_LOCATION": [

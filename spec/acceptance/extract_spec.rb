@@ -38,7 +38,7 @@ describe 'Acceptance::Extract' do
           "NAME_SUFFIX": nil,
           "SURNAME": 'Testerton',
           "DELETED_IN_UPLOAD": 123_456,
-          "ORGANISATION_KEY": 444,
+          "ORGANISATION_KEY": 144,
           "FIRST_NAME_PHONIC": 'JM',
           "SURNAME_PHONIC": 'TN',
           "ASSESSOR_LOCATION": [

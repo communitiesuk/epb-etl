@@ -19,23 +19,22 @@ module UseCase
       rules = @request.body['configuration']['transform']['rules']
 
       rules.each do |rule|
-        if rule['to'].include? 'dateOfBirth'
-          @request.body['data']['ASSESSOR']["DATE_OF_BIRTH"] = convert_date_format(rule)
+        source_data = @request.body.dig(*rule['from'])
+
+        if rule.keys.include? 'convert'
+          args = rule['convert']['args']
+          args.unshift source_data
+
+          source_data = Helpers::Transform.send rule['convert']['type'], *args
         end
 
-        bury(response, *rule['to'], @request.body.dig(*rule['from']))
+        bury(response, *rule['to'], source_data)
       end
 
       @message_gateway.write(queue_url, response)
     end
 
     private
-
-    def convert_date_format(rule)
-      data_of_birth = @request.body['data']['ASSESSOR']["DATE_OF_BIRTH"]
-      date_format = rule['convert']['format']
-      Date.parse(data_of_birth).strftime(date_format)
-    end
 
     def bury(hash, *args)
       if args.count < 2
