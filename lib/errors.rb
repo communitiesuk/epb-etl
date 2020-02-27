@@ -4,6 +4,7 @@ module Errors
   class RequestInvalid < StandardError; end
   class RequestWithoutBody < Errors::RequestInvalid; end
   class RequestWithoutConfiguration < Errors::RequestInvalid; end
+  class RequestWithInvalidParams < Errors::RequestInvalid; end
 
   class EtlStage < StandardError; end
   class EtlStageInvalid < Errors::EtlStage; end

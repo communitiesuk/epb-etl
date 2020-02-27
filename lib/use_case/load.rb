@@ -5,11 +5,17 @@ require 'epb_auth_tools'
 module UseCase
   class Load < UseCase::Base
     def execute
-      method = @request.body['configuration']['load']['endpoint']['method']
-      uri = URI.parse(@request.body['configuration']['load']['endpoint']['uri'])
       body = JSON.generate(@request.body['data'])
-      req = Net::HTTP.const_get(method.capitalize).new(uri.path)
-      req['Content-Length'] = body.length
+      params, method, uri = @request.body['configuration']['load']['endpoint']
+                                .values_at('params', 'method', 'uri')
+
+      begin
+        uri = params.nil? ?
+                URI.parse(uri) :
+                URI.parse(ERB.new(uri).result_with_hash(params))
+      rescue NameError => e
+        raise Errors::RequestWithInvalidParams, e.message, e.backtrace
+      end
 
       http_client = Auth::HttpClient.new ENV['EPB_AUTH_CLIENT_ID'],
                                          ENV['EPB_AUTH_CLIENT_SECRET'],

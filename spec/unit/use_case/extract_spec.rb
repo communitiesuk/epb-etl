@@ -43,7 +43,7 @@ describe UseCase::Extract do
             },
             'load': {
               'endpoint': {
-                'uri': 'http://test-endpoint/api/schemes/1/assessors/TEST000000',
+                'uri': 'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
                 'method': 'put'
               }
             }
@@ -89,7 +89,7 @@ describe UseCase::Extract do
           load: {
             endpoint: {
               method: 'put',
-              uri: 'http://test-endpoint/api/schemes/1/assessors/TEST000000'
+              uri: 'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>'
             }
           }
         },
