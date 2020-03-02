@@ -1,0 +1,51 @@
+name: Test
+on:
+  push:
+    branches: [master]
+
+jobs:
+  test:
+    name: Integration Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Setup environment
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.5'
+
+      - name: Log into DockerHub
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.communitesukdeploybot_dockerhub_access_token }}
+        run: docker login --username communitesukdeploybot  --password $DOCKERHUB_TOKEN
+
+      - name: Pull Oracle image
+        run: docker pull store/oracle/database-enterprise:12.2.0.1
+
+      - name: Pull Linux Oracle SDK from S3
+        env:
+          AWS_S3_BUCKET: ${{ secrets.epb_etl_test_resources_bucket_url }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.epb_etl_test_resources_bucket_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.epb_etl_test_resources_bucket_secret_access_key }}
+          AWS_REGION: 'eu-west-2'
+        run: aws s3 cp $AWS_S3_BUCKET . --recursive
+
+      - name: Move SDK files to expected location
+        run: mkdir vendor; mv oracle vendor
+
+      - name: Install Ruby interface to Oracle oci8
+        run: gem install ruby-oci8
+
+      - name: Install bundler
+        run: gem install bundler -v '2.1.4'
+
+      - name: Install dependencies
+        run: bundle install --without staging
+
+      - name: Start Oracle DB
+        run: docker run -d -p 1521:1521 --name oracle store/oracle/database-enterprise:12.2.0.1
+
+      - name: Test
+        run: bundle exec rspec --exclude-pattern "**/unit/**/*_spec.rb, **/e2e/**/*_spec.rb"
