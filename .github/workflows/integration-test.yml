@@ -19,7 +19,7 @@ jobs:
       - name: Log into DockerHub
         env:
           DOCKERHUB_TOKEN: ${{ secrets.communitesukdeploybot_dockerhub_access_token }}
-        run: docker login --username communitesukdeploybot  --password-stdin < $DOCKERHUB_TOKEN
+        run: docker login --username communitesukdeploybot --password-stdin < $DOCKERHUB_TOKEN
 
       - name: Pull Oracle image
         run: docker pull store/oracle/database-enterprise:12.2.0.1
@@ -31,9 +31,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.epb_etl_test_resources_bucket_secret_access_key }}
           AWS_REGION: 'eu-west-2'
         run: aws s3 cp $AWS_S3_BUCKET . --recursive
-
-      - name: Move SDK files to expected location
-        run: mkdir vendor; mv oracle vendor
 
       - name: Install Ruby interface to Oracle oci8
         run: gem install ruby-oci8
