@@ -11,6 +11,21 @@ include, but not limited to: [Lambda](https://aws.amazon.com/lambda),
 pipeline is designed to accommodate any database (DB) system - Oracle,
 PostgreSQL, etc.
 
+## Table of Contents
+
+- [ETL Pipeline](#etl-pipeline)
+  * [Overview](#overview)
+  * [Setup](#setup)
+    + [Operating System](#operating-system)
+  * [Usage](#usage)
+    + [Configuration](#configuration)
+      - [Extract](#extract)
+      - [Transform](#transform)
+      - [Load](#load)
+    + [Test](#test)
+  * [Documentation](#documentation)
+    + [Technical Architecture](#technical-architecture)
+
 ## Overview
 
 Below is a diagram that illustrates the flow and process of the ETL pipeline.
