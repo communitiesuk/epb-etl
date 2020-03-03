@@ -59,8 +59,8 @@ jobs:
       - name: Debug bundle-linux
         run: ls -la /home/runner/work/epb-etl/epb-etl/vendor/bundle-linux
 
-      - name: Debug bundle install without paths
-        run: bundle install
+      - name: Debug bundle install with LD_LIBRARY ONLY
+        run: LLD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" bundle install
 
       - name: Install dependencies
         run: >-
