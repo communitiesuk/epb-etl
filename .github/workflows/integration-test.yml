@@ -42,4 +42,4 @@ jobs:
         run: LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" bundle install
 
       - name: Test
-        run: bundle exec rspec --include-pattern "**/integration/**/*_spec.rb"
+        run: bundle exec rspec --pattern "**/integration/**/*_spec.rb"
