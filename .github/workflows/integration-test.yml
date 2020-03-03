@@ -42,7 +42,12 @@ jobs:
         run: mkdir vendor/bundle-linux
 
       - name: Debug
-        run: pwd && ls -la && ls -la vendor && ls -la /home/runner/work/epb-etl/epb-etl/vendor/bundle-linux
+        run: >-
+          pwd && ls -la && ls -la vendor && ls -la /home/runner/work/epb-etl/epb-etl/vendor/bundle-linux \
+          && ls -la /home/runner/work/epb-etl/epb-etl/vendor/oracle/Linux/instantclient_12_2
+
+      - name: DEBUG bundle install without paths
+        run: bundle install
 
       - name: Install dependencies
         run: >-
