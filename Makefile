@@ -30,7 +30,8 @@ create_bundler_image:
 		- < bundler.Dockerfile 1>/dev/null
 
 build: build_bundler_layer
-	@echo "-> Building lambda package"
+	@echo "-> Building lambda package" && \
+		$(SHELL) ./scripts/build-lambda.sh
 
 build_bundler_layer: vendor/bundle-linux
 	@echo "-> Building lambda bundler layer"
