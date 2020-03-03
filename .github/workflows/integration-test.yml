@@ -38,35 +38,8 @@ jobs:
       - name: Install bundler
         run: gem install bundler -v '2.1.4'
 
-      - name: Make directory for bundler
-        run: mkdir vendor/bundle-linux
-
-      - name: Debug pwd
-        run: pwd
-
-      - name: Debug vendor
-        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor
-
-      - name: Debug oracle
-        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor/oracle
-
-      - name: Debug Linux
-        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor/oracle/Linux
-
-      - name: Debug instantclient
-        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor/oracle/Linux/instantclient_12_2
-
-      - name: Debug bundle-linux
-        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor/bundle-linux
-
-      - name: Debug bundle install with LD_LIBRARY ONLY
+      - name: Install dependencies
         run: LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" bundle install
 
-      - name: Install dependencies
-        run: >-
-          LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" \
-          BUNDLE_PATH="$(pwd)/vendor/bundle-linux" \
-          bundle install
-
       - name: Test
-        run: BUNDLE_PATH="$(pwd)/vendor/bundle-linux" bundle exec rspec --include-pattern "**/integration/**/*_spec.rb"
+        run: bundle exec rspec --include-pattern "**/integration/**/*_spec.rb"
