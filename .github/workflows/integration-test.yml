@@ -41,6 +41,9 @@ jobs:
       - name: Make directory for bundler
         run: mkdir vendor/bundle-linux
 
+      - name: Debug
+        run: ls && pwd && ls vendor
+
       - name: Install dependencies
         run: >-
           LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" \
