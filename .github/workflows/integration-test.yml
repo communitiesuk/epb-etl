@@ -35,9 +35,6 @@ jobs:
       - name: Install the Oracle client
         run: bash ./scripts/install-ruby-oic8.sh Linux
 
-      - name: Install Ruby interface to Oracle oci8
-        run: gem install ruby-oci8
-
       - name: Install bundler
         run: gem install bundler -v '2.1.4'
 
