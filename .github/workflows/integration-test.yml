@@ -38,6 +38,9 @@ jobs:
       - name: Install bundler
         run: gem install bundler -v '2.1.4'
 
+      - name: Debug
+        run: ls && pwd && ls vendor
+
       - name: Install dependencies
         run: >-
           LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" \
