@@ -41,16 +41,25 @@ jobs:
       - name: Make directory for bundler
         run: mkdir vendor/bundle-linux
 
-      - name: Debug
-        run: >-
-          echo "pwd: " && pwd && \
-          echo "vendor --->" && ls -la /home/runner/work/epb-etl/epb-etl/vendor && \
-          echo "oracle --->" && ls -la /home/runner/work/epb-etl/epb-etl/vendor/oracle && \
-          echo "Linux  --->" && ls -la /home/runner/work/epb-etl/epb-etl/vendor/oracle/Linux && \
-          echo "Insta  --->" && ls -la /home/runner/work/epb-etl/epb-etl/vendor/oracle/Linux/instantclient_12_2 && \
-          echo "bun-lx --->" && ls -la /home/runner/work/epb-etl/epb-etl/vendor/bundle-linux
+      - name: Debug pwd
+        run: pwd
 
-      - name: DEBUG bundle install without paths
+      - name: Debug vendor
+        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor
+
+      - name: Debug oracle
+        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor/oracle
+
+      - name: Debug Linux
+        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor/oracle/Linux
+
+      - name: Debug instantclient
+        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor/oracle/Linux/instantclient_12_2
+
+      - name: Debug bundle-linux
+        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor/bundle-linux
+
+      - name: Debug bundle install without paths
         run: bundle install
 
       - name: Install dependencies
