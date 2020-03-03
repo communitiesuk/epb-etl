@@ -38,8 +38,8 @@ jobs:
       - name: Install bundler
         run: gem install bundler -v '2.1.4'
 
-      - name: Debug
-        run: ls && pwd && ls vendor
+      - name: Make directory for bundler
+        run: mkdir vendor/bundle-linux
 
       - name: Install dependencies
         run: >-
