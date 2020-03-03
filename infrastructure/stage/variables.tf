@@ -5,31 +5,28 @@ variable "service_tags" {
 
 variable "stage" {
   description = "The stage of the ETL pipeline this processor relates to"
-  type = string
+  type        = string
 }
 
 variable "handler" {
   description = "A remotefiles_read output of the zipped codebase that will be used as the handler code"
   type = object({
     actual_sha256 = string
-    id = string
-    local_path = string
-    source = string
+    id            = string
+    local_path    = string
+    source        = string
   })
 }
 
 variable "layers" {
   description = "A list of layers that will be loaded onto the lambda execution environment"
-  default = []
-  type = list(
+  default     = {}
+  type = map(
     object({
-      name = string
-      source = object({
-        actual_sha256 = string
-        id = string
-        local_path = string
-        source = string
-      })
+      actual_sha256 = string
+      id            = string
+      local_path    = string
+      source        = string
     })
   )
 }

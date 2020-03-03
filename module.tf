@@ -1,5 +1,5 @@
 module "etl_pipeline" {
-  source = "./infrastructure"
+  source       = "./infrastructure"
   service_tags = var.service_tags
 }
 

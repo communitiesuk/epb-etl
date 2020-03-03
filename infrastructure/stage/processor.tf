@@ -6,12 +6,20 @@ resource "aws_lambda_function" "processor" {
   source_code_hash = base64encode(var.handler.actual_sha256)
   runtime          = "ruby2.7"
   tags             = var.service_tags
+  layers           = [for layer in aws_lambda_layer_version.layer : layer.arn]
 
   environment {
     variables = {
       ETL_STAGE = var.stage
     }
   }
+}
+
+resource "aws_lambda_layer_version" "layer" {
+  for_each         = var.layers
+  layer_name       = "${local.resource_prefix}-processor-${each.key}"
+  filename         = each.value.local_path
+  source_code_hash = base64encode(each.value.actual_sha256)
 }
 
 resource "aws_lambda_event_source_mapping" "processor_listener" {
@@ -22,8 +30,7 @@ resource "aws_lambda_event_source_mapping" "processor_listener" {
 resource "aws_iam_role" "processor_role" {
   name               = "${local.resource_prefix}-processor-role"
   assume_role_policy = data.aws_iam_policy_document.processor_role.json
-
-  tags = var.service_tags
+  tags               = var.service_tags
 }
 
 data "aws_iam_policy_document" "processor_role" {
@@ -50,9 +57,8 @@ resource "aws_iam_role_policy_attachment" "processor_policy" {
 
 data "aws_iam_policy_document" "processor_role_permissions" {
   statement {
-    actions = ["sqs:GetQueueAttributes", "sqs:ReceiveMessage", "sqs:DeleteMessage"]
-    effect  = "Allow"
-
+    actions   = ["sqs:GetQueueAttributes", "sqs:ReceiveMessage", "sqs:DeleteMessage"]
+    effect    = "Allow"
     resources = [aws_sqs_queue.input_queue.arn]
   }
 }
