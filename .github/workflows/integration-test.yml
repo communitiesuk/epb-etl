@@ -42,7 +42,7 @@ jobs:
         run: mkdir vendor/bundle-linux
 
       - name: Debug
-        run: ls && pwd && ls vendor
+        run: pwd && ls -la && ls -la vendor && ls -la /home/runner/work/epb-etl/epb-etl/vendor/bundle-linux
 
       - name: Install dependencies
         run: >-
