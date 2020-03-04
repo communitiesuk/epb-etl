@@ -43,12 +43,12 @@ jobs:
 
       - name: Install dependencies
         run: >-
-          LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" \
-          BUNDLE_PATH="$(pwd)/vendor/bundle-linux" \
+          LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2"
+          BUNDLE_PATH="$(pwd)/vendor/bundle-linux"
           bundle install
 
       - name: Test
         run: >-
-          LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" \
-          BUNDLE_PATH="$(pwd)/vendor/bundle-linux" \
+          LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2"
+          BUNDLE_PATH="$(pwd)/vendor/bundle-linux"
           bundle exec rspec --pattern "**/integration/**/*_spec.rb"
