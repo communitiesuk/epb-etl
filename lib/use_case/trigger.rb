@@ -10,7 +10,11 @@ module UseCase
     end
 
     def execute
+      scanners = @request.body['configuration']['trigger']['scanners']
 
+      scanners.each_pair do |name, config|
+        @database_gateway.read(config['scan'])
+      end
     end
   end
 end

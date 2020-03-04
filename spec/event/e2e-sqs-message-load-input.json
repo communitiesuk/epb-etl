@@ -10,6 +10,17 @@
           "dateOfBirth": "1980-11-01"
         },
         "configuration": {
+          "trigger": {
+            "scanners": {
+              "ASSESSOR": {
+                "scan": "SELECT ASSESSOR_KEY FROM assessors",
+                "extract": {
+                  "query": "SELECT * FROM assessors WHERE ASSESSOR_KEY = '<%= primary_key %>'",
+                  "multiple": false
+                }
+              }
+            }
+          },
           "extract": {
             "queries": {
               "ASSESSOR": {

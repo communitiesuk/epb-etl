@@ -10,7 +10,63 @@
         "TopicArn": "arn:aws:sns:eu-west-2:123456789012:ExampleTopic",
         "Subject": "example subject",
         "Message": {
-          "test": true
+          "configuration": {
+            "trigger": {
+              "scanners": {
+                "ASSESSOR": {
+                  "scan": "SELECT ASSESSOR_KEY FROM assessors",
+                  "extract": {
+                    "query": "SELECT * FROM assessors WHERE ASSESSOR_KEY = '<%= primary_key %>'",
+                    "multiple": false
+                  }
+                }
+              }
+            },
+            "extract": {
+              "queries": {}
+            },
+            "transform": {
+              "rules": [
+                {
+                  "from": ["data", "ASSESSOR", "FIRST_NAME"],
+                  "to": ["data", "firstName"]
+                },
+                {
+                  "from": ["data", "ASSESSOR", "SURNAME"],
+                  "to": ["data", "lastName"]
+                },
+                {
+                  "from": ["data", "ASSESSOR", "DATE_OF_BIRTH"],
+                  "to": ["data", "dateOfBirth"],
+                  "convert": {
+                    "type": "date_format",
+                    "args": ["%Y-%m-%d"]
+                  }
+                },
+                {
+                  "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
+                  "to": ["configuration", "load", "endpoint", "params", "scheme_id"],
+                  "convert": {
+                    "type": "map",
+                    "args": [{
+                      "142": 2,
+                      "144": 1
+                    }]
+                  }
+                },
+                {
+                  "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
+                  "to": ["configuration", "load", "endpoint", "params", "scheme_assessor_id"]
+                }
+              ]
+            },
+            "load": {
+              "endpoint": {
+                "method": "put",
+                "uri": "http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>"
+              }
+            }
+          }
         },
         "Timestamp": "1970-01-01T00:00:00.000Z",
         "SignatureVersion": "1",
