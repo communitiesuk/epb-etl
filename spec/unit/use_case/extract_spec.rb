@@ -1,24 +1,6 @@
 # frozen_string_literal: true
 
 describe UseCase::Extract do
-  class DatabaseGatewayFake
-    def read(query)
-      result = JSON.parse(
-        [
-          {
-            DATE_OF_BIRTH: '1980-11-01 00:00:00.000000',
-            FIRST_NAME: 'Joe',
-            SURNAME: 'Testerton'
-          }
-        ].to_json
-      )
-
-      return result[0] if result && !query['multiple']
-
-      result
-    end
-  end
-
   class ExtractRequestStub
     def body
       JSON.parse(
