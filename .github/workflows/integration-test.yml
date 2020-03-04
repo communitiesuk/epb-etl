@@ -54,4 +54,4 @@ jobs:
         run:  stat /home/runner/work/epb-etl/epb-etl/vendor/bundle-linux/ruby/2.5.0/gems/ruby-oci8-2.2.8/lib/oci8lib_250.so
 
       - name: Test
-        run: BUNDLE_PATH="$(pwd)/vendor/bundle-linux" bundle exec rspec --pattern "**/integration/**/*_spec.rb"
+        run: LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" BUNDLE_PATH="$(pwd)/vendor/bundle-linux" bundle exec rspec --pattern "**/integration/**/*_spec.rb"
