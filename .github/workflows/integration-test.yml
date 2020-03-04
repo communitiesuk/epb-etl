@@ -44,5 +44,11 @@ jobs:
       - name: Install dependencies
         run: LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" BUNDLE_PATH="$(pwd)/vendor/bundle-linux" bundle install
 
+      - name: Debug 1
+        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor/bundle-linux/ruby/2.5.0/gems
+
+      - name: Debug 2
+        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor/bundle-linux/ruby/2.5.0/gems/ruby-oci8-2.2.8/lib
+
       - name: Test
         run: BUNDLE_PATH="$(pwd)/vendor/bundle-linux" bundle exec rspec --pattern "**/integration/**/*_spec.rb"
