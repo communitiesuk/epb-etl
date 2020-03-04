@@ -5,7 +5,7 @@ on:
 
 jobs:
   test:
-    name: Integration Test
+    name: Integration test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -42,16 +42,13 @@ jobs:
         run: mkdir "$(pwd)/vendor/bundle-linux"
 
       - name: Install dependencies
-        run: LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" BUNDLE_PATH="$(pwd)/vendor/bundle-linux" bundle install
-
-      - name: Debug 1
-        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor/bundle-linux/ruby/2.5.0/gems
-
-      - name: Debug 2
-        run: ls -la /home/runner/work/epb-etl/epb-etl/vendor/bundle-linux/ruby/2.5.0/gems/ruby-oci8-2.2.8/lib
-
-      - name: Debug 3
-        run:  stat /home/runner/work/epb-etl/epb-etl/vendor/bundle-linux/ruby/2.5.0/gems/ruby-oci8-2.2.8/lib/oci8lib_250.so
+        run: >-
+          LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" \
+          BUNDLE_PATH="$(pwd)/vendor/bundle-linux" \
+          bundle install
 
       - name: Test
-        run: LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" BUNDLE_PATH="$(pwd)/vendor/bundle-linux" bundle exec rspec --pattern "**/integration/**/*_spec.rb"
+        run: >-
+          LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" \
+          BUNDLE_PATH="$(pwd)/vendor/bundle-linux" \
+          bundle exec rspec --pattern "**/integration/**/*_spec.rb"
