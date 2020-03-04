@@ -13,7 +13,9 @@ class Handler
     use_case_constant = UseCase.const_get(etl_stage)
 
     normalised_event['Records'].each do |message|
-      request = Boundary.const_get(etl_stage + 'Request').new message['body']
+      event_source = message["EventSource"].nil? ? message['eventSource'] : message["EventSource"]
+
+      request = Boundary.const_get(etl_stage + 'Request').new event_source == 'aws:sqs' ? message['body'] : message["Sns"]['Message']
       use_case = use_case_constant.new(request, @container)
 
       use_case.execute
