@@ -1,0 +1,54 @@
+name: Test
+on:
+  push:
+    branches: [master]
+
+jobs:
+  test:
+    name: End-to-end test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Setup environment
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.5'
+
+      - name: Log into DockerHub
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.communitesukdeploybot_dockerhub_access_token }}
+        run: echo $DOCKERHUB_TOKEN | docker login --username communitiesukdeploybot --password-stdin
+
+      - name: Pull Oracle image
+        run: docker pull store/oracle/database-enterprise:12.2.0.1
+
+      - name: Pull Linux Oracle SDK from S3
+        env:
+          AWS_S3_BUCKET: ${{ secrets.epb_etl_test_resources_bucket_url }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.epb_etl_test_resources_bucket_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.epb_etl_test_resources_bucket_secret_access_key }}
+          AWS_REGION: 'eu-west-2'
+        run: aws s3 cp $AWS_S3_BUCKET . --recursive
+
+      - name: Install the Oracle client
+        run: bash ./scripts/install-ruby-oic8.sh Linux
+
+      - name: Install bundler
+        run: gem install bundler -v '2.1.4'
+
+      - name: Make directory to bundle to
+        run: mkdir "$(pwd)/vendor/bundle-linux"
+
+      - name: Install dependencies
+        run: >-
+          LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" \
+          BUNDLE_PATH="$(pwd)/vendor/bundle-linux" \
+          bundle install
+
+      - name: Test
+        run: >-
+          LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2" \
+          BUNDLE_PATH="$(pwd)/vendor/bundle-linux" \
+          bundle exec rspec --pattern "**/e2e/**/*_spec.rb"
