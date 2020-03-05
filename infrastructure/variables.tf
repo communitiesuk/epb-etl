@@ -5,3 +5,7 @@ variable "service_tags" {
     Environment = string
   })
 }
+
+locals {
+  resource_prefix = "${var.service_tags.Application}-${var.service_tags.Environment}"
+}

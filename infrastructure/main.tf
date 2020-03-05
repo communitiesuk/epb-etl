@@ -1,37 +1,58 @@
-data "remotefile_read" "handler" {
-  source = "file://${abspath(path.module)}/../dist/handler.zip"
-}
-
-data "remotefile_read" "bundler_layer" {
-  source = "file://${abspath(path.module)}/../dist/bundler-layer.zip"
-}
-
 module "extract_stage" {
-  source  = "./stage"
-  handler = data.remotefile_read.handler
+  source = "./stage"
+  handler = {
+    actual_sha256 = data.remotefile_read.handler.actual_sha256
+    s3_bucket     = aws_s3_bucket.s3_deployment_artefacts.bucket
+    s3_key        = aws_s3_bucket_object.handler.key
+  }
   layers = {
-    bundler = data.remotefile_read.bundler_layer
+    libs = {
+      actual_sha256 = data.remotefile_read.lib_layer.actual_sha256
+      s3_bucket     = aws_s3_bucket.s3_deployment_artefacts.bucket
+      s3_key        = aws_s3_bucket_object.lib_layer.key
+    }
   }
   service_tags = var.service_tags
   stage        = "extract"
+  input_roles = [
+  aws_iam_role.trigger_role.arn]
 }
 
 module "transform_stage" {
-  source  = "./stage"
-  handler = data.remotefile_read.handler
+  source = "./stage"
+  handler = {
+    actual_sha256 = data.remotefile_read.handler.actual_sha256
+    s3_bucket     = aws_s3_bucket.s3_deployment_artefacts.bucket
+    s3_key        = aws_s3_bucket_object.handler.key
+  }
   layers = {
-    bundler = data.remotefile_read.bundler_layer
+    libs = {
+      actual_sha256 = data.remotefile_read.lib_layer.actual_sha256
+      s3_bucket     = aws_s3_bucket.s3_deployment_artefacts.bucket
+      s3_key        = aws_s3_bucket_object.lib_layer.key
+    }
   }
   service_tags = var.service_tags
   stage        = "transform"
+  input_roles = [
+  module.extract_stage.processor_role]
 }
 
 module "load_stage" {
-  source  = "./stage"
-  handler = data.remotefile_read.handler
+  source = "./stage"
+  handler = {
+    actual_sha256 = data.remotefile_read.handler.actual_sha256
+    s3_bucket     = aws_s3_bucket.s3_deployment_artefacts.bucket
+    s3_key        = aws_s3_bucket_object.handler.key
+  }
   layers = {
-    bundler = data.remotefile_read.bundler_layer
+    libs = {
+      actual_sha256 = data.remotefile_read.lib_layer.actual_sha256
+      s3_bucket     = aws_s3_bucket.s3_deployment_artefacts.bucket
+      s3_key        = aws_s3_bucket_object.lib_layer.key
+    }
   }
   service_tags = var.service_tags
   stage        = "load"
+  input_roles  = [module.transform_stage.processor_role]
 }

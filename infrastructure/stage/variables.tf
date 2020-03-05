@@ -12,9 +12,8 @@ variable "handler" {
   description = "A remotefiles_read output of the zipped codebase that will be used as the handler code"
   type = object({
     actual_sha256 = string
-    id            = string
-    local_path    = string
-    source        = string
+    s3_bucket     = string
+    s3_key        = string
   })
 }
 
@@ -24,11 +23,16 @@ variable "layers" {
   type = map(
     object({
       actual_sha256 = string
-      id            = string
-      local_path    = string
-      source        = string
+      s3_bucket     = string
+      s3_key        = string
     })
   )
+}
+
+variable "input_roles" {
+  description = "The role arns that are allowed to publish a message to this stage's sqs queue"
+  default     = []
+  type        = list(string)
 }
 
 locals {

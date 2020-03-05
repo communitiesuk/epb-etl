@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "input_sqs_policy" {
     resources = [aws_sqs_queue.input_queue.arn]
 
     principals {
-      identifiers = [aws_iam_role.processor_role.arn]
+      identifiers = concat([aws_iam_role.processor_role.arn], var.input_roles)
       type        = "AWS"
     }
   }

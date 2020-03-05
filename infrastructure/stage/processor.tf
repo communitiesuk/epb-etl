@@ -1,12 +1,14 @@
 resource "aws_lambda_function" "processor" {
-  filename         = var.handler.local_path
   function_name    = "${local.resource_prefix}-processor"
   role             = aws_iam_role.processor_role.arn
-  handler          = "lib.bootstrap.handler"
+  handler          = "lib/bootstrap.handler"
   source_code_hash = base64encode(var.handler.actual_sha256)
   runtime          = "ruby2.7"
   tags             = var.service_tags
+  timeout          = 900
   layers           = [for layer in aws_lambda_layer_version.layer : layer.arn]
+  s3_bucket        = var.handler.s3_bucket
+  s3_key           = var.handler.s3_key
 
   environment {
     variables = {
@@ -18,7 +20,8 @@ resource "aws_lambda_function" "processor" {
 resource "aws_lambda_layer_version" "layer" {
   for_each         = var.layers
   layer_name       = "${local.resource_prefix}-processor-${each.key}"
-  filename         = each.value.local_path
+  s3_bucket        = each.value.s3_bucket
+  s3_key           = each.value.s3_key
   source_code_hash = base64encode(each.value.actual_sha256)
 }
 
