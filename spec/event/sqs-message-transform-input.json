@@ -10,7 +10,7 @@
               "ASSESSOR": {
                 "scan": "SELECT ASSESSOR_KEY FROM assessors",
                 "extract": {
-                  "query": "SELECT * FROM assessors WHERE ASSESSOR_KEY = '<%= primary_key %>'",
+                  "query": "SELECT ASSESSOR_ID, DATE_OF_BIRTH, FIRST_NAME, ORGANISATION_KEY, SURNAME FROM assessors WHERE ASSESSOR_KEY = '<%= primary_key %>'",
                   "multiple": false
                 }
               }
@@ -19,7 +19,7 @@
           "extract": {
             "queries": {
               "ASSESSOR": {
-                "query": "SELECT * FROM assessors WHERE ASSESSOR_KEY = 'TEST000000'",
+                "query": "SELECT ASSESSOR_ID, DATE_OF_BIRTH, FIRST_NAME, ORGANISATION_KEY, SURNAME FROM assessors WHERE ASSESSOR_KEY = '23456789'",
                 "multiple": false
               }
             }
@@ -68,51 +68,11 @@
         },
         "data": {
           "ASSESSOR": {
-            "ASSESSOR_KEY": 89030012,
-            "ACTIVE_IND": "N",
             "ASSESSOR_ID": "TEST000000",
-            "BASE_POSTCODE_LOCATION": "S1 1DA",
-            "ADDRESS1": "Green House",
-            "ADDRESS2": "89 Street",
-            "ADDRESS3": null,
-            "POST_TOWN": "Sheffield",
-            "POSTCODE": "S1 2HE",
-            "COMPANY_NAME": "Test Ltd",
-            "EMAIL": "test@example.com",
-            "COMPANY_FAX": null,
-            "TELEPHONE": "07777777777",
-            "COMPANY_WEBSITE": "www.example.com",
             "DATE_OF_BIRTH": "1980-11-01 00:00:00.000000",
             "FIRST_NAME": "Joe",
-            "NAME_PREFIX": "Mr",
-            "NAME_SUFFIX": null,
             "SURNAME": "Testerton",
-            "DELETED_IN_UPLOAD": 123456,
-            "ORGANISATION_KEY": 144,
-            "FIRST_NAME_PHONIC": "JM",
-            "SURNAME_PHONIC": "TN",
-            "ASSESSOR_LOCATION": [
-              1234,
-              1234,
-              [
-                746745,
-                523646,
-                null
-              ],
-              null,
-              null
-            ],
-            "MIDDLE_NAMES": "Not Applicable",
-            "DISPLAY_NAME": null,
-            "COMPANY_REG_NO": null,
-            "COMPANY_ADDR1": "Example address",
-            "COMPANY_ADDR2": "Long Street",
-            "COMPANY_ADDR3": null,
-            "COMPANY_TOWN": "Sheffield",
-            "COMPANY_POSTCODE": "S1 1DA",
-            "COMPANY_TELEPHONE": "07000 678901",
-            "COMPANY_EMAIL": "test@example.com",
-            "UPI": null
+            "ORGANISATION_KEY": 144
           }
         }
       },

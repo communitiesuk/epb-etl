@@ -28,8 +28,9 @@ describe 'E2E::Etl', order: :defined do
     until @oracle_has_started
       begin
         conn = OCI8.new 'sys', 'Oradoc_db1', '//localhost:1521/ORCLCDB.LOCALDOMAIN', :SYSDBA
-        conn.exec 'create table ASSESSORS (FIRST_NAME varchar(20), SURNAME varchar(20), DATE_OF_BIRTH varchar(30), ASSESSOR_ID varchar(20), ORGANISATION_KEY integer)'
-        conn.exec "insert into ASSESSORS values ('Joe', 'Testerton', '1980-11-01 00:00:00.000000', 'TEST000000', 144)"
+        conn.exec 'create table ASSESSORS (ASSESSOR_KEY varchar(20), FIRST_NAME varchar(20), SURNAME varchar(20), DATE_OF_BIRTH varchar(30), ASSESSOR_ID varchar(20), ORGANISATION_KEY integer)'
+        conn.exec "insert into ASSESSORS values ('12345678', 'Joe', 'Testerton', '1980-11-01 00:00:00.000000', 'TEST000001', 142)"
+        conn.exec "insert into ASSESSORS values ('23456789', 'Joe', 'Testerton', '1980-11-01 00:00:00.000000', 'TEST000000', 144)"
         conn.commit
         @oracle_has_started = true
       rescue OCIError
@@ -58,6 +59,16 @@ describe 'E2E::Etl', order: :defined do
   end
 
   context 'when data is supplied' do
+    it 'triggers the creation of extraction jobs' do
+      ENV['ETL_STAGE'] = 'trigger'
+      trigger_notification = JSON.parse File.open('spec/event/e2e-sns-trigger-input.json').read
+      expected_trigger_output = JSON.parse File.open('spec/event/e2e-sqs-message-extract-input.json').read
+
+      @handler.process event: trigger_notification
+
+      expect(@sqs_adapter.read).to eq(expected_trigger_output)
+    end
+
     it 'extracts the data from the database' do
       ENV['ETL_STAGE'] = 'extract'
       extract_event = JSON.parse File.open('spec/event/e2e-sqs-message-extract-input.json').read

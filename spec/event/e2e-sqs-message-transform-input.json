@@ -10,7 +10,7 @@
               "ASSESSOR": {
                 "scan": "SELECT ASSESSOR_KEY FROM assessors",
                 "extract": {
-                  "query": "SELECT * FROM assessors WHERE ASSESSOR_KEY = '<%= primary_key %>'",
+                  "query": "SELECT ASSESSOR_ID, DATE_OF_BIRTH, FIRST_NAME, ORGANISATION_KEY, SURNAME FROM assessors WHERE ASSESSOR_KEY = '<%= primary_key %>'",
                   "multiple": false
                 }
               }
@@ -19,7 +19,7 @@
           "extract": {
             "queries": {
               "ASSESSOR": {
-                "query": "SELECT * FROM assessors WHERE ASSESSOR_ID = 'TEST000000'",
+                "query": "SELECT ASSESSOR_ID, DATE_OF_BIRTH, FIRST_NAME, ORGANISATION_KEY, SURNAME FROM assessors WHERE ASSESSOR_KEY = '23456789'",
                 "multiple": false
               }
             }
