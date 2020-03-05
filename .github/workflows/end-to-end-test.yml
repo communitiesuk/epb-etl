@@ -39,16 +39,16 @@ jobs:
         run: gem install bundler -v '2.1.4'
 
       - name: Make directory to bundle to
-        run: mkdir "$(pwd)/vendor/bundle-linux"
+        run: mkdir "$(pwd)/vendor/bundle"
 
       - name: Install dependencies
         run: >-
           LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2"
-          BUNDLE_PATH="$(pwd)/vendor/bundle-linux"
+          BUNDLE_PATH="$(pwd)/vendor/bundle"
           bundle install
 
       - name: Test
         run: >-
           LD_LIBRARY_PATH="$(pwd)/vendor/oracle/Linux/instantclient_12_2"
-          BUNDLE_PATH="$(pwd)/vendor/bundle-linux"
+          BUNDLE_PATH="$(pwd)/vendor/bundle"
           bundle exec rspec --pattern "**/e2e/**/*_spec.rb"

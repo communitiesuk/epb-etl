@@ -3,7 +3,9 @@
 .idea/
 .terraform/
 spec/
-vendor/
+vendor/oracle
+vendor/lib
+vendor/bundle-darwin
 docs/
 infrastructure/
 scripts/
