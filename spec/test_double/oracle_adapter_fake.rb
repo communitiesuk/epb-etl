@@ -2,10 +2,17 @@
 
 class OracleAdapterFake
   def initialize(data)
-    @data = data
+    @default_data = data
+    @stubbed_queries = {}
   end
 
-  def read(_query)
-    @data
+  def stub_query(query, data)
+    @stubbed_queries[query] = data
+  end
+
+  def read(query)
+    return @default_data unless @stubbed_queries.key? query
+
+    @stubbed_queries[query]
   end
 end

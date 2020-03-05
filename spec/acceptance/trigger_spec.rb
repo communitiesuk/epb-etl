@@ -15,15 +15,41 @@ describe 'Acceptance::Trigger' do
   end
 
   context 'when a trigger notification is received' do
+    let(:oracle_adapter) do
+      adapter = OracleAdapterFake.new OracleAdapterStub.data
+
+      adapter.stub_query(
+          'SELECT ASSESSOR_KEY FROM assessors',
+          [
+              {
+                  "ASSESSOR_KEY": '23456789',
+              }
+          ]
+      )
+
+      adapter
+    end
+
     it 'handles the event without raising an error' do
       event = JSON.parse File.open('spec/event/sns-trigger-input.json').read
 
       ENV['ETL_STAGE'] = 'trigger'
 
-      expect do
-        handler = Handler.new Container.new false
-        handler.process event: event
-      end.not_to raise_error
+      sqs_adapter = SqsAdapterFake.new
+
+      message_gateway = Gateway::MessageGateway.new(sqs_adapter)
+      database_gateway = Gateway::DatabaseGateway.new(oracle_adapter)
+
+      container = Container.new false
+      container.set_object(:message_gateway, message_gateway)
+      container.set_object(:database_gateway, database_gateway)
+
+      handler = Handler.new(container)
+      handler.process event: event
+
+      expected_extract_output = JSON.parse File.open('spec/event/sqs-message-extract-input.json').read
+
+      expect(sqs_adapter.read).to eq(expected_extract_output)
     end
   end
 end
