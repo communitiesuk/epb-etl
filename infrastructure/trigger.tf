@@ -11,7 +11,7 @@ resource "aws_lambda_function" "trigger" {
   s3_key           = aws_s3_bucket_object.handler.key
   vpc_config {
     security_group_ids = var.trigger_vpc_config.security_group_ids
-    subnet_ids = var.trigger_vpc_config.subnet_ids
+    subnet_ids         = var.trigger_vpc_config.subnet_ids
   }
 
   environment {

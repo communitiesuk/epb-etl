@@ -7,9 +7,9 @@ data "remotefile_read" "lib_layer" {
 }
 
 resource "aws_s3_bucket" "s3_deployment_artefacts" {
-  bucket = "${local.resource_prefix}-deployment"
-  acl    = "private"
-  tags   = var.service_tags
+  bucket        = "${local.resource_prefix}-deployment"
+  acl           = "private"
+  tags          = var.service_tags
   force_destroy = true
 }
 

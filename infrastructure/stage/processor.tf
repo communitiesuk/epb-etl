@@ -11,7 +11,7 @@ resource "aws_lambda_function" "processor" {
   s3_key           = var.handler.s3_key
   vpc_config {
     security_group_ids = var.vpc_config.security_group_ids
-    subnet_ids = var.vpc_config.subnet_ids
+    subnet_ids         = var.vpc_config.subnet_ids
   }
 
   environment {
