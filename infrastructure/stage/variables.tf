@@ -29,6 +29,18 @@ variable "layers" {
   )
 }
 
+variable "vpc_config" {
+  description = "The vpc configuration for the lambda function"
+  default = {
+    subnet_ids = [],
+    security_group_ids= [],
+  }
+  type = object({
+    subnet_ids = list(string),
+    security_group_ids= list(string),
+  })
+}
+
 variable "input_roles" {
   description = "The role arns that are allowed to publish a message to this stage's sqs queue"
   default     = []

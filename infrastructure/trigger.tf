@@ -9,6 +9,10 @@ resource "aws_lambda_function" "trigger" {
   layers           = [aws_lambda_layer_version.lib_layer.arn]
   s3_bucket        = aws_s3_bucket.s3_deployment_artefacts.bucket
   s3_key           = aws_s3_bucket_object.handler.key
+  vpc_config {
+    security_group_ids = var.trigger_vpc_config.security_group_ids
+    subnet_ids = var.trigger_vpc_config.subnet_ids
+  }
 
   environment {
     variables = {
@@ -30,6 +34,30 @@ resource "aws_lambda_permission" "with_sns" {
   function_name = aws_lambda_function.trigger.function_name
   principal     = "sns.amazonaws.com"
   source_arn    = aws_sns_topic.trigger_etl.arn
+}
+
+resource "aws_iam_policy" "ec2_create_network_int" {
+  name   = "${local.resource_prefix}-trigger-policy"
+  policy = data.aws_iam_policy_document.ec2_create_network_int.json
+}
+
+data "aws_iam_policy_document" "ec2_create_network_int" {
+  statement {
+    actions = [
+      "EC2:CreateNetworkInterface",
+      "EC2:DescribeNetworkInterfaces",
+      "EC2:DeleteNetworkInterface"
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "test-attach" {
+  role       = aws_iam_role.trigger_role.name
+  policy_arn = aws_iam_policy.ec2_create_network_int.arn
 }
 
 resource "aws_iam_role" "trigger_role" {

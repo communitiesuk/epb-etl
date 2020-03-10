@@ -9,6 +9,10 @@ resource "aws_lambda_function" "processor" {
   layers           = [for layer in aws_lambda_layer_version.layer : layer.arn]
   s3_bucket        = var.handler.s3_bucket
   s3_key           = var.handler.s3_key
+  vpc_config {
+    security_group_ids = var.vpc_config.security_group_ids
+    subnet_ids = var.vpc_config.subnet_ids
+  }
 
   environment {
     variables = {
@@ -46,6 +50,30 @@ data "aws_iam_policy_document" "processor_role" {
       identifiers = ["lambda.amazonaws.com"]
     }
   }
+}
+
+resource "aws_iam_policy" "ec2_create_network_int" {
+  name   = "${local.resource_prefix}-policy"
+  policy = data.aws_iam_policy_document.ec2_create_network_int.json
+}
+
+data "aws_iam_policy_document" "ec2_create_network_int" {
+  statement {
+    actions = [
+      "EC2:CreateNetworkInterface",
+      "EC2:DescribeNetworkInterfaces",
+      "EC2:DeleteNetworkInterface"
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "test-attach" {
+  role       = aws_iam_role.processor_role.name
+  policy_arn = aws_iam_policy.ec2_create_network_int.arn
 }
 
 resource "aws_iam_policy" "processor_policy" {

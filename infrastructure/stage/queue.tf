@@ -1,8 +1,9 @@
 resource "aws_sqs_queue" "input_queue" {
-  name                      = "${local.resource_prefix}-input-queue"
-  max_message_size          = 2048
-  message_retention_seconds = 86400
-  tags                      = var.service_tags
+  name                       = "${local.resource_prefix}-input-queue"
+  max_message_size           = 2048
+  message_retention_seconds  = 86400
+  visibility_timeout_seconds = 900
+  tags                       = var.service_tags
   // @TODO add a DLQ to this queue
 }
 
