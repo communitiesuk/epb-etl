@@ -16,6 +16,7 @@ module "extract_stage" {
   stage        = "extract"
   input_roles  = [aws_iam_role.trigger_role.arn]
   vpc_config   = var.extract_vpc_config
+  environment  = var.extract_environment
 }
 
 module "transform_stage" {
@@ -35,6 +36,7 @@ module "transform_stage" {
   service_tags = var.service_tags
   stage        = "transform"
   input_roles  = [module.extract_stage.processor_role]
+  environment  = var.transform_environment
 }
 
 module "load_stage" {
@@ -54,4 +56,5 @@ module "load_stage" {
   service_tags = var.service_tags
   stage        = "load"
   input_roles  = [module.transform_stage.processor_role]
+  environment  = var.load_environment
 }

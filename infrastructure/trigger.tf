@@ -15,9 +15,9 @@ resource "aws_lambda_function" "trigger" {
   }
 
   environment {
-    variables = {
+    variables = merge(var.trigger_environment, {
       ETL_STAGE = "trigger"
-    }
+    })
   }
 }
 

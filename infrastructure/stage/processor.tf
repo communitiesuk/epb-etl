@@ -2,7 +2,7 @@ resource "aws_lambda_function" "processor" {
   function_name    = "${local.resource_prefix}-processor"
   role             = aws_iam_role.processor_role.arn
   handler          = "lib/bootstrap.handler"
-  source_code_hash = base64encode(var.handler.actual_sha256)
+  source_code_hash = var.handler.actual_sha256
   runtime          = "ruby2.7"
   tags             = var.service_tags
   timeout          = 900
@@ -15,9 +15,9 @@ resource "aws_lambda_function" "processor" {
   }
 
   environment {
-    variables = {
+    variables = merge({
       ETL_STAGE = var.stage
-    }
+    }, var.environment)
   }
 }
 
@@ -26,7 +26,7 @@ resource "aws_lambda_layer_version" "layer" {
   layer_name       = "${local.resource_prefix}-processor-${each.key}"
   s3_bucket        = each.value.s3_bucket
   s3_key           = each.value.s3_key
-  source_code_hash = base64encode(each.value.actual_sha256)
+  source_code_hash = each.value.actual_sha256
 }
 
 resource "aws_lambda_event_source_mapping" "processor_listener" {

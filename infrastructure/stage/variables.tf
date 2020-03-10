@@ -29,6 +29,10 @@ variable "layers" {
   )
 }
 
+variable "environment" {
+  description = "Environment variables for the lambda execution environment"
+}
+
 variable "vpc_config" {
   description = "The vpc configuration for the lambda function"
   default = {

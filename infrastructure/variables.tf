@@ -18,6 +18,8 @@ variable "trigger_vpc_config" {
   }
 }
 
+variable "trigger_environment" {
+  description = "The environment variables used by the trigger stage"
 }
 
 variable "extract_vpc_config" {
@@ -31,7 +33,17 @@ variable "extract_vpc_config" {
     security_group_ids = [],
   }
 }
+
+variable "extract_environment" {
+  description = "The environment variables used by the extract stage"
 }
+
+variable "transform_environment" {
+  description = "The environment variables used by the extract stage"
+}
+
+variable "load_environment" {
+  description = "The environment variables used by the load stage"
 }
 
 locals {
