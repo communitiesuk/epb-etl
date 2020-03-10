@@ -4,7 +4,10 @@ resource "aws_sqs_queue" "input_queue" {
   message_retention_seconds  = 86400
   visibility_timeout_seconds = 900
   tags                       = var.service_tags
-  // @TODO add a DLQ to this queue
+  redrive_policy = jsonencode({
+    maxReceiveCount = 1
+    deadLetterTargetArn = aws_sqs_queue.dead_letter_queue.arn
+  })
 }
 
 resource "aws_sqs_queue_policy" "input_sqs_policy" {
@@ -23,4 +26,12 @@ data "aws_iam_policy_document" "input_sqs_policy" {
       type        = "AWS"
     }
   }
+}
+
+resource "aws_sqs_queue" "dead_letter_queue" {
+  name                       = "${local.resource_prefix}-dead-letter-queue"
+  max_message_size           = 2048
+  message_retention_seconds  = 86400
+  visibility_timeout_seconds = 900
+  tags                       = var.service_tags
 }
