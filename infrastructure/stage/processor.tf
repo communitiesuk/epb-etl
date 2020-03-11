@@ -9,6 +9,7 @@ resource "aws_lambda_function" "processor" {
   layers           = [for layer in aws_lambda_layer_version.layer : layer.arn]
   s3_bucket        = var.handler.s3_bucket
   s3_key           = var.handler.s3_key
+
   vpc_config {
     security_group_ids = var.vpc_config.security_group_ids
     subnet_ids         = var.vpc_config.subnet_ids
@@ -53,7 +54,7 @@ data "aws_iam_policy_document" "processor_role" {
 }
 
 resource "aws_iam_policy" "ec2_create_network_int" {
-  name   = "${local.resource_prefix}-policy"
+  name   = "${local.resource_prefix}-ec2-create-network-policy"
   policy = data.aws_iam_policy_document.ec2_create_network_int.json
 }
 
@@ -71,9 +72,31 @@ data "aws_iam_policy_document" "ec2_create_network_int" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "test-attach" {
+resource "aws_iam_role_policy_attachment" "attach_ec2_create_network_int" {
   role       = aws_iam_role.processor_role.name
   policy_arn = aws_iam_policy.ec2_create_network_int.arn
+}
+
+resource "aws_iam_policy" "send_message_to_next_queue" {
+  count  = length(var.output_queue_arns) >= 1 ? 1 : 0
+  name   = "${local.resource_prefix}-send-message-to-next-queue-policy"
+  policy = data.aws_iam_policy_document.send_message_to_next_queue.json
+}
+
+data "aws_iam_policy_document" "send_message_to_next_queue" {
+  statement {
+    actions = [
+      "sqs:SendMessage"
+    ]
+
+    resources = var.output_queue_arns
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "attach_send_message_to_next_queue" {
+  count      = length(var.output_queue_arns) >= 1 ? 1 : 0
+  role       = aws_iam_role.processor_role.name
+  policy_arn = aws_iam_policy.send_message_to_next_queue[0].arn
 }
 
 resource "aws_iam_policy" "processor_policy" {

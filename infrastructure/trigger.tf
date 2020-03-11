@@ -9,6 +9,7 @@ resource "aws_lambda_function" "trigger" {
   layers           = [aws_lambda_layer_version.lib_layer.arn]
   s3_bucket        = aws_s3_bucket.s3_deployment_artefacts.bucket
   s3_key           = aws_s3_bucket_object.handler.key
+
   vpc_config {
     security_group_ids = var.trigger_vpc_config.security_group_ids
     subnet_ids         = var.trigger_vpc_config.subnet_ids
@@ -51,6 +52,16 @@ data "aws_iam_policy_document" "ec2_create_network_int" {
 
     resources = [
       "*",
+    ]
+  }
+
+  statement {
+    actions = [
+      "sqs:SendMessage"
+    ]
+
+    resources = [
+      module.extract_stage.stage_input_queue_arn
     ]
   }
 }

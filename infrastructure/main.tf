@@ -12,11 +12,11 @@ module "extract_stage" {
       s3_key        = aws_s3_bucket_object.lib_layer.key
     }
   }
-  service_tags = var.service_tags
-  stage        = "extract"
-  input_roles  = [aws_iam_role.trigger_role.arn]
-  vpc_config   = var.extract_vpc_config
-  environment  = var.extract_environment
+  service_tags      = var.service_tags
+  stage             = "extract"
+  vpc_config        = var.extract_vpc_config
+  environment       = var.extract_environment
+  output_queue_arns = [module.transform_stage.stage_input_queue_arn]
 }
 
 module "transform_stage" {
@@ -33,10 +33,10 @@ module "transform_stage" {
       s3_key        = aws_s3_bucket_object.lib_layer.key
     }
   }
-  service_tags = var.service_tags
-  stage        = "transform"
-  input_roles  = [module.extract_stage.processor_role]
-  environment  = var.transform_environment
+  service_tags      = var.service_tags
+  stage             = "transform"
+  environment       = var.transform_environment
+  output_queue_arns = [module.load_stage.stage_input_queue_arn]
 }
 
 module "load_stage" {
@@ -53,8 +53,9 @@ module "load_stage" {
       s3_key        = aws_s3_bucket_object.lib_layer.key
     }
   }
-  service_tags = var.service_tags
-  stage        = "load"
-  input_roles  = [module.transform_stage.processor_role]
-  environment  = var.load_environment
+  service_tags      = var.service_tags
+  stage             = "load"
+  environment       = var.load_environment
+  output_queue_arns = []
+}
 }

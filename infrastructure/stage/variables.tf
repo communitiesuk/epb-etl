@@ -51,6 +51,11 @@ variable "input_roles" {
   type        = list(string)
 }
 
+variable "output_queue_arns" {
+  description = "The ARNs of any queue this function sends messages to"
+  type        = list(string)
+}
+
 locals {
   resource_prefix = "${var.service_tags.Application}-${var.service_tags.Environment}-${var.stage}"
 }

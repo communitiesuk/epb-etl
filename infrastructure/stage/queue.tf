@@ -5,7 +5,7 @@ resource "aws_sqs_queue" "input_queue" {
   visibility_timeout_seconds = 900
   tags                       = var.service_tags
   redrive_policy = jsonencode({
-    maxReceiveCount = 1
+    maxReceiveCount     = 1
     deadLetterTargetArn = aws_sqs_queue.dead_letter_queue.arn
   })
 }
@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "input_sqs_policy" {
     resources = [aws_sqs_queue.input_queue.arn]
 
     principals {
-      identifiers = concat([aws_iam_role.processor_role.arn], var.input_roles)
+      identifiers = [aws_iam_role.processor_role.arn]
       type        = "AWS"
     }
   }
