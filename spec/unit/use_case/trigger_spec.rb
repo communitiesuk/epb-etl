@@ -46,7 +46,7 @@ describe UseCase::Trigger do
 
       container.set_object(:message_gateway, message_gateway_fake)
       container.set_object(:database_gateway, database_gateway_fake)
-      trigger = described_class.new(request, container)
+      described_class.new(request, container)
     end
 
     it 'scans the database' do

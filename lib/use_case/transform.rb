@@ -15,7 +15,6 @@ module UseCase
         }.to_json
       )
 
-      queue_url = @request.body['configuration']['load']['queue_url']
       rules = @request.body['configuration']['transform']['rules']
 
       rules.each do |rule|
@@ -31,7 +30,7 @@ module UseCase
         bury(response, *rule['to'], source_data)
       end
 
-      @message_gateway.write(queue_url, response)
+      @message_gateway.write(ENV['NEXT_SQS_URL'], response)
     end
 
     private

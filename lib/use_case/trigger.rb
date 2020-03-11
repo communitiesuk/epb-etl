@@ -31,7 +31,7 @@ module UseCase
 
           job['configuration']['extract']['queries'][name] = extract
 
-          @message_gateway.write("sns-queue-url", job)
+          @message_gateway.write(ENV['NEXT_SQS_URL'], job)
         end
       end
     end
