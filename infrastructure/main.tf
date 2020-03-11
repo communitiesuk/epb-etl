@@ -17,6 +17,7 @@ module "extract_stage" {
   vpc_config        = var.extract_vpc_config
   environment       = var.extract_environment
   output_queue_arns = [module.transform_stage.stage_input_queue_arn]
+  output_queue_url  = module.transform_stage.stage_input_queue_url
 }
 
 module "transform_stage" {
@@ -37,6 +38,7 @@ module "transform_stage" {
   stage             = "transform"
   environment       = var.transform_environment
   output_queue_arns = [module.load_stage.stage_input_queue_arn]
+  output_queue_url  = module.load_stage.stage_input_queue_url
 }
 
 module "load_stage" {
@@ -57,5 +59,6 @@ module "load_stage" {
   stage             = "load"
   environment       = var.load_environment
   output_queue_arns = []
+  output_queue_url  = ""
 }
 }

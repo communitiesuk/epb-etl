@@ -56,6 +56,11 @@ variable "output_queue_arns" {
   type        = list(string)
 }
 
+variable "output_queue_url" {
+  description = "The output SQS queue URL"
+  type        = string
+}
+
 locals {
   resource_prefix = "${var.service_tags.Application}-${var.service_tags.Environment}-${var.stage}"
 }

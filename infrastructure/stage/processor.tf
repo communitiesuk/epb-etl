@@ -18,6 +18,7 @@ resource "aws_lambda_function" "processor" {
   environment {
     variables = merge({
       ETL_STAGE = var.stage
+      NEXT_SQS_URL = var.output_queue_url
     }, var.environment)
   }
 }
