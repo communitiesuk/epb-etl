@@ -10,4 +10,4 @@ zip -r $EXCLUDE_PATTERNS dist/handler.zip ./
 
 cd vendor || exit 1
 
-zip -r dist/lib-layer.zip ./lib
+zip -r ../dist/lib-layer.zip ./lib
