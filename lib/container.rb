@@ -6,7 +6,7 @@ class Container
 
     if bootstrap
       sqs_client = Aws::SQS::Client.new
-      oracle_client = OCI8.new ENV['ORACLE_CONNECT_STRING']
+      oracle_client = OCI8.new ENV['DATABASE_URL']
 
       sqs_adapter = Adapter::SqsAdapter.new sqs_client
       oracle_adapter = Adapter::OracleAdapter.new oracle_client
