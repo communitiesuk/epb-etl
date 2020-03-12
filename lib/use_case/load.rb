@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'epb_auth_tools'
+require 'erb'
 
 module UseCase
   class Load < UseCase::Base
