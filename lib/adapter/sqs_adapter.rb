@@ -9,13 +9,15 @@ module Adapter
     end
 
     def write(queue_url, message_body)
-      @sqs.send_message(queue_url: queue_url, message_body: message_body)
+      raise Errors::SqsClientWithoutMessageBody if message_body.nil? || message_body.empty?
+
+      @sqs.send_message(queue_url: queue_url, message_body: JSON.generate(message_body))
     rescue ArgumentError => e
       if e.message.include?('invalid endpoint')
         raise Errors::SqsClientHasInvalidQueueUrl
-      else
-        raise Errors::SqsClientWithoutMessageBody
       end
+
+      raise
     end
   end
 end
