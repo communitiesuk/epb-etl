@@ -18,8 +18,11 @@ class Handler
 
     normalised_event['Records'].each do |message|
       event_source = message["EventSource"].nil? ? message['eventSource'] : message["EventSource"]
+      event_body = event_source == 'aws:sqs' ? message['body'] : message["Sns"]['Message']
 
-      request = Boundary.const_get(etl_stage + 'Request').new event_source == 'aws:sqs' ? message['body'] : message["Sns"]['Message']
+      event_body = event_body.is_a?(String) ? JSON.parse(event_body) : event_body
+
+      request = Boundary.const_get(etl_stage + 'Request').new event_body
       use_case = use_case_constant.new(request, @container)
 
       use_case.execute
