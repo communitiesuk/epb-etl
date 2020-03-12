@@ -10,7 +10,11 @@ class Handler
 
     etl_stage = ENV['ETL_STAGE'].capitalize
 
-    use_case_constant = UseCase.const_get(etl_stage)
+    begin
+      use_case_constant = UseCase.const_get(etl_stage)
+    rescue NameError
+      raise Errors::EtlStageInvalid
+    end
 
     normalised_event['Records'].each do |message|
       event_source = message["EventSource"].nil? ? message['eventSource'] : message["EventSource"]
@@ -20,7 +24,5 @@ class Handler
 
       use_case.execute
     end
-  rescue NameError
-    raise Errors::EtlStageInvalid
   end
 end
