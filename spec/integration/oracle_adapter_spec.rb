@@ -48,15 +48,18 @@ describe 'Integration::OracleAdapter' do
    end
 
   context 'when connecting to the Oracle database' do
+    ENV['DATABASE_URL'] = 'sys/Oradoc_db1@//localhost:1521/ORCLCDB.LOCALDOMAIN as sysdba'
+
     it 'does not raise an error' do
       expect do
-        Adapter::OracleAdapter.new OCI8.new 'sys/Oradoc_db1@//localhost:1521/ORCLCDB.LOCALDOMAIN as sysdba'
+        oracle_adapter = Adapter::OracleAdapter.new
+        oracle_adapter.connect
       end.not_to raise_error
     end
 
     it 'can select from a table' do
-      oracle = OCI8.new 'sys/Oradoc_db1@//localhost:1521/ORCLCDB.LOCALDOMAIN as sysdba'
-      oracle_adapter = Adapter::OracleAdapter.new oracle
+      oracle_adapter = Adapter::OracleAdapter.new
+      oracle_adapter.connect
       response = oracle_adapter.read('SELECT * FROM rates').first
 
       expect(response['SCORE']).to eq 25

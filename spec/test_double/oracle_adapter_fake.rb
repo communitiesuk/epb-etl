@@ -15,4 +15,8 @@ class OracleAdapterFake
 
     @stubbed_queries[query]
   end
+
+  def connected?
+    true
+  end
 end

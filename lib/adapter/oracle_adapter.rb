@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
+require 'ruby-oci8'
+
 module Adapter
   class OracleAdapter
-    def initialize(oracle)
-      @oracle = oracle
+    def initialize
+      @oracle = nil
     end
 
     def read(query)
@@ -15,6 +17,14 @@ module Adapter
       cursor.close
 
       records
+    end
+
+    def connect
+      @oracle = OCI8.new ENV['DATABASE_URL']
+    end
+
+    def connected?
+      !@oracle.nil?
     end
   end
 end

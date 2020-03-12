@@ -9,5 +9,13 @@ module Adapter
     def write
       raise StandardError.new, 'Adapter does not implement write()'
     end
+
+    def connect
+      raise StandardError.new, 'Adapter does not implement connect()'
+    end
+
+    def connected?
+      true
+    end
   end
 end

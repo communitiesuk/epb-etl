@@ -39,8 +39,7 @@ describe 'E2E::Etl', order: :defined do
     end
 
     @sqs_adapter = SqsAdapterFake.new
-    oracle = OCI8.new 'sys/Oradoc_db1@//localhost:1521/ORCLCDB.LOCALDOMAIN as sysdba'
-    oracle_adapter = Adapter::OracleAdapter.new oracle
+    oracle_adapter = Adapter::OracleAdapter.new
 
     message_gateway = Gateway::MessageGateway.new(@sqs_adapter)
     database_gateway = Gateway::DatabaseGateway.new(oracle_adapter)
@@ -59,6 +58,8 @@ describe 'E2E::Etl', order: :defined do
   end
 
   context 'when data is supplied' do
+    ENV['DATABASE_URL'] = 'sys/Oradoc_db1@//localhost:1521/ORCLCDB.LOCALDOMAIN as sysdba'
+
     it 'triggers the creation of extraction jobs' do
       ENV['ETL_STAGE'] = 'trigger'
       trigger_notification = JSON.parse File.open('spec/event/e2e-sns-trigger-input.json').read

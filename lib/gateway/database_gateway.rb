@@ -2,12 +2,14 @@
 
 module Gateway
   class DatabaseGateway
-    def initialize(oracle_adapter)
-      @oracle_adapter = oracle_adapter
+    def initialize(adapter)
+      @adapter = adapter
     end
 
     def read(query)
-      result = @oracle_adapter.read(query['query'])
+      @adapter.connect unless @adapter.connected?
+
+      result = @adapter.read(query['query'])
 
       raise Errors::ResultEmpty if result.nil?
 
