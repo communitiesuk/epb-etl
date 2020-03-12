@@ -100,6 +100,15 @@ resource "aws_iam_role_policy_attachment" "attach_send_message_to_next_queue" {
   policy_arn = aws_iam_policy.send_message_to_next_queue[0].arn
 }
 
+data "aws_iam_policy" "AWSLambdaBasicExecutionRole" {
+  arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy_attachment" "attach_basic_execution_role_policy" {
+  role       = aws_iam_role.processor_role.name
+  policy_arn = data.aws_iam_policy.AWSLambdaBasicExecutionRole.arn
+}
+
 resource "aws_iam_policy" "processor_policy" {
   name   = "${local.resource_prefix}-processor-permissions-policy"
   policy = data.aws_iam_policy_document.processor_role_permissions.json

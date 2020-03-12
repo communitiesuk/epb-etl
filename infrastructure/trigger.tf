@@ -67,9 +67,18 @@ data "aws_iam_policy_document" "ec2_create_network_int" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "test-attach" {
+resource "aws_iam_role_policy_attachment" "attach_ec2_create_network_int" {
   role       = aws_iam_role.trigger_role.name
   policy_arn = aws_iam_policy.ec2_create_network_int.arn
+}
+
+data "aws_iam_policy" "AWSLambdaBasicExecutionRole" {
+  arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy_attachment" "attach_basic_execution_role_policy" {
+  role       = aws_iam_role.trigger_role.name
+  policy_arn = data.aws_iam_policy.AWSLambdaBasicExecutionRole.arn
 }
 
 resource "aws_iam_role" "trigger_role" {

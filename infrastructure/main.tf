@@ -61,4 +61,3 @@ module "load_stage" {
   output_queue_arns = []
   output_queue_url  = ""
 }
-}
