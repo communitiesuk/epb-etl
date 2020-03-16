@@ -5,5 +5,9 @@ module Gateway
     def read
       raise StandardError.new, 'Gateway does not implement read()'
     end
+
+    def write
+      raise StandardError.new, 'Gateway does not implement write()'
+    end
   end
 end
