@@ -12,6 +12,7 @@ module UseCase
     def execute
       response = JSON.parse(
         {
+          job: @request.body['job'],
           configuration: @request.body['configuration'],
           data: {
           }

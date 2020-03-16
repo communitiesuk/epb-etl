@@ -5,6 +5,9 @@ describe UseCase::Extract do
     def body
       JSON.parse(
         {
+          'job': {
+            'ASSESSOR': ['TEST000000']
+          },
           'configuration': {
             'extract': {
               'queries': {
@@ -52,6 +55,9 @@ describe UseCase::Extract do
       response = extract.execute
 
       expect(response).to eq(JSON.parse({
+        job: {
+            ASSESSOR: ['TEST000000']
+        },
         configuration: {
           extract: {
             queries: {

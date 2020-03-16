@@ -31,6 +31,8 @@ module UseCase
 
           job = @request.body.dup
 
+          Helper::bury(job, *['job', name], [params[:primary_key]])
+
           job['configuration']['extract']['queries'][name] = extract
 
           @message_gateway.write(ENV['NEXT_SQS_URL'], job)

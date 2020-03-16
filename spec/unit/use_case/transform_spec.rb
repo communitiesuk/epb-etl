@@ -5,6 +5,9 @@ describe UseCase::Transform do
     def body
       JSON.parse(
         {
+          "job": {
+            "ASSESSOR": ['TEST000000']
+          },
           "configuration": {
             "load": {
               "endpoint": {
@@ -42,6 +45,9 @@ describe UseCase::Transform do
       response = transform.execute
 
       expect(response).to eq(JSON.parse({
+        job: {
+          ASSESSOR: ['TEST000000']
+        },
         "configuration": {
           "load": {
             "endpoint": {
