@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 describe Gateway::MessageGateway do
+  context 'when trying to read from the adapter' do
+    it 'raises a standard error' do
+      message_gateway = described_class.new(nil)
+      expect { message_gateway.read }.to raise_error instance_of StandardError
+    end
+  end
+
   context 'when reading from the adapter' do
     it 'modifies the message' do
       sqs_adapter = SqsAdapterFake.new

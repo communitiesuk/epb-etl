@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Gateway
-  class MessageGateway
+  class MessageGateway < BaseGateway
     def initialize(adapter)
       @adapter = adapter
     end

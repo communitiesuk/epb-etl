@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 describe Gateway::DatabaseGateway do
+  context 'when trying to write to the adapter' do
+    it 'raises a standard error' do
+      database_gateway = Gateway::DatabaseGateway.new(nil)
+      expect { database_gateway.write }.to raise_error instance_of StandardError
+    end
+  end
+
   context 'when reading from the adapter' do
     it 'returns the result of the query' do
       oracle_adapter = OracleAdapterFake.new(
