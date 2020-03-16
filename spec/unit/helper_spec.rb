@@ -1,6 +1,6 @@
 require 'rspec'
 
-describe Helpers::Transform do
+describe Helper::Transform do
   context 'when transforming a date to another format' do
     it 'outputs in the expected format' do
       input_date = '1985-10-15 03:00:00.0000'

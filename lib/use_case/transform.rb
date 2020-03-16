@@ -24,29 +24,13 @@ module UseCase
           args = rule['convert']['args']
           args.unshift source_data
 
-          source_data = Helpers::Transform.send rule['convert']['type'], *args
+          source_data = Helper::Transform.send rule['convert']['type'], *args
         end
 
-        bury(response, *rule['to'], source_data)
+        Helper::bury(response, *rule['to'], source_data)
       end
 
       @message_gateway.write(ENV['NEXT_SQS_URL'], response)
-    end
-
-    private
-
-    def bury(hash, *args)
-      if args.count < 2
-        raise ArgumentError, '2 or more arguments required'
-      elsif args.count == 2
-        hash[args[0]] = args[1]
-      else
-        arg = args.shift
-        hash[arg] = {} unless hash[arg]
-        bury(hash[arg], *args) unless args.empty?
-      end
-
-      hash
     end
   end
 end

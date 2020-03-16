@@ -140,7 +140,7 @@ transformations defined as a list; `from` and `to`.
 ```
 
 Some of the rules have a `convert` property. This makes use of `Helper` methods
-which are defined in the [helpers file](lib/helpers.rb). The `type` property is
+which are defined in the [helpers file](lib/helper.rb). The `type` property is
 the name of the `Helper` method - `date_format` and `map` - and the 
 `args` property contains the method argument. These methods are designed to
 transform the data accordingly; e.g. `1980-11-01 00:00:00.000000` to
