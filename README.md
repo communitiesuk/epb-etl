@@ -19,6 +19,7 @@ PostgreSQL, etc.
     + [Operating System](#operating-system)
   * [Usage](#usage)
     + [Configuration](#configuration)
+      - [Trigger](#trigger)
       - [Extract](#extract)
       - [Transform](#transform)
       - [Load](#load)
@@ -56,6 +57,37 @@ Assume we have the following data in an Oracle DB with a table `employees`:
 FIRST_NAME | SURNAME | DATE_OF_BIRTH | EMPLOYEE_ID | COMPANY_ID
 --- | --- | --- | --- | ---
 John | Smith | 1980-11-01 00:00:00.000000 | EMPL123456 | 10
+
+#### Trigger
+
+```json
+{
+  "trigger": {
+    "scanners": {
+      "EMPLOYEE": {
+        "scan": "SELECT EMPLOYEE_ID FROM employees",
+        "extract": {
+          "query": "SELECT * FROM employees WHERE EMPLOYEE_ID = '<%= primary_key %>'",
+          "multiple": false
+        }
+      }
+    }
+  }
+}
+```
+
+The configuration for the `trigger` stage contains information required to scan
+a database table and produce jobs for the ETL pipeline.
+
+The `scanners` property contains key value pairs. The key is the same key found 
+in the [extract](#extract) configuration, explained later in the document. The
+value is an object that includes the properties `scan` and `extract`. 
+
+The `scan` property contains an SQL query that should select only the primary 
+key from a given table. For each row selected from the table, a new ETL job will
+be created in the pipeline. In each new job, the contents of the scanner's 
+`extract` property are placed in the extract [extract](#extract) configuration,
+replacing `<%= primary_key %>` with the primary key selected from the table.
 
 #### Extract
 
@@ -236,6 +268,7 @@ Adapter | Gateway
 --- | ---
 [Oracle](lib/adapter/oracle_adapter.rb) | [Database](lib/gateway/database_gateway.rb)
 [AWS SQS](lib/adapter/sqs_adapter.rb) | [Message](lib/gateway/message_gateway.rb)
+[Logit](lib/adapter/logit_adapter.rb) | [Log](lib/gateway/log_gateway.rb)
 
 The idea behind this technical decision is to adhere to the
 [open/closed principle](https://en.wikipedia.org/wiki/Open–closed_principle)
@@ -244,6 +277,7 @@ PostgreSQL adapter for the `database` gateway.
 
 Use cases:
 
+- [Trigger](lib/use_case/trigger.rb)
 - [Extract](lib/use_case/extract.rb)
 - [Transform](lib/use_case/transform.rb)
 - [Load](lib/use_case/load.rb)
