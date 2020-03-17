@@ -37,7 +37,7 @@ create_bundler_image:
 		-f bundler.Dockerfile \
 		- < bundler.Dockerfile 1>/dev/null
 
-build: vendor/lib
+build: vendor/lib vendor/bundle
 	@echo "-> Building lambda package" && \
 		$(SHELL) ./scripts/build-lambda.sh
 
