@@ -3,7 +3,7 @@
 require 'ruby-oci8'
 
 module Adapter
-  class OracleAdapter
+  class OracleAdapter < Adapter::BaseAdapter
     def initialize
       @oracle = nil
     end
