@@ -11,13 +11,13 @@ class LogitAdapterFake
     true
   end
 
-  def write(stage, event, job)
-    @data << JSON.parse(
+  def write(stage, event, data)
+    @data << JSON.generate(
         {
             stage: stage,
             event: event,
-            job: job
-        }.to_json
+            data: data
+        }
     )
   end
 end

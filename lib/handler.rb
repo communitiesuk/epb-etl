@@ -25,6 +25,8 @@ class Handler
       request = Boundary.const_get(etl_stage + 'Request').new event_body
       use_case = use_case_constant.new(request, @container)
 
+      @container.fetch_object(:log_gateway).write ENV['ETL_STAGE'], 'start', event_body['job']
+
       use_case.execute
     end
   end
