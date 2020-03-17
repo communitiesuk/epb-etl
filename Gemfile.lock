@@ -1,20 +1,11 @@
-GIT
-  remote: https://github.com/communitiesuk/epb-auth-tools
-  revision: c2b5d0dfcb37bc3f0cf641b1af15d4e5e3fef9c6
-  branch: master
-  specs:
-    epb_auth_tools (0.0.0)
-      jwt (~> 2.2)
-      oauth2 (~> 1.4)
-
 GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     aws-eventstream (1.0.3)
-    aws-partitions (1.274.0)
-    aws-sdk-core (3.90.1)
+    aws-partitions (1.281.0)
+    aws-sdk-core (3.91.0)
       aws-eventstream (~> 1.0, >= 1.0.2)
       aws-partitions (~> 1, >= 1.239.0)
       aws-sigv4 (~> 1.1)
@@ -22,7 +13,7 @@ GEM
     aws-sdk-sqs (1.23.1)
       aws-sdk-core (~> 3, >= 3.71.0)
       aws-sigv4 (~> 1.1)
-    aws-sigv4 (1.1.0)
+    aws-sigv4 (1.1.1)
       aws-eventstream (~> 1.0, >= 1.0.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -30,10 +21,13 @@ GEM
     docker-api (1.34.2)
       excon (>= 0.47.0)
       multi_json
+    epb-auth-tools (1.0.1)
+      jwt (~> 2.2)
+      oauth2 (~> 1.4)
     excon (0.72.0)
     faraday (1.0.0)
       multipart-post (>= 1.2, < 3)
-    hashdiff (1.0.0)
+    hashdiff (1.0.1)
     jmespath (1.4.0)
     jwt (2.2.1)
     multi_json (1.14.1)
@@ -62,11 +56,11 @@ GEM
     rspec-support (3.9.2)
     ruby-oci8 (2.2.8)
     safe_yaml (1.0.5)
-    webmock (3.8.2)
+    webmock (3.8.3)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    zeitwerk (2.2.2)
+    zeitwerk (2.3.0)
 
 PLATFORMS
   ruby
@@ -74,7 +68,7 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk-sqs (~> 1.23)!
   docker-api (~> 1.34)!
-  epb_auth_tools!
+  epb-auth-tools (~> 1.0)!
   rspec (~> 3.0)!
   ruby-oci8 (~> 2.2)!
   webmock (~> 3.8)!
