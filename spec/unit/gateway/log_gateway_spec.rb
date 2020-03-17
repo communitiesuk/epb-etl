@@ -10,12 +10,12 @@ describe Gateway::LogGateway do
 
   context 'when writing to the logstash adapter' do
     it 'emits a log event' do
-      logstash_adapter = LogstashAdapterFake.new
-      log_gateway = described_class.new logstash_adapter
+      logit_adapter = LogitAdapterFake.new
+      log_gateway = described_class.new logit_adapter
 
       log_gateway.write('test', 'event', {})
 
-      expect(logstash_adapter.data).to eq(JSON.parse([{
+      expect(logit_adapter.data).to eq(JSON.parse([{
         stage: 'test',
         event: 'event',
         job: {}

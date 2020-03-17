@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class LogstashAdapterFake
+class LogitAdapterFake
   attr_reader :data
 
   def initialize
