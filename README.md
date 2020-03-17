@@ -208,16 +208,17 @@ body](https://en.wikipedia.org/wiki/HTTP_message_body) is defined in JSON as:
 
 ### Test
 
-Use the following commands to run all or a particular type of test:
+Use the following commands to run all or a particular type of test (some tests
+require docker):
 
 ```shell script
 $ make test # run all acceptance and unit tests
 
-$ make test_integration # run all integration tests
+$ make test_integration # run all integration tests (requires docker)
 
-$ make test_e2e # run all end-to-end tests
+$ make test_e2e # run all end-to-end tests (requires docker)
 
-$ make test_all # run all tests
+$ make test_all # run all tests (requires docker)
 ```
 
 ## Documentation
