@@ -56,3 +56,7 @@ variable "transform_environment" {
 variable "load_environment" {
   description = "The environment variables used by the load stage"
 }
+
+output "trigger_sns_topic_url" {
+  value = module.etl_pipeline.trigger_sns_topic_url
+}
