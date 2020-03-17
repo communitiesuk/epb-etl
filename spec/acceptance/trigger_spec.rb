@@ -36,13 +36,16 @@ describe 'Acceptance::Trigger' do
       ENV['ETL_STAGE'] = 'trigger'
 
       sqs_adapter = SqsAdapterFake.new
+      logit_adapter = LogitAdapterFake.new
 
       message_gateway = Gateway::MessageGateway.new(sqs_adapter)
       database_gateway = Gateway::DatabaseGateway.new(oracle_adapter)
+      log_gateway = Gateway::LogGateway.new logit_adapter
 
       container = Container.new false
       container.set_object(:message_gateway, message_gateway)
       container.set_object(:database_gateway, database_gateway)
+      container.set_object(:log_gateway, log_gateway)
 
       handler = Handler.new(container)
       handler.process event: event

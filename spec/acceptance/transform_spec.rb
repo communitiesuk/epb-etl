@@ -22,11 +22,18 @@ describe 'Acceptance::Transform' do
         ENV['ETL_STAGE'] = 'transform'
 
         sqs_adapter = SqsAdapterFake.new
+        logit_adapter = LogitAdapterFake.new
+
         message_gateway = Gateway::MessageGateway.new(sqs_adapter)
+        log_gateway = Gateway::LogGateway.new logit_adapter
+
         container = Container.new false
         container.set_object(:message_gateway, message_gateway)
+        container.set_object(:log_gateway, log_gateway)
+
         handler = Handler.new(container)
         handler.process event: event
+
         expected_transform_output = JSON.parse File.open('spec/event/sqs-message-load-input.json').read
 
         expect(sqs_adapter.read).to eq(expected_transform_output)

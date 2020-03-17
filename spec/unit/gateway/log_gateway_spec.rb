@@ -15,11 +15,11 @@ describe Gateway::LogGateway do
 
       log_gateway.write('test', 'event', {})
 
-      expect(logit_adapter.data).to eq(JSON.parse([{
+      expect(logit_adapter.data).to include JSON.generate({
         stage: 'test',
         event: 'event',
-        job: {}
-      }].to_json))
+        data: {}
+      })
     end
   end
 end
