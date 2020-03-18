@@ -96,6 +96,15 @@ describe 'E2E::Etl', order: :defined do
                                                                    }
                                                                },
                                                            })
+      expect(@logit_adapter.data).to include JSON.generate({
+                                                               stage: 'extract',
+                                                               event: 'finish',
+                                                               data: {
+                                                                   job: {
+                                                                       "ASSESSOR": ["23456789"]
+                                                                   }
+                                                               },
+                                                           })
     end
 
     it 'transforms the data to the correct format' do
@@ -108,6 +117,15 @@ describe 'E2E::Etl', order: :defined do
       expect(@logit_adapter.data).to include JSON.generate({
                                                                stage: 'transform',
                                                                event: 'start',
+                                                               data: {
+                                                                   job: {
+                                                                       "ASSESSOR": ["23456789"]
+                                                                   }
+                                                               },
+                                                           })
+      expect(@logit_adapter.data).to include JSON.generate({
+                                                               stage: 'transform',
+                                                               event: 'finish',
                                                                data: {
                                                                    job: {
                                                                        "ASSESSOR": ["23456789"]
@@ -139,6 +157,16 @@ describe 'E2E::Etl', order: :defined do
                                                                    }
                                                                },
                                                            })
+      expect(@logit_adapter.data).to include JSON.generate({
+                                                               stage: 'load',
+                                                               event: 'finish',
+                                                               data: {
+                                                                   job: {
+                                                                       "ASSESSOR": ["23456789"]
+                                                                   }
+                                                               },
+                                                           })
+
       remove_request_stub(http_stub)
     end
   end

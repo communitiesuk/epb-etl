@@ -30,6 +30,9 @@ class Handler
                                                   {job: event_body['job']}
 
       use_case.execute
+      @container.fetch_object(:log_gateway).write ENV['ETL_STAGE'],
+                                                  'finish',
+                                                  {job: event_body['job']}
     end
   end
 end
