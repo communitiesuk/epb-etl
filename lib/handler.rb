@@ -29,10 +29,19 @@ class Handler
                                                   'start',
                                                   {job: event_body['job']}
 
-      use_case.execute
-      @container.fetch_object(:log_gateway).write ENV['ETL_STAGE'],
-                                                  'finish',
-                                                  {job: event_body['job']}
+      begin
+        use_case.execute
+        @container.fetch_object(:log_gateway).write ENV['ETL_STAGE'],
+                                                    'finish',
+                                                    {job: event_body['job']}
+      rescue StandardError => e
+        @container.fetch_object(:log_gateway).write ENV['ETL_STAGE'],
+                                                    'fail',
+                                                    {
+                                                        error: e.message,
+                                                        job: event_body['job'],
+                                                    }
+      end
     end
   end
 end

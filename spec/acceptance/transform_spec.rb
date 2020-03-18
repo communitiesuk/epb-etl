@@ -14,7 +14,40 @@ describe 'Acceptance::Transform' do
     end
   end
 
-  context 'when data is supplied in the message body' do
+  context 'when invalid data is supplied in the message body' do
+    context 'when the data present is invalid' do
+      it 'handles the event by logging the error' do
+        event = JSON.parse File.open('spec/event/sqs-message-invalid.json').read
+
+        ENV['ETL_STAGE'] = 'transform'
+
+        sqs_adapter = SqsAdapterFake.new
+        logit_adapter = LogitAdapterFake.new
+
+        message_gateway = Gateway::MessageGateway.new(sqs_adapter)
+        log_gateway = Gateway::LogGateway.new logit_adapter
+
+        container = Container.new false
+        container.set_object(:message_gateway, message_gateway)
+        container.set_object(:log_gateway, log_gateway)
+
+        handler = Handler.new(container)
+        handler.process event: event
+
+
+        expect(logit_adapter.data).to include JSON.generate({
+                                                                stage: 'transform',
+                                                                event: 'fail',
+                                                                data: {
+                                                                    error: 'undefined method `unshift\' for nil:NilClass',
+                                                                    job: {
+                                                                        "ASSESSOR": ["23456789"]
+                                                                    }
+                                                                },
+                                                            })
+      end
+    end
+
     context 'when all required data is present' do
       it 'converts data to target hash' do
         event = JSON.parse File.open('spec/event/sqs-message-transform-input.json').read

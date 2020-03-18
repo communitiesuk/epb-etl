@@ -15,6 +15,33 @@ describe 'Acceptance::Load' do
   end
 
   context 'when data is supplied in the message body' do
+    context 'when the data present is invalid' do
+      it 'handles the event by logging the error' do
+        event = JSON.parse File.open('spec/event/sqs-message-invalid.json').read
+
+        ENV['ETL_STAGE'] = 'load'
+
+        logit_adapter = LogitAdapterFake.new
+        log_gateway = Gateway::LogGateway.new logit_adapter
+        container = Container.new false
+        container.set_object(:log_gateway, log_gateway)
+
+        handler = Handler.new container
+        handler.process event: event
+
+        expect(logit_adapter.data).to include JSON.generate({
+                                                                stage: 'load',
+                                                                event: 'fail',
+                                                                data: {
+                                                                    error: 'undefined method `values_at\' for nil:NilClass',
+                                                                    job: {
+                                                                        "ASSESSOR": ["23456789"]
+                                                                    }
+                                                                },
+                                                            })
+      end
+    end
+
     context 'when all required data is present' do
       it 'sends the data to the endpoint' do
         event = JSON.parse File.open('spec/event/sqs-message-load-input.json').read
