@@ -75,7 +75,7 @@ describe 'E2E::Etl', order: :defined do
       expect(@logit_adapter.data).to include JSON.generate({
                                                  stage: 'trigger',
                                                  event: 'start',
-                                                 data: nil,
+                                                 data: {job: nil},
                                              })
     end
 
@@ -91,7 +91,9 @@ describe 'E2E::Etl', order: :defined do
                                                                stage: 'extract',
                                                                event: 'start',
                                                                data: {
-                                                                   "ASSESSOR": ["23456789"]
+                                                                   job: {
+                                                                       "ASSESSOR": ["23456789"]
+                                                                   }
                                                                },
                                                            })
     end
@@ -107,7 +109,9 @@ describe 'E2E::Etl', order: :defined do
                                                                stage: 'transform',
                                                                event: 'start',
                                                                data: {
-                                                                   "ASSESSOR": ["23456789"]
+                                                                   job: {
+                                                                       "ASSESSOR": ["23456789"]
+                                                                   }
                                                                },
                                                            })
     end
@@ -130,10 +134,11 @@ describe 'E2E::Etl', order: :defined do
                                                                stage: 'load',
                                                                event: 'start',
                                                                data: {
-                                                                   "ASSESSOR": ["23456789"]
+                                                                   job: {
+                                                                       "ASSESSOR": ["23456789"]
+                                                                   }
                                                                },
                                                            })
-
       remove_request_stub(http_stub)
     end
   end
