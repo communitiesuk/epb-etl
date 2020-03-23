@@ -5,7 +5,7 @@ resource "aws_sqs_queue" "input_queue" {
   visibility_timeout_seconds = 900
   tags                       = var.service_tags
   redrive_policy = jsonencode({
-    maxReceiveCount     = 1
+    maxReceiveCount     = var.max_queue_receive_count
     deadLetterTargetArn = aws_sqs_queue.dead_letter_queue.arn
   })
 }

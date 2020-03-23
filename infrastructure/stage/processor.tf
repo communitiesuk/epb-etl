@@ -1,14 +1,15 @@
 resource "aws_lambda_function" "processor" {
-  function_name    = "${local.resource_prefix}-processor"
-  role             = aws_iam_role.processor_role.arn
-  handler          = "lib/bootstrap.handler"
-  source_code_hash = var.handler.actual_sha256
-  runtime          = "ruby2.7"
-  tags             = var.service_tags
-  timeout          = 900
-  layers           = [for layer in aws_lambda_layer_version.layer : layer.arn]
-  s3_bucket        = var.handler.s3_bucket
-  s3_key           = var.handler.s3_key
+  function_name                  = "${local.resource_prefix}-processor"
+  role                           = aws_iam_role.processor_role.arn
+  handler                        = "lib/bootstrap.handler"
+  source_code_hash               = var.handler.actual_sha256
+  runtime                        = "ruby2.7"
+  tags                           = var.service_tags
+  timeout                        = 900
+  layers                         = [for layer in aws_lambda_layer_version.layer : layer.arn]
+  s3_bucket                      = var.handler.s3_bucket
+  s3_key                         = var.handler.s3_key
+  reserved_concurrent_executions = var.reserved_concurrent_executions
 
   vpc_config {
     security_group_ids = var.vpc_config.security_group_ids
@@ -17,7 +18,7 @@ resource "aws_lambda_function" "processor" {
 
   environment {
     variables = merge({
-      ETL_STAGE = var.stage
+      ETL_STAGE    = var.stage
       NEXT_SQS_URL = var.output_queue_url
     }, var.environment)
   }

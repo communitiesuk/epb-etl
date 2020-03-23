@@ -61,6 +61,18 @@ variable "output_queue_url" {
   type        = string
 }
 
+variable "max_queue_receive_count" {
+  description = "The max number of times the consumer of the source queue receives a message"
+  default     = 1
+  type        = number
+}
+
+variable "reserved_concurrent_executions" {
+  description = "The amount of reserved concurrent executions for this lambda function"
+  default     = -1
+  type        = number
+}
+
 locals {
   resource_prefix = "${var.service_tags.Application}-${var.service_tags.Environment}-${var.stage}"
 }
