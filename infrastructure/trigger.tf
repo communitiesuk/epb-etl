@@ -17,7 +17,7 @@ resource "aws_lambda_function" "trigger" {
 
   environment {
     variables = merge(var.trigger_environment, {
-      ETL_STAGE = "trigger"
+      ETL_STAGE    = "trigger"
       NEXT_SQS_URL = module.extract_stage.stage_input_queue_url
     })
   }
