@@ -2,7 +2,7 @@ resource "aws_sqs_queue" "input_queue" {
   name                       = "${local.resource_prefix}-input-queue"
   max_message_size           = 2048
   message_retention_seconds  = 86400
-  visibility_timeout_seconds = 900
+  visibility_timeout_seconds = 2700
   tags                       = var.service_tags
   redrive_policy = jsonencode({
     maxReceiveCount     = var.max_queue_receive_count
