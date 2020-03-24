@@ -136,12 +136,12 @@ describe 'E2E::Etl', order: :defined do
 
     it 'sends the data to the endpoint in the correct format' do
       ENV['ETL_STAGE'] = 'load'
-      http_stub = stub_request(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST000000')
+      http_stub = stub_request(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST%2F000000')
                   .to_return(body: JSON.generate(message: 'ok'), status: 200)
 
       @handler.process event: @sqs_adapter.read
 
-      expect(WebMock).to have_requested(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST000000')
+      expect(WebMock).to have_requested(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST%2F000000')
         .with(body: JSON.generate(
           firstName: 'Joe',
           lastName: 'Testerton',
