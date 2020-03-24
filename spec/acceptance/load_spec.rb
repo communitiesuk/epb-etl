@@ -48,7 +48,7 @@ describe 'Acceptance::Load' do
 
         ENV['ETL_STAGE'] = 'load'
 
-        http_stub = stub_request(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST000000')
+        http_stub = stub_request(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST%2F000000')
                     .to_return(body: JSON.generate(message: 'ok'), status: 200)
 
         logit_adapter = LogitAdapterFake.new
@@ -59,7 +59,7 @@ describe 'Acceptance::Load' do
         handler = Handler.new container
         handler.process event: event
 
-        expect(WebMock).to have_requested(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST000000')
+        expect(WebMock).to have_requested(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST%2F000000')
           .with(body: JSON.generate(
             firstName: 'Joe',
             lastName: 'Testerton',
