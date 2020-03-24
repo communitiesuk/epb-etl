@@ -63,7 +63,11 @@
               },
               {
                 "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
-                "to": ["configuration", "load", "endpoint", "params", "scheme_assessor_id"]
+                "to": ["configuration", "load", "endpoint", "params", "scheme_assessor_id"],
+                "convert": {
+                  "type": "escape",
+                  "args": []
+                }
               }
             ]
           },
@@ -73,7 +77,7 @@
               "uri": "http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>",
               "params": {
                 "scheme_id": 1,
-                "scheme_assessor_id": "TEST000000"
+                "scheme_assessor_id": "TEST%2F000000"
               }
             }
           }

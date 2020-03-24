@@ -58,7 +58,11 @@
               },
               {
                 "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
-                "to": ["configuration", "load", "endpoint", "params", "scheme_assessor_id"]
+                "to": ["configuration", "load", "endpoint", "params", "scheme_assessor_id"],
+                "convert": {
+                  "type": "escape",
+                  "args": []
+                }
               }
             ]
           },
@@ -71,7 +75,7 @@
         },
         "data": {
           "ASSESSOR": {
-            "ASSESSOR_ID": "TEST000000",
+            "ASSESSOR_ID": "TEST/000000",
             "DATE_OF_BIRTH": "1980-11-01 00:00:00.000000",
             "FIRST_NAME": "Joe",
             "SURNAME": "Testerton",
