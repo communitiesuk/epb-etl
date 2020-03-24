@@ -21,5 +21,9 @@ module Helper
     def self.map(key, input_map)
       JSON.parse(JSON.generate(input_map))[key.to_s]
     end
+
+    def self.escape(value)
+      CGI::escape value
+    end
   end
 end

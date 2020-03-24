@@ -34,5 +34,11 @@ describe Helper::Transform do
 
       expect(output).to eq 800
     end
+
+    it 'outputs an escaped version of the input value' do
+      output = described_class.escape('TEST/0000')
+
+      expect(output).to eq 'TEST%2F0000'
+    end
   end
 end
