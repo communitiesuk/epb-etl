@@ -4,6 +4,7 @@ require 'epb_auth_tools'
 require 'erb'
 
 module UseCase
+
   class Load < UseCase::Base
     def execute
       body = JSON.generate(@request.body['data'])
@@ -24,10 +25,16 @@ module UseCase
                                          ENV['EPB_API_URL'],
                                          OAuth2::Client
 
-      http_client.request method, uri.path, body: body, headers: {
+      response = http_client.request method, uri.path, body: body, headers: {
         'Content-Length' => body.length.to_s,
         'Content-Type' => 'application/json'
       }
+
+      unless response.status > 199 && response.status < 300
+        raise Errors::LoadHttpErrorResponse.new "Got a #{response.status} on #{method} #{uri.path}"
+      end
+
+      response
     end
   end
 end

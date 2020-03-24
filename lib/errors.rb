@@ -15,4 +15,6 @@ module Errors
   class SqsClient < StandardError; end
   class SqsClientHasInvalidQueueUrl < Errors::SqsClient; end
   class SqsClientWithoutMessageBody < Errors::SqsClient; end
+
+  class LoadHttpErrorResponse < StandardError; end
 end
