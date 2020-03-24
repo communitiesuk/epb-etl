@@ -1,6 +1,6 @@
 resource "aws_sqs_queue" "input_queue" {
   name                       = "${local.resource_prefix}-input-queue"
-  max_message_size           = 2048
+  max_message_size           = 262144
   message_retention_seconds  = 86400
   visibility_timeout_seconds = 2700
   tags                       = var.service_tags
