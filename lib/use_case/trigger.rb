@@ -12,31 +12,32 @@ module UseCase
     end
 
     def execute
-      scanners = @request.body['configuration']['trigger']['scanners']
+      config = @request.body['configuration']['trigger']
 
-      scanners.each_pair do |name, config|
-        records = @database_gateway.read({'query' => config['scan'], 'multiple' => true})
+      records = @database_gateway.read({ 'query' => config['scan'], 'multiple' => true })
 
-        records.each do |record|
-          extract = config['extract'].dup
-          params = {primary_key: record.values.first}
+      records.each do |record|
+        job = @request.body.dup
+        config['extract'].each_pair do |extract_name, extract_query|
+          params = { primary_key: record.values.first }
+          query = extract_query.dup
 
           begin
-            extract['query'] = params.nil? ?
-                      extract['query'] :
-                      ERB.new(extract['query']).result_with_hash(params)
+            query['query'] = if params.nil?
+                               query['query']
+                             else
+                               ERB.new(query['query']).result_with_hash(params)
+                             end
           rescue NameError => e
             raise Errors::RequestWithInvalidParams, e.message, e.backtrace
           end
 
-          job = @request.body.dup
+          Helper.bury(job, 'job', extract_name, [params[:primary_key]])
 
-          Helper::bury(job, *['job', name], [params[:primary_key]])
-
-          job['configuration']['extract']['queries'][name] = extract
-
-          @message_gateway.write(ENV['NEXT_SQS_URL'], job)
+          job['configuration']['extract']['queries'][extract_name] = query
         end
+
+        @message_gateway.write(ENV['NEXT_SQS_URL'], job)
       end
     end
   end

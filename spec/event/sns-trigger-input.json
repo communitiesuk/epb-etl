@@ -12,13 +12,11 @@
         "Message": {
           "configuration": {
             "trigger": {
-              "scanners": {
+              "scan": "SELECT ASSESSOR_KEY FROM assessors",
+              "extract": {
                 "ASSESSOR": {
-                  "scan": "SELECT ASSESSOR_KEY FROM assessors",
-                  "extract": {
-                    "query": "SELECT ASSESSOR_ID, DATE_OF_BIRTH, FIRST_NAME, ORGANISATION_KEY, SURNAME FROM assessors WHERE ASSESSOR_KEY = '<%= primary_key %>'",
-                    "multiple": false
-                  }
+                  "query": "SELECT ASSESSOR_ID, DATE_OF_BIRTH, FIRST_NAME, ORGANISATION_KEY, SURNAME FROM assessors WHERE ASSESSOR_KEY = '<%= primary_key %>'",
+                  "multiple": false
                 }
               }
             },
