@@ -17,6 +17,10 @@
                 "ASSESSOR": {
                   "query": "SELECT ASSESSOR_ID, DATE_OF_BIRTH, FIRST_NAME, ORGANISATION_KEY, SURNAME FROM assessors WHERE ASSESSOR_KEY = '<%= primary_key %>'",
                   "multiple": false
+                },
+                "POSTCODE_COVERAGE": {
+                  "query": "SELECT POSTCODE FROM assessor_coverage WHERE ASSESSOR_KEY = '<%= primary_key %>'",
+                  "multiple": true
                 }
               }
             },
@@ -59,6 +63,10 @@
                     "type": "escape",
                     "args": []
                   }
+                },
+                {
+                  "from": ["data", "POSTCODE_COVERAGE", "*", "POSTCODE"],
+                  "to": ["data", "postcodeCoverage"]
                 }
               ]
             },
