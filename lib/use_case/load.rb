@@ -31,7 +31,8 @@ module UseCase
       }
 
       unless response.status > 199 && response.status < 300
-        raise Errors::LoadHttpErrorResponse.new "Got a #{response.status} on #{method} #{uri.path}"
+        response_body = JSON.parse(response.body)
+        raise Errors::LoadHttpErrorResponse.new "Got a #{response.status} (#{response_body.to_json}) on #{method} #{uri.path}"
       end
 
       response

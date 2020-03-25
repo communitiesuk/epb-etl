@@ -66,11 +66,12 @@ describe 'Acceptance::Load' do
                                    dateOfBirth: '1980-11-01'
                                ))
 
+        expected_response = {message: 'fail'}.to_json
         expect(logit_adapter.data).to include JSON.generate({
                                                                 stage: 'load',
                                                                 event: 'fail',
                                                                 data: {
-                                                                    error: 'Got a 500 on put /api/schemes/1/assessors/TEST%2F000000',
+                                                                    error: "Got a 500 (#{expected_response}) on put /api/schemes/1/assessors/TEST%2F000000",
                                                                     job: {
                                                                         "ASSESSOR": ["23456789"]
                                                                     }
