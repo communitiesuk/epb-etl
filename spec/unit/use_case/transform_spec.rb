@@ -35,6 +35,45 @@ describe UseCase::Transform do
     end
   end
 
+  class TransformRequestTwoStub
+    def body
+      JSON.parse(
+        {
+          "job": {
+            "ASSESSOR": ['TEST000000']
+          },
+          "configuration": {
+            "load": {
+              "endpoint": {
+                "uri": 'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
+                "method": 'put'
+              }
+            },
+            transform: {
+              "rules": [
+                {
+                  "from": %w[data POSTCODE_COVERAGE * POSTCODE],
+                  "to": %w[data postcodeCoverage]
+                }
+              ]
+            }
+          },
+          "data": {
+            "POSTCODE_COVERAGE": [
+              {
+                "POSTCODE": 'SW1A 2AA'
+              },
+              {
+                "POSTCODE": 'SW2A 3AA'
+              }
+            ]
+          }
+        }
+            .to_json
+      )
+    end
+  end
+
   context 'when transforming data from extraction' do
     it 'converts the first name to the body' do
       request = TransformRequestStub.new
@@ -66,6 +105,40 @@ describe UseCase::Transform do
         },
         "data": {
           "firstName": 'Joe'
+        }
+      }.to_json))
+    end
+
+    it 'converts the postcode coverage array to the body' do
+      request = TransformRequestTwoStub.new
+      container = Container.new(false)
+      message_gateway_fake = MessageGatewayFake.new
+      container.set_object(:message_gateway, message_gateway_fake)
+      transform = described_class.new(request, container)
+      response = transform.execute
+
+      expect(response).to eq(JSON.parse({
+        job: {
+          ASSESSOR: ['TEST000000']
+        },
+        "configuration": {
+          "load": {
+            "endpoint": {
+              "uri": 'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
+              "method": 'put'
+            }
+          },
+          "transform": {
+            "rules": [
+              {
+                "from": %w[data POSTCODE_COVERAGE * POSTCODE],
+                "to": %w[data postcodeCoverage]
+              }
+            ]
+          }
+        },
+        "data": {
+          "postcodeCoverage": ['SW1A 2AA', 'SW2A 3AA']
         }
       }.to_json))
     end

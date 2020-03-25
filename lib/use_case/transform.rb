@@ -19,7 +19,21 @@ module UseCase
       rules = @request.body['configuration']['transform']['rules']
 
       rules.each do |rule|
-        source_data = @request.body.dig(*rule['from'])
+        if rule['from'].include? '*'
+          wildcard = rule['from'].index('*')
+          before, after = rule['from'].each_slice(wildcard).to_a
+
+          after.shift
+
+          source_data = []
+          before_source = @request.body.dig(*before)
+
+          before_source.each do |value|
+            source_data << value.dig(*after)
+          end
+        else
+          source_data = @request.body.dig(*rule['from'])
+        end
 
         if rule.keys.include? 'convert'
           args = rule['convert']['args']
