@@ -26,16 +26,25 @@ describe 'Integration::OracleAdapter' do
     until @oracle_has_started
       begin
         conn = OCI8.new 'sys', 'Oradoc_db1', '//localhost:1521/ORCLCDB.LOCALDOMAIN', :SYSDBA
+        begin
+          conn.exec 'create table rates (actual varchar(10), word varchar(8), score integer)'
+          conn.exec "insert into rates values ('1', 'one', 25)"
+          conn.exec "insert into rates values ('2', 'two', 50)"
+          conn.exec "insert into rates values ('3', 'three', 75)"
+          conn.commit
+        rescue OCIError => e
+          @container.kill
+          @container.stop
+          @container.delete(force: true)
+          Docker::Volume.prune
+          sleep 1
 
-        conn.exec 'create table rates (actual varchar(10), word varchar(8), score integer)'
-        conn.exec "insert into rates values ('1', 'one', 25)"
-        conn.exec "insert into rates values ('2', 'two', 50)"
-        conn.exec "insert into rates values ('3', 'three', 75)"
-        conn.commit
-
+          raise StandardError, 'Failed to run queries! ' + e.message
+        end
         @oracle_has_started = true
       rescue OCIError
         @oracle_has_started = false
+        sleep 10
       end
     end
    end
