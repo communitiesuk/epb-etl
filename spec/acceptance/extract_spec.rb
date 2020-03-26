@@ -39,22 +39,38 @@ describe 'Acceptance::Extract' do
       handler = Handler.new(container)
       handler.process event: event
 
-      expect(logit_adapter.data).to include JSON.generate({
-                                                              stage: 'extract',
-                                                              event: 'fail',
-                                                              data: {
-                                                                  error: 'undefined method `each\' for nil:NilClass',
-                                                                  job: {
-                                                                      "ASSESSOR": ["23456789"]
-                                                                  }
-                                                              },
-                                                          })
+      expect(logit_adapter.data).to include JSON.generate(
+        {
+          stage: 'extract',
+          event: 'fail',
+          data: {
+            error: 'undefined method `each\' for nil:NilClass',
+            job: {
+              "ASSESSOR": ['23456789']
+            }
+          }
+        }
+      )
     end
   end
 
   context 'when data is supplied in the message body' do
     let(:oracle_adapter) do
-      OracleAdapterFake.new OracleAdapterStub.data
+      adapter = OracleAdapterFake.new OracleAdapterStub.data
+
+      adapter.stub_query(
+        "SELECT POSTCODE FROM assessor_coverage WHERE ASSESSOR_KEY = '23456789'",
+        [
+          {
+            "POSTCODE": 'SW2A 3AA'
+          },
+          {
+            "POSTCODE": 'SW3A 4AA'
+          }
+        ]
+      )
+
+      adapter
     end
 
     it 'extracts the data' do

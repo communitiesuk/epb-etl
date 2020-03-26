@@ -29,16 +29,18 @@ describe 'Acceptance::Load' do
         handler = Handler.new container
         handler.process event: event
 
-        expect(logit_adapter.data).to include JSON.generate({
-                                                                stage: 'load',
-                                                                event: 'fail',
-                                                                data: {
-                                                                    error: 'undefined method `values_at\' for nil:NilClass',
-                                                                    job: {
-                                                                        "ASSESSOR": ["23456789"]
-                                                                    }
-                                                                },
-                                                            })
+        expect(logit_adapter.data).to include JSON.generate(
+          {
+            stage: 'load',
+            event: 'fail',
+            data: {
+              error: 'undefined method `values_at\' for nil:NilClass',
+              job: {
+                "ASSESSOR": ['23456789']
+              }
+            }
+          }
+        )
       end
     end
 
@@ -49,7 +51,7 @@ describe 'Acceptance::Load' do
         ENV['ETL_STAGE'] = 'load'
 
         http_stub = stub_request(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST%2F000000')
-                        .to_return(body: JSON.generate(message: 'fail'), status: 500)
+                    .to_return(body: JSON.generate(message: 'fail'), status: 500)
 
         logit_adapter = LogitAdapterFake.new
         log_gateway = Gateway::LogGateway.new logit_adapter
@@ -60,23 +62,27 @@ describe 'Acceptance::Load' do
         handler.process event: event
 
         expect(WebMock).to have_requested(:put, 'http://test-endpoint/api/schemes/1/assessors/TEST%2F000000')
-                               .with(body: JSON.generate(
-                                   firstName: 'Joe',
-                                   lastName: 'Testerton',
-                                   dateOfBirth: '1980-11-01'
-                               ))
+          .with(body: JSON.generate(
+            firstName: 'Joe',
+            lastName: 'Testerton',
+            dateOfBirth: '1980-11-01',
+            postcodeCoverage: ['SW2A 3AA', 'SW3A 4AA']
+          ))
 
-        expected_response = {message: 'fail'}.to_json
-        expect(logit_adapter.data).to include JSON.generate({
-                                                                stage: 'load',
-                                                                event: 'fail',
-                                                                data: {
-                                                                    error: "Got a 500 (#{expected_response}) on put /api/schemes/1/assessors/TEST%2F000000",
-                                                                    job: {
-                                                                        "ASSESSOR": ["23456789"]
-                                                                    }
-                                                                },
-                                                            })
+        expected_response = { message: 'fail' }.to_json
+        expect(logit_adapter.data).to include JSON.generate(
+          {
+            stage: 'load',
+            event: 'fail',
+            data: {
+              error: "Got a 500 (#{expected_response}) on put /api/schemes/1/assessors/TEST%2F000000",
+              job: {
+                "ASSESSOR": ['23456789'],
+                "POSTCODE_COVERAGE": ['23456789']
+              }
+            }
+          }
+        )
 
         remove_request_stub(http_stub)
       end
@@ -103,7 +109,8 @@ describe 'Acceptance::Load' do
           .with(body: JSON.generate(
             firstName: 'Joe',
             lastName: 'Testerton',
-            dateOfBirth: '1980-11-01'
+            dateOfBirth: '1980-11-01',
+            postcodeCoverage: ['SW2A 3AA', 'SW3A 4AA']
           ))
 
         remove_request_stub(http_stub)

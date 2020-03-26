@@ -5,7 +5,8 @@
       "receiptHandle": "MessageReceiptHandle",
       "body": {
         "job": {
-          "ASSESSOR": ["23456789"]
+          "ASSESSOR": ["23456789"],
+          "POSTCODE_COVERAGE": ["23456789"]
         },
         "configuration": {
           "trigger": {
@@ -14,6 +15,10 @@
               "ASSESSOR": {
                 "query": "SELECT ASSESSOR_ID, DATE_OF_BIRTH, FIRST_NAME, ORGANISATION_KEY, SURNAME FROM assessors WHERE ASSESSOR_KEY = '<%= primary_key %>'",
                 "multiple": false
+              },
+              "POSTCODE_COVERAGE": {
+                "query": "SELECT POSTCODE FROM assessor_coverage WHERE ASSESSOR_KEY = '<%= primary_key %>'",
+                "multiple": true
               }
             }
           },
@@ -22,6 +27,10 @@
               "ASSESSOR": {
                 "query": "SELECT ASSESSOR_ID, DATE_OF_BIRTH, FIRST_NAME, ORGANISATION_KEY, SURNAME FROM assessors WHERE ASSESSOR_KEY = '23456789'",
                 "multiple": false
+              },
+              "POSTCODE_COVERAGE": {
+                "query": "SELECT POSTCODE FROM assessor_coverage WHERE ASSESSOR_KEY = '23456789'",
+                "multiple": true
               }
             }
           },
@@ -61,6 +70,10 @@
                   "type": "escape",
                   "args": []
                 }
+              },
+              {
+                "from": ["data", "POSTCODE_COVERAGE", "*", "POSTCODE"],
+                "to": ["data", "postcodeCoverage"]
               }
             ]
           },
@@ -78,7 +91,15 @@
             "FIRST_NAME": "Joe",
             "SURNAME": "Testerton",
             "ORGANISATION_KEY": 144
-          }
+          },
+          "POSTCODE_COVERAGE": [
+            {
+              "POSTCODE": "SW2A 3AA"
+            },
+            {
+              "POSTCODE": "SW3A 4AA"
+            }
+          ]
         }
       },
       "attributes": {
