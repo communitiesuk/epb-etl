@@ -1,14 +1,15 @@
 resource "aws_lambda_function" "trigger" {
-  function_name    = "${local.resource_prefix}-trigger-processor"
-  role             = aws_iam_role.trigger_role.arn
-  handler          = "lib/bootstrap.handler"
-  source_code_hash = base64encode(data.remotefile_read.handler.actual_sha256)
-  runtime          = "ruby2.7"
-  tags             = var.service_tags
-  timeout          = 900
-  layers           = [aws_lambda_layer_version.lib_layer.arn]
-  s3_bucket        = aws_s3_bucket.s3_deployment_artefacts.bucket
-  s3_key           = aws_s3_bucket_object.handler.key
+  function_name                  = "${local.resource_prefix}-trigger-processor"
+  role                           = aws_iam_role.trigger_role.arn
+  handler                        = "lib/bootstrap.handler"
+  source_code_hash               = base64encode(data.remotefile_read.handler.actual_sha256)
+  runtime                        = "ruby2.7"
+  tags                           = var.service_tags
+  timeout                        = 900
+  layers                         = [aws_lambda_layer_version.lib_layer.arn]
+  s3_bucket                      = aws_s3_bucket.s3_deployment_artefacts.bucket
+  s3_key                         = aws_s3_bucket_object.handler.key
+  reserved_concurrent_executions = var.trigger_reserved_concurrent_executions
 
   vpc_config {
     security_group_ids = var.trigger_vpc_config.security_group_ids

@@ -82,6 +82,12 @@ variable "load_reserved_concurrent_executions" {
   type        = number
 }
 
+variable "trigger_reserved_concurrent_executions" {
+  description = "The amount of reserved concurrent executions for this lambda function for the load stage"
+  default     = -1
+  type        = number
+}
+
 locals {
   resource_prefix = "${var.service_tags.Application}-${var.service_tags.Environment}"
 }

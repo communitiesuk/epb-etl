@@ -7,6 +7,7 @@ module "etl_pipeline" {
   extract_environment                      = var.extract_environment
   transform_environment                    = var.transform_environment
   load_environment                         = var.load_environment
+  trigger_reserved_concurrent_executions   = var.trigger_reserved_concurrent_executions
   extract_reserved_concurrent_executions   = var.extract_reserved_concurrent_executions
   extract_max_queue_receive_count          = var.extract_max_queue_receive_count
   transform_reserved_concurrent_executions = var.transform_reserved_concurrent_executions
@@ -94,6 +95,12 @@ variable "load_max_queue_receive_count" {
 }
 
 variable "load_reserved_concurrent_executions" {
+  description = "The amount of reserved concurrent executions for this lambda function for the load stage"
+  default     = -1
+  type        = number
+}
+
+variable "trigger_reserved_concurrent_executions" {
   description = "The amount of reserved concurrent executions for this lambda function for the load stage"
   default     = -1
   type        = number
