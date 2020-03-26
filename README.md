@@ -58,18 +58,27 @@ FIRST_NAME | SURNAME | DATE_OF_BIRTH | EMPLOYEE_ID | COMPANY_ID
 --- | --- | --- | --- | ---
 John | Smith | 1980-11-01 00:00:00.000000 | EMPL123456 | 10
 
+We have another table `emails` with the following data:
+
+EMPLOYEE_ID | EMAIL
+--- | ---
+EMPL123456 | john@example.com
+EMPL123456 | jsmith@example.com
+
 #### Trigger
 
 ```json
 {
   "trigger": {
-    "scanners": {
+    "scan": "SELECT EMPLOYEE_ID FROM employees",
+    "extract": {
       "EMPLOYEE": {
-        "scan": "SELECT EMPLOYEE_ID FROM employees",
-        "extract": {
-          "query": "SELECT * FROM employees WHERE EMPLOYEE_ID = '<%= primary_key %>'",
-          "multiple": false
-        }
+        "query": "SELECT * FROM employees WHERE EMPLOYEE_ID = '<%= primary_key %>'",
+        "multiple": false
+      },
+      "EMAIL": {
+        "query": "SELECT * FROM emails WHERE EMPLOYEE_ID = '<%= primary_key %>'",
+        "multiple": true
       }
     }
   }
@@ -79,15 +88,11 @@ John | Smith | 1980-11-01 00:00:00.000000 | EMPL123456 | 10
 The configuration for the `trigger` stage contains information required to scan
 a database table and produce jobs for the ETL pipeline.
 
-The `scanners` property contains key value pairs. The key is the same key found 
-in the [extract](#extract) configuration, explained later in the document. The
-value is an object that includes the properties `scan` and `extract`. 
-
 The `scan` property contains an SQL query that should select only the primary 
 key from a given table. For each row selected from the table, a new ETL job will
-be created in the pipeline. In each new job, the contents of the scanner's 
-`extract` property are placed in the extract [extract](#extract) configuration,
-replacing `<%= primary_key %>` with the primary key selected from the table.
+be created in the pipeline. In each new job, the contents of the `extract`
+property are placed in the extract [extract](#extract) configuration, replacing
+`<%= primary_key %>` with the primary key selected from the table.
 
 #### Extract
 
@@ -98,6 +103,10 @@ replacing `<%= primary_key %>` with the primary key selected from the table.
       "EMPLOYEE": {
         "query": "SELECT * FROM employees WHERE EMPLOYEE_ID = 'EMPL123456'",
         "multiple": false
+      },
+      "EMAIL": {
+        "query": "SELECT * FROM emails WHERE EMPLOYEE_ID = 'EMPL123456'",
+        "multiple": true
       }
     }
   }
@@ -108,8 +117,9 @@ The `EMPLOYEE` property contains the `query` property and `multiple` property
 The `query` property contains contains the SQL query to be made. There is also a
 `multiple` property which determines whether there are multiple values in a
 column, typically a list. This part of the ETL pipeline will extract the data
-from the Oracle DB into an `EMPLOYEE` property which will be at the same level as
-the `configuration` property as shown below.
+from the Oracle DB into a `data` property which will be at the same level as
+the `configuration` property. The `EMAIL` property will be a list of objects as 
+shown below.
 
 ```json
 {
@@ -121,7 +131,15 @@ the `configuration` property as shown below.
       "DATE_OF_BIRTH": "1980-11-01 00:00:00.000000",
       "EMPLOYEE_ID": "EMPL123456",
       "COMPANY_ID": 10
-    }   
+    },
+    "EMAIL": [
+      {
+        "EMAIL": "john@example.com"
+      },
+      {
+        "EMAIL": "jsmith@example.com"
+      }
+    ]
   }
 }
 ```
@@ -165,6 +183,10 @@ transformations defined as a list; `from` and `to`.
       {
         "from": ["data", "EMPLOYEE", "EMPLOYEE_ID"],
         "to": ["configuration", "load", "endpoint", "params", "employee_id"]
+      },
+      {
+        "from": ["data", "EMAIL", "*", "EMAIL"],
+        "to": ["data", "emails"]
       }
     ]
   }
@@ -178,6 +200,9 @@ the name of the `Helper` method - `date_format` and `map` - and the
 transform the data accordingly; e.g. `1980-11-01 00:00:00.000000` to
 `1980-11-01`.
 
+The last rule has a wildcard (*) in the `from` rule which will transform values
+for any key, in this case `EMAIL` key with the email values, into an array/list.
+
 An example of the output following the above transformation rules:
 
 ```json
@@ -186,6 +211,7 @@ An example of the output following the above transformation rules:
     "firstName": "John",
     "lastName": "Smith",
     "dateOfBirth": "1980-11-01"
+    "emails": ["john@example.com", "jsmith@example.com"]
   },
   "configuration": {
     "load": {
@@ -234,7 +260,8 @@ body](https://en.wikipedia.org/wiki/HTTP_message_body) is defined in JSON as:
 {
   "firstName": "John",
   "lastName": "Smith",
-  "dateOfBirth": "1980-11-01"
+  "dateOfBirth": "1980-11-01",
+  "emails": ["john@example.com", "jsmith@example.com"]
 }
 ```
 
