@@ -66,7 +66,8 @@ describe 'Acceptance::Load' do
             firstName: 'Joe',
             lastName: 'Testerton',
             dateOfBirth: '1980-11-01',
-            postcodeCoverage: ['SW2A 3AA', 'SW3A 4AA']
+            postcodeCoverage: ['SW2A 3AA', 'SW3A 4AA'],
+            assessments: []
           ))
 
         expected_response = { message: 'fail' }.to_json
@@ -110,7 +111,8 @@ describe 'Acceptance::Load' do
             firstName: 'Joe',
             lastName: 'Testerton',
             dateOfBirth: '1980-11-01',
-            postcodeCoverage: ['SW2A 3AA', 'SW3A 4AA']
+            postcodeCoverage: ['SW2A 3AA', 'SW3A 4AA'],
+            assessments: []
           ))
 
         remove_request_stub(http_stub)

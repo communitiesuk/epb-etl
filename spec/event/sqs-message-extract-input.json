@@ -64,6 +64,13 @@
                 }
               },
               {
+                "to": ["data", "assessments"],
+                "convert": {
+                  "type": "populate",
+                  "args": [[]]
+                }
+              },
+              {
                 "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
                 "to": ["configuration", "load", "endpoint", "params", "scheme_assessor_id"],
                 "convert": {
