@@ -74,6 +74,35 @@ describe UseCase::Transform do
     end
   end
 
+  class TransformRequestThreeStub
+    def body
+      JSON.parse(
+          {
+              "job": {
+                  "ASSESSOR": ['TEST000000']
+              },
+              "configuration": {
+                  transform: {
+                      "rules": [
+                          {
+                              "to": %w[data assessments],
+                              "convert": {
+                                  type: 'populate',
+                                  args: [[]]
+                              }
+                          }
+                      ]
+                  }
+              },
+              "data": {
+
+              }
+          }
+              .to_json
+      )
+    end
+  end
+
   context 'when transforming data from extraction' do
     it 'converts the first name to the body' do
       request = TransformRequestStub.new
@@ -141,6 +170,37 @@ describe UseCase::Transform do
           "postcodeCoverage": ['SW1A 2AA', 'SW2A 3AA']
         }
       }.to_json))
+    end
+
+    it 'populates a property based on configuration' do
+      request = TransformRequestThreeStub.new
+      container = Container.new(false)
+      message_gateway_fake = MessageGatewayFake.new
+      container.set_object(:message_gateway, message_gateway_fake)
+      transform = described_class.new(request, container)
+      response = transform.execute
+
+      expect(response).to eq(JSON.parse({
+                                            "job": {
+                                                "ASSESSOR": ['TEST000000']
+                                            },
+                                            "configuration": {
+                                                transform: {
+                                                    "rules": [
+                                                        {
+                                                            "to": %w[data assessments],
+                                                            "convert": {
+                                                                type: 'populate',
+                                                                args: [[]]
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "data": {
+                                                "assessments": []
+                                            }
+                                        }.to_json))
     end
   end
 end

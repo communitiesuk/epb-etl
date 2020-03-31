@@ -19,6 +19,8 @@ module UseCase
       rules = @request.body['configuration']['transform']['rules']
 
       rules.each do |rule|
+        source_data = nil
+
         if rule['from'].include? '*'
           wildcard = rule['from'].index('*')
           before, after = rule['from'].each_slice(wildcard).to_a
@@ -33,7 +35,7 @@ module UseCase
           end
         else
           source_data = @request.body.dig(*rule['from'])
-        end
+        end unless rule['from'].nil?
 
         if rule.keys.include? 'convert'
           args = rule['convert']['args']
