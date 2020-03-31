@@ -12,7 +12,8 @@
           "firstName": "Joe",
           "lastName": "Testerton",
           "dateOfBirth": "1980-11-01",
-          "postcodeCoverage": ["SW2A 3AA", "SW3A 4AA"]
+          "postcodeCoverage": ["SW2A 3AA", "SW3A 4AA"],
+          "assessments": []
         },
         "configuration": {
           "trigger": {
@@ -67,6 +68,13 @@
                     "142": 2,
                     "144": 1
                   }]
+                }
+              },
+              {
+                "to": ["data", "assessments"],
+                "convert": {
+                  "type": "populate",
+                  "args": [[]]
                 }
               },
               {

@@ -166,6 +166,7 @@ describe 'E2E::Etl', order: :defined do
           firstName: 'Joe',
           lastName: 'Testerton',
           dateOfBirth: '1980-11-01',
+          assessments: [],
           postcodeCoverage: ['SW2A 3AA', 'SW3A 4AA']
         ))
 
