@@ -10,6 +10,14 @@ describe Helper::Transform do
     end
   end
 
+  context 'when transforming by populating with hard-coded data' do
+    it 'outputs the hard-coded input data' do
+      output = described_class.populate(nil, [])
+
+      expect(output).to eq []
+    end
+  end
+
   context 'when transforming a value to another in a map' do
     it 'outputs the expected value from the map' do
       output = described_class.map('100', {

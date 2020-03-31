@@ -25,5 +25,9 @@ module Helper
     def self.escape(value)
       CGI::escape value
     end
+
+    def self.populate(_key, value)
+      value
+    end
   end
 end
