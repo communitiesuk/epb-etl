@@ -29,5 +29,10 @@ module Helper
     def self.populate(_key, value)
       value
     end
+
+    def self.cast(value, type)
+      casting_method = "to_#{type}"
+      value.send(casting_method)
+    end
   end
 end

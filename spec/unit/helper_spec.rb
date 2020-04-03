@@ -43,10 +43,34 @@ describe Helper::Transform do
       expect(output).to eq 800
     end
 
+  end
+
+  context 'when transforming a value by escaping it' do
     it 'outputs an escaped version of the input value' do
       output = described_class.escape('TEST/0000')
 
       expect(output).to eq 'TEST%2F0000'
     end
   end
+
+  context 'when transforming a value by type casting it' do
+    it 'outputs an integer when given a string' do
+      output = described_class.cast('1', 'i')
+
+      expect(output).to be 1
+    end
+
+    it 'outputs a string when given an integer' do
+      output = described_class.cast(1, 's')
+
+      expect(output).to eq '1'
+    end
+
+    it 'outputs a float when given a string' do
+      output = described_class.cast('1.45', 'f')
+
+      expect(output).to eq 1.45
+    end
+  end
+
 end
