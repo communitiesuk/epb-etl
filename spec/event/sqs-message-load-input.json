@@ -54,36 +54,36 @@
               {
                 "from": ["data", "ASSESSOR", "DATE_OF_BIRTH"],
                 "to": ["data", "dateOfBirth"],
-                "convert": {
+                "convert": [{
                   "type": "date_format",
                   "args": ["%Y-%m-%d"]
-                }
+                }]
               },
               {
                 "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
                 "to": ["configuration", "load", "endpoint", "params", "scheme_id"],
-                "convert": {
+                "convert": [{
                   "type": "map",
                   "args": [{
                     "142": 2,
                     "144": 1
                   }]
-                }
+                }]
               },
               {
                 "to": ["data", "assessments"],
-                "convert": {
+                "convert": [{
                   "type": "populate",
                   "args": [[]]
-                }
+                }]
               },
               {
                 "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
                 "to": ["configuration", "load", "endpoint", "params", "scheme_assessor_id"],
-                "convert": {
+                "convert": [{
                   "type": "escape",
                   "args": []
-                }
+                }]
               },
               {
                 "from": ["data", "POSTCODE_COVERAGE", "*", "POSTCODE"],

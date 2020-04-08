@@ -33,9 +33,9 @@
               {
                 "from": ["data", "ASSESSOR", "DATE_OF_BIRTH"],
                 "to": ["data", "dateOfBirth"],
-                "convert": {
+                "convert": [{
                   "type": "date_format"
-                }
+                }]
               },
               {
                 "from": ["data", "ASSESSOR", "ORGANISATION_KEY"],
@@ -47,10 +47,10 @@
               {
                 "from": ["data", "ASSESSOR", "ASSESSOR_ID"],
                 "to": ["configuration", "load", "endpoint", "params", "scheme_assessor_id"],
-                "convert": {
+                "convert": [{
                   "type": "escape",
                   "args": []
-                }
+                }]
               }
             ]
           },

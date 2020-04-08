@@ -38,10 +38,12 @@ module UseCase
         end unless rule['from'].nil?
 
         if rule.keys.include? 'convert'
-          args = rule['convert']['args']
-          args.unshift source_data
+          rule['convert'].each do |conversion|
+            args = conversion['args']
+            args.unshift source_data
 
-          source_data = Helper::Transform.send rule['convert']['type'], *args
+            source_data = Helper::Transform.send conversion['type'], *args
+          end
         end
 
         Helper::bury(response, *rule['to'], source_data)

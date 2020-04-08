@@ -86,10 +86,10 @@ describe UseCase::Transform do
                       "rules": [
                           {
                               "to": %w[data assessments],
-                              "convert": {
+                              "convert": [{
                                   type: 'populate',
                                   args: [[]]
-                              }
+                              }]
                           }
                       ]
                   }
@@ -189,10 +189,10 @@ describe UseCase::Transform do
                                                     "rules": [
                                                         {
                                                             "to": %w[data assessments],
-                                                            "convert": {
+                                                            "convert": [{
                                                                 type: 'populate',
                                                                 args: [[]]
-                                                            }
+                                                            }]
                                                         }
                                                     ]
                                                 }
