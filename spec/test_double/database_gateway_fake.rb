@@ -1,14 +1,19 @@
 class DatabaseGatewayFake
   def initialize(data = nil)
-    @data = data.nil? ? JSON.parse(
-        [
+    @data =
+      if data.nil?
+        JSON.parse(
+          [
             {
-                DATE_OF_BIRTH: '1980-11-01 00:00:00.000000',
-                FIRST_NAME: 'Joe',
-                SURNAME: 'Testerton'
+              DATE_OF_BIRTH: '1980-11-01 00:00:00.000000',
+              FIRST_NAME: 'Joe',
+              SURNAME: 'Testerton'
             }
-        ].to_json
-    ) : data
+          ].to_json
+        )
+      else
+        data
+      end
   end
 
   def read(query)

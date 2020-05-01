@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class UnimplementedDummyAdapter < Adapter::BaseAdapter
-end
+class UnimplementedDummyAdapter < Adapter::BaseAdapter; end
 
 describe Adapter::BaseAdapter do
   context 'does not implement read()' do

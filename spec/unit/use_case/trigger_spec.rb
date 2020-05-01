@@ -10,14 +10,13 @@ describe UseCase::Trigger do
               'scan': 'SELECT ASSESSOR_KEY FROM assessors',
               'extract': {
                 'ASSESSOR': {
-                  'query': "SELECT * FROM assessors WHERE ASSESSOR_KEY = '<%= primary_key %>'",
+                  'query':
+                    "SELECT * FROM assessors WHERE ASSESSOR_KEY = '<%= primary_key %>'",
                   'multiple': false
                 }
               }
             },
-            'extract': {
-              'queries': {}
-            }
+            'extract': { 'queries': {} }
           }
         }.to_json
       )
@@ -27,15 +26,11 @@ describe UseCase::Trigger do
   context 'when receiving an SNS notification' do
     let(:database_gateway_fake) do
       DatabaseGatewayFake.new JSON.parse(
-        [
-          {
-            ASSESSOR_KEY: 'TEST000001'
-          },
-          {
-            ASSESSOR_KEY: 'TEST000002'
-          }
-        ].to_json
-      )
+                                [
+                                  { ASSESSOR_KEY: 'TEST000001' },
+                                  { ASSESSOR_KEY: 'TEST000002' }
+                                ].to_json
+                              )
     end
     let(:message_gateway_fake) { MessageGatewayFake.new }
     let(:trigger) do
@@ -52,11 +47,9 @@ describe UseCase::Trigger do
 
       trigger.execute
 
-      expect(database_gateway_fake).to have_received(:read)
-        .with({
-                'query' => 'SELECT ASSESSOR_KEY FROM assessors',
-                'multiple' => true
-              })
+      expect(database_gateway_fake).to have_received(:read).with(
+        { 'query' => 'SELECT ASSESSOR_KEY FROM assessors', 'multiple' => true }
+      )
     end
 
     it 'gives the expected response' do
@@ -68,8 +61,13 @@ describe UseCase::Trigger do
       expect(database_gateway_fake).to have_received(:read).exactly(1).times
       expect(message_gateway_fake).to have_received(:write).exactly(2).times
 
-      expect(message_gateway_fake.data['configuration']['extract']['queries']['ASSESSOR']['query'])
-        .to eq "SELECT * FROM assessors WHERE ASSESSOR_KEY = 'TEST000002'"
+      expect(
+        message_gateway_fake.data['configuration']['extract']['queries'][
+          'ASSESSOR'
+        ][
+          'query'
+        ]
+      ).to eq "SELECT * FROM assessors WHERE ASSESSOR_KEY = 'TEST000002'"
     end
   end
 end

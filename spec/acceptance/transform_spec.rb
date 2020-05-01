@@ -3,7 +3,8 @@
 describe 'Acceptance::Transform' do
   context 'when all required data is present' do
     it 'converts data to target hash' do
-      event = JSON.parse File.open('spec/event/sqs-message-transform-input.json').read
+      event =
+        JSON.parse File.open('spec/event/sqs-message-transform-input.json').read
 
       ENV['ETL_STAGE'] = 'transform'
 
@@ -20,7 +21,8 @@ describe 'Acceptance::Transform' do
       handler = Handler.new(container)
       handler.process event: event
 
-      expected_transform_output = JSON.parse File.open('spec/event/sqs-message-load-input.json').read
+      expected_transform_output =
+        JSON.parse File.open('spec/event/sqs-message-load-input.json').read
 
       expect(sqs_adapter.read).to eq(expected_transform_output)
     end
@@ -46,17 +48,16 @@ describe 'Acceptance::Transform' do
         handler = Handler.new(container)
         handler.process event: event
 
-
-        expect(logit_adapter.data).to include JSON.generate({
-                                                                stage: 'transform',
-                                                                event: 'fail',
-                                                                data: {
-                                                                    error: 'undefined method `unshift\' for nil:NilClass',
-                                                                    job: {
-                                                                        "ASSESSOR": ["23456789"]
-                                                                    }
-                                                                },
-                                                            })
+        expect(logit_adapter.data).to include JSON.generate(
+                  {
+                    stage: 'transform',
+                    event: 'fail',
+                    data: {
+                      error: 'undefined method `unshift\' for nil:NilClass',
+                      job: { "ASSESSOR": %w[23456789] }
+                    }
+                  }
+                )
       end
     end
   end

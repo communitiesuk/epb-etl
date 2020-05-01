@@ -267,8 +267,12 @@ body](https://en.wikipedia.org/wiki/HTTP_message_body) is defined in JSON as:
 
 ### Test
 
-Use the following commands to run all or a particular type of test (some tests
-require docker):
+**Requirements**
+
+* Docker
+* docker image `store/oracle/database-enterprise:12.2.0.1`
+
+Use the following commands to run all or a particular type of test:
 
 ```shell script
 $ make test # run all acceptance and unit tests

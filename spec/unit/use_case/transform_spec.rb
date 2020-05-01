@@ -5,32 +5,25 @@ describe UseCase::Transform do
     def body
       JSON.parse(
         {
-          "job": {
-            "ASSESSOR": ['TEST000000']
-          },
+          "job": { "ASSESSOR": %w[TEST000000] },
           "configuration": {
             "load": {
               "endpoint": {
-                "uri": 'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
+                "uri":
+                  'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
                 "method": 'put'
               }
             },
             transform: {
               "rules": [
                 {
-                  "from": %w[data ASSESSOR FIRST_NAME],
-                  "to": %w[data firstName]
+                  "from": %w[data ASSESSOR FIRST_NAME], "to": %w[data firstName]
                 }
               ]
             }
           },
-          "data": {
-            "ASSESSOR": {
-              "FIRST_NAME": 'Joe'
-            }
-          }
-        }
-          .to_json
+          "data": { "ASSESSOR": { "FIRST_NAME": 'Joe' } }
+        }.to_json
       )
     end
   end
@@ -39,13 +32,12 @@ describe UseCase::Transform do
     def body
       JSON.parse(
         {
-          "job": {
-            "ASSESSOR": ['TEST000000']
-          },
+          "job": { "ASSESSOR": %w[TEST000000] },
           "configuration": {
             "load": {
               "endpoint": {
-                "uri": 'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
+                "uri":
+                  'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
                 "method": 'put'
               }
             },
@@ -60,16 +52,11 @@ describe UseCase::Transform do
           },
           "data": {
             "POSTCODE_COVERAGE": [
-              {
-                "POSTCODE": 'SW1A 2AA'
-              },
-              {
-                "POSTCODE": 'SW2A 3AA'
-              }
+              { "POSTCODE": 'SW1A 2AA' },
+              { "POSTCODE": 'SW2A 3AA' }
             ]
           }
-        }
-            .to_json
+        }.to_json
       )
     end
   end
@@ -77,28 +64,53 @@ describe UseCase::Transform do
   class TransformRequestThreeStub
     def body
       JSON.parse(
-          {
-              "job": {
-                  "ASSESSOR": ['TEST000000']
-              },
-              "configuration": {
-                  transform: {
-                      "rules": [
-                          {
-                              "to": %w[data assessments],
-                              "convert": [{
-                                  type: 'populate',
-                                  args: [[]]
-                              }]
-                          }
-                      ]
-                  }
-              },
-              "data": {
+        {
+          "job": { "ASSESSOR": %w[TEST000000] },
+          "configuration": {
+            transform: {
+              "rules": [
+                {
+                  "to": %w[data assessments],
+                  "convert": [{ type: 'populate', args: [[]] }]
+                }
+              ]
+            }
+          },
+          "data": {}
+        }.to_json
+      )
+    end
+  end
 
+  class TransformRequestArrayTransformStub
+    def body
+      JSON.parse(
+        {
+          "job": { "ASSESSOR": %w[TEST000000] },
+          "configuration": {
+            "load": {
+              "endpoint": {
+                "uri":
+                  'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
+                "method": 'put'
               }
+            },
+            transform: {
+              "rules": [
+                {
+                  "from": ['data', 'QUALIFICATIONS', '*', %w[TYPE STATUS]],
+                  "to": %w[data qualifications]
+                }
+              ]
+            }
+          },
+          "data": {
+            "QUALIFICATIONS": [
+              { TYPE: 'Level 1', STATUS: 'ACTIVE' },
+              { TYPE: 'Level 2', STATUS: 'INACTIVE' }
+            ]
           }
-              .to_json
+        }.to_json
       )
     end
   end
@@ -112,30 +124,31 @@ describe UseCase::Transform do
       transform = described_class.new(request, container)
       response = transform.execute
 
-      expect(response).to eq(JSON.parse({
-        job: {
-          ASSESSOR: ['TEST000000']
-        },
-        "configuration": {
-          "load": {
-            "endpoint": {
-              "uri": 'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
-              "method": 'put'
-            }
-          },
-          "transform": {
-            "rules": [
-              {
-                "from": %w[data ASSESSOR FIRST_NAME],
-                "to": %w[data firstName]
+      expect(response).to eq(
+        JSON.parse(
+          {
+            job: { ASSESSOR: %w[TEST000000] },
+            "configuration": {
+              "load": {
+                "endpoint": {
+                  "uri":
+                    'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
+                  "method": 'put'
+                }
+              },
+              "transform": {
+                "rules": [
+                  {
+                    "from": %w[data ASSESSOR FIRST_NAME],
+                    "to": %w[data firstName]
+                  }
+                ]
               }
-            ]
-          }
-        },
-        "data": {
-          "firstName": 'Joe'
-        }
-      }.to_json))
+            },
+            "data": { "firstName": 'Joe' }
+          }.to_json
+        )
+      )
     end
 
     it 'converts the postcode coverage array to the body' do
@@ -146,30 +159,31 @@ describe UseCase::Transform do
       transform = described_class.new(request, container)
       response = transform.execute
 
-      expect(response).to eq(JSON.parse({
-        job: {
-          ASSESSOR: ['TEST000000']
-        },
-        "configuration": {
-          "load": {
-            "endpoint": {
-              "uri": 'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
-              "method": 'put'
-            }
-          },
-          "transform": {
-            "rules": [
-              {
-                "from": %w[data POSTCODE_COVERAGE * POSTCODE],
-                "to": %w[data postcodeCoverage]
+      expect(response).to eq(
+        JSON.parse(
+          {
+            job: { ASSESSOR: %w[TEST000000] },
+            "configuration": {
+              "load": {
+                "endpoint": {
+                  "uri":
+                    'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
+                  "method": 'put'
+                }
+              },
+              "transform": {
+                "rules": [
+                  {
+                    "from": %w[data POSTCODE_COVERAGE * POSTCODE],
+                    "to": %w[data postcodeCoverage]
+                  }
+                ]
               }
-            ]
-          }
-        },
-        "data": {
-          "postcodeCoverage": ['SW1A 2AA', 'SW2A 3AA']
-        }
-      }.to_json))
+            },
+            "data": { "postcodeCoverage": ['SW1A 2AA', 'SW2A 3AA'] }
+          }.to_json
+        )
+      )
     end
 
     it 'populates a property based on configuration' do
@@ -180,27 +194,64 @@ describe UseCase::Transform do
       transform = described_class.new(request, container)
       response = transform.execute
 
-      expect(response).to eq(JSON.parse({
-                                            "job": {
-                                                "ASSESSOR": ['TEST000000']
-                                            },
-                                            "configuration": {
-                                                transform: {
-                                                    "rules": [
-                                                        {
-                                                            "to": %w[data assessments],
-                                                            "convert": [{
-                                                                type: 'populate',
-                                                                args: [[]]
-                                                            }]
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                            "data": {
-                                                "assessments": []
-                                            }
-                                        }.to_json))
+      expect(response).to eq(
+        JSON.parse(
+          {
+            "job": { "ASSESSOR": %w[TEST000000] },
+            "configuration": {
+              transform: {
+                "rules": [
+                  {
+                    "to": %w[data assessments],
+                    "convert": [{ type: 'populate', args: [[]] }]
+                  }
+                ]
+              }
+            },
+            "data": { "assessments": [] }
+          }.to_json
+        )
+      )
+    end
+
+    it 'populates an array of objects' do
+      request = TransformRequestArrayTransformStub.new
+      container = Container.new(false)
+      message_gateway_fake = MessageGatewayFake.new
+      container.set_object(:message_gateway, message_gateway_fake)
+      transform = described_class.new(request, container)
+      response = transform.execute
+
+      expect(response).to eq(
+        JSON.parse(
+          {
+            "job": { "ASSESSOR": %w[TEST000000] },
+            "configuration": {
+              "load": {
+                "endpoint": {
+                  "uri":
+                    'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
+                  "method": 'put'
+                }
+              },
+              transform: {
+                "rules": [
+                  {
+                    "from": ['data', 'QUALIFICATIONS', '*', %w[TYPE STATUS]],
+                    "to": %w[data qualifications]
+                  }
+                ]
+              }
+            },
+            "data": {
+              "qualifications": [
+                { TYPE: 'Level 1', STATUS: 'ACTIVE' },
+                { TYPE: 'Level 2', STATUS: 'INACTIVE' }
+              ]
+            }
+          }.to_json
+        )
+      )
     end
   end
 end

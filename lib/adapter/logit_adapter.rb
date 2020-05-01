@@ -5,11 +5,7 @@ require 'net/http'
 module Adapter
   class LogitAdapter < Adapter::BaseAdapter
     def write(stage, event, data)
-      log_data = JSON.generate({
-          stage: stage,
-          event: event,
-          data: data
-      })
+      log_data = JSON.generate({ stage: stage, event: event, data: data })
 
       uri = URI.parse 'https://api.logit.io/v2'
 

@@ -14,7 +14,10 @@ module UseCase
     def execute
       config = @request.body['configuration']['trigger']
 
-      records = @database_gateway.read({ 'query' => config['scan'], 'multiple' => true })
+      records =
+        @database_gateway.read(
+          { 'query' => config['scan'], 'multiple' => true }
+        )
 
       records.each do |record|
         job = @request.body.dup
@@ -23,11 +26,12 @@ module UseCase
           query = extract_query.dup
 
           begin
-            query['query'] = if params.nil?
-                               query['query']
-                             else
-                               ERB.new(query['query']).result_with_hash(params)
-                             end
+            query['query'] =
+              if params.nil?
+                query['query']
+              else
+                ERB.new(query['query']).result_with_hash(params)
+              end
           rescue NameError => e
             raise Errors::RequestWithInvalidParams, e.message, e.backtrace
           end

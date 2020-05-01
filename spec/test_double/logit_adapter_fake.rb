@@ -12,12 +12,6 @@ class LogitAdapterFake
   end
 
   def write(stage, event, data)
-    @data << JSON.generate(
-        {
-            stage: stage,
-            event: event,
-            data: data
-        }
-    )
+    @data << JSON.generate({ stage: stage, event: event, data: data })
   end
 end

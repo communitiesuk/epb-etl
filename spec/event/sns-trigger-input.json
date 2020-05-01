@@ -21,6 +21,10 @@
                 "POSTCODE_COVERAGE": {
                   "query": "SELECT POSTCODE FROM assessor_coverage WHERE ASSESSOR_KEY = '<%= primary_key %>'",
                   "multiple": true
+                },
+                "QUALIFICATIONS": {
+                  "query": "SELECT TYPE, STATUS FROM assessor_qualifications WHERE ASSESSOR_KEY = '<%= primary_key %>'",
+                  "multiple": true
                 }
               }
             },
@@ -74,6 +78,10 @@
                 {
                   "from": ["data", "POSTCODE_COVERAGE", "*", "POSTCODE"],
                   "to": ["data", "postcodeCoverage"]
+                },
+                {
+                  "from": ["data", "QUALIFICATIONS", "*", ["TYPE", "STATUS"]],
+                  "to": ["data", "qualifications"]
                 }
               ]
             },

@@ -17,8 +17,7 @@ ENV['EPB_AUTH_CLIENT_SECRET'] = 'test.client.secret'
 ENV['EPB_AUTH_SERVER'] = 'http://test-auth-server.gov.uk'
 
 RSpec.configure do |config|
-  config.warnings = true
-  config.order = :random
+  config.warnings = true # config.order = :random
   Kernel.srand config.seed
   config.before(:each) { OauthStub.token }
 end

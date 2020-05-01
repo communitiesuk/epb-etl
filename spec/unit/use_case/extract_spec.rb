@@ -5,39 +5,35 @@ describe UseCase::Extract do
     def body
       JSON.parse(
         {
-          'job': {
-            'ASSESSOR': ['TEST000000']
-          },
+          'job': { 'ASSESSOR': %w[TEST000000] },
           'configuration': {
             'extract': {
               'queries': {
                 'ASSESSOR': {
-                  'query': 'SELECT * FROM assessors WHERE ASSESSOR_KEY = \'TEST000000\'',
+                  'query':
+                    'SELECT * FROM assessors WHERE ASSESSOR_KEY = \'TEST000000\'',
                   'multiple': false
                 }
               }
             },
             'transform': {
-              'queue_url': 'https://sqs.eu-west-2.amazonaws.com/1234567890/transform',
+              'queue_url':
+                'https://sqs.eu-west-2.amazonaws.com/1234567890/transform',
               'rules': [
                 {
-                  'from': %w[data ASSESSOR FIRST_NAME],
-                  'to': %w[data firstName]
+                  'from': %w[data ASSESSOR FIRST_NAME], 'to': %w[data firstName]
                 }
               ]
             },
             'load': {
               'endpoint': {
-                'uri': 'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
+                'uri':
+                  'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
                 'method': 'put'
               }
             }
           },
-          'data': {
-            'ASSESSOR': {
-              'FIRST_NAME': 'Joe'
-            }
-          }
+          'data': { 'ASSESSOR': { 'FIRST_NAME': 'Joe' } }
         }.to_json
       )
     end
@@ -54,41 +50,45 @@ describe UseCase::Extract do
       extract = described_class.new(request, container)
       response = extract.execute
 
-      expect(response).to eq(JSON.parse({
-        job: {
-            ASSESSOR: ['TEST000000']
-        },
-        configuration: {
-          extract: {
-            queries: {
+      expect(response).to eq(
+        JSON.parse(
+          {
+            job: { ASSESSOR: %w[TEST000000] },
+            configuration: {
+              extract: {
+                queries: {
+                  ASSESSOR: {
+                    multiple: false,
+                    query:
+                      'SELECT * FROM assessors WHERE ASSESSOR_KEY = \'TEST000000\''
+                  }
+                }
+              },
+              transform: {
+                queue_url:
+                  'https://sqs.eu-west-2.amazonaws.com/1234567890/transform',
+                rules: [
+                  { from: %w[data ASSESSOR FIRST_NAME], to: %w[data firstName] }
+                ]
+              },
+              load: {
+                endpoint: {
+                  method: 'put',
+                  uri:
+                    'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>'
+                }
+              }
+            },
+            data: {
               ASSESSOR: {
-                multiple: false,
-                query: 'SELECT * FROM assessors WHERE ASSESSOR_KEY = \'TEST000000\''
+                DATE_OF_BIRTH: '1980-11-01 00:00:00.000000',
+                FIRST_NAME: 'Joe',
+                SURNAME: 'Testerton'
               }
             }
-          },
-          transform: {
-            queue_url: 'https://sqs.eu-west-2.amazonaws.com/1234567890/transform',
-            rules: [{
-              from: %w[data ASSESSOR FIRST_NAME],
-              to: %w[data firstName]
-            }]
-          },
-          load: {
-            endpoint: {
-              method: 'put',
-              uri: 'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>'
-            }
-          }
-        },
-        data: {
-          ASSESSOR: {
-            DATE_OF_BIRTH: '1980-11-01 00:00:00.000000',
-            FIRST_NAME: 'Joe',
-            SURNAME: 'Testerton'
-          }
-        }
-      }.to_json))
+          }.to_json
+        )
+      )
     end
   end
 end

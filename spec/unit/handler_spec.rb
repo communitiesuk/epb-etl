@@ -7,11 +7,7 @@ describe Handler do
 
       expect do
         handler = described_class.new Container.new false
-        handler.process(
-          event: {
-            Records: []
-          }
-        )
+        handler.process(event: { Records: [] })
       end.not_to raise_error
     end
   end
@@ -22,11 +18,7 @@ describe Handler do
 
       expect do
         handler = described_class.new Container.new false
-        handler.process(
-          event: {
-            Records: []
-          }
-        )
+        handler.process(event: { Records: [] })
       end.to raise_error instance_of Errors::EtlStageInvalid
     end
   end
@@ -37,11 +29,7 @@ describe Handler do
 
       expect do
         handler = described_class.new Container.new false
-        handler.process(
-          event: {
-            Records: []
-          }
-        )
+        handler.process(event: { Records: [] })
       end.to raise_error instance_of Errors::EtlStageInvalid
     end
   end

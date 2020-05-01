@@ -60,7 +60,7 @@ test_all:
 test_darwin: vendor/bundle-darwin
 	@echo "-> Running unit tests (Darwin)" && \
 		BUNDLE_PATH="vendor/bundle-darwin" \
-		bundle exec rspec --exclude-pattern "**/integration/*_spec.rb, **/e2e/*_spec.rb"
+		bundle exec rspec --pattern "**/unit/*_spec.rb, **/acceptance/*_spec.rb"
 
 test_integration_darwin: vendor/bundle-darwin
 	@echo "-> Running integration tests (Darwin)" && \

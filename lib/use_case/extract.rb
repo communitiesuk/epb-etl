@@ -10,14 +10,14 @@ module UseCase
     end
 
     def execute
-      response = JSON.parse(
-        {
-          job: @request.body['job'],
-          configuration: @request.body['configuration'],
-          data: {
-          }
-        }.to_json
-      )
+      response =
+        JSON.parse(
+          {
+            job: @request.body['job'],
+            configuration: @request.body['configuration'],
+            data: {}
+          }.to_json
+        )
 
       queries = @request.body['configuration']['extract']['queries']
 

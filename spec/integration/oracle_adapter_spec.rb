@@ -6,7 +6,7 @@ require 'ruby-oci8'
 WebMock.allow_net_connect!
 
 describe 'Integration::OracleAdapter' do
-   before :context do
+  before :context do
     @container = nil
 
     @config = {
@@ -25,7 +25,11 @@ describe 'Integration::OracleAdapter' do
 
     until @oracle_has_started
       begin
-        conn = OCI8.new 'sys', 'Oradoc_db1', '//localhost:1521/ORCLCDB.LOCALDOMAIN', :SYSDBA
+        conn =
+          OCI8.new 'sys',
+                   'Oradoc_db1',
+                   '//localhost:1521/ORCLCDB.LOCALDOMAIN',
+                   :SYSDBA
         begin
           conn.exec 'create table rates (actual varchar(10), word varchar(8), score integer)'
           conn.exec "insert into rates values ('1', 'one', 25)"
@@ -47,17 +51,18 @@ describe 'Integration::OracleAdapter' do
         sleep 10
       end
     end
-   end
+  end
 
-   after :context do
+  after :context do
     @container.kill
     @container.stop
-    @container.delete(:force => true)
+    @container.delete(force: true)
     Docker::Volume.prune
-   end
+  end
 
   context 'when connecting to the Oracle database' do
-    ENV['DATABASE_URL'] = 'sys/Oradoc_db1@//localhost:1521/ORCLCDB.LOCALDOMAIN as sysdba'
+    ENV['DATABASE_URL'] =
+      'sys/Oradoc_db1@//localhost:1521/ORCLCDB.LOCALDOMAIN as sysdba'
 
     it 'does not raise an error' do
       expect do

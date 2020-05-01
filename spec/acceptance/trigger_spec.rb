@@ -3,7 +3,8 @@ require 'rspec'
 describe 'Acceptance::Trigger' do
   context 'when an empty trigger notification is received' do
     it 'raises an error' do
-      event = JSON.parse File.open('spec/event/sns-empty-trigger-input.json').read
+      event =
+        JSON.parse File.open('spec/event/sns-empty-trigger-input.json').read
 
       ENV['ETL_STAGE'] = 'trigger'
 
@@ -19,19 +20,16 @@ describe 'Acceptance::Trigger' do
       adapter = OracleAdapterFake.new OracleAdapterStub.data
 
       adapter.stub_query(
-          'SELECT ASSESSOR_KEY FROM assessors',
-          [
-              {
-                  "ASSESSOR_KEY": '23456789',
-              }
-          ]
+        'SELECT ASSESSOR_KEY FROM assessors',
+        [{ "ASSESSOR_KEY": '23456789' }]
       )
 
       adapter
     end
 
     it 'handles the event by logging the error' do
-      event = JSON.parse File.open('spec/event/sns-trigger-input-invalid.json').read
+      event =
+        JSON.parse File.open('spec/event/sns-trigger-input-invalid.json').read
 
       ENV['ETL_STAGE'] = 'trigger'
 
@@ -50,14 +48,16 @@ describe 'Acceptance::Trigger' do
       handler = Handler.new(container)
       handler.process event: event
 
-      expect(logit_adapter.data).to include JSON.generate({
-                                                               stage: 'trigger',
-                                                               event: 'fail',
-                                                               data: {
-                                                                   error: 'undefined method `each_pair\' for nil:NilClass',
-                                                                   job: nil
-                                                               },
-                                                           })
+      expect(logit_adapter.data).to include JSON.generate(
+                {
+                  stage: 'trigger',
+                  event: 'fail',
+                  data: {
+                    error: 'undefined method `each_pair\' for nil:NilClass',
+                    job: nil
+                  }
+                }
+              )
     end
   end
 
@@ -66,12 +66,8 @@ describe 'Acceptance::Trigger' do
       adapter = OracleAdapterFake.new OracleAdapterStub.data
 
       adapter.stub_query(
-          'SELECT ASSESSOR_KEY FROM assessors',
-          [
-              {
-                  "ASSESSOR_KEY": '23456789',
-              }
-          ]
+        'SELECT ASSESSOR_KEY FROM assessors',
+        [{ "ASSESSOR_KEY": '23456789' }]
       )
 
       adapter
@@ -97,7 +93,8 @@ describe 'Acceptance::Trigger' do
       handler = Handler.new(container)
       handler.process event: event
 
-      expected_extract_output = JSON.parse File.open('spec/event/sqs-message-extract-input.json').read
+      expected_extract_output =
+        JSON.parse File.open('spec/event/sqs-message-extract-input.json').read
 
       expect(sqs_adapter.read).to eq(expected_extract_output)
     end

@@ -17,29 +17,36 @@ class Handler
     end
 
     normalised_event['Records'].each do |message|
-      event_source = message["EventSource"].nil? ? message['eventSource'] : message["EventSource"]
-      event_body = event_source == 'aws:sqs' ? message['body'] : message["Sns"]['Message']
+      event_source =
+        if message['EventSource'].nil?
+          message['eventSource']
+        else
+          message['EventSource']
+        end
+      event_body =
+        event_source == 'aws:sqs' ? message['body'] : message['Sns']['Message']
 
-      event_body = event_body.is_a?(String) ? JSON.parse(event_body) : event_body
+      event_body =
+        event_body.is_a?(String) ? JSON.parse(event_body) : event_body
 
       request = Boundary.const_get(etl_stage + 'Request').new event_body
       use_case = use_case_constant.new(request, @container)
 
       @container.fetch_object(:log_gateway).write ENV['ETL_STAGE'],
                                                   'start',
-                                                  {job: event_body['job']}
+                                                  { job: event_body['job'] }
 
       begin
         use_case.execute
         @container.fetch_object(:log_gateway).write ENV['ETL_STAGE'],
                                                     'finish',
-                                                    {job: event_body['job']}
+                                                    { job: event_body['job'] }
       rescue StandardError => e
         @container.fetch_object(:log_gateway).write ENV['ETL_STAGE'],
                                                     'fail',
                                                     {
-                                                        error: e.message,
-                                                        job: event_body['job'],
+                                                      error: e.message,
+                                                      job: event_body['job']
                                                     }
       end
     end

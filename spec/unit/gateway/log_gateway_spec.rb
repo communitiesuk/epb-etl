@@ -15,11 +15,9 @@ describe Gateway::LogGateway do
 
       log_gateway.write('test', 'event', {})
 
-      expect(logit_adapter.data).to include JSON.generate({
-        stage: 'test',
-        event: 'event',
-        data: {}
-      })
+      expect(logit_adapter.data).to include JSON.generate(
+                { stage: 'test', event: 'event', data: {} }
+              )
     end
   end
 end
