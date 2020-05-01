@@ -7,6 +7,10 @@ source 'https://rubygems.org' do
     gem 'docker-api', '~> 1.34'
   end
 
+  group :dev do
+    gem "prettier", "~> 0.18.1"
+  end
+
   group :staging do
     gem 'ruby-oci8', '~> 2.2'
   end

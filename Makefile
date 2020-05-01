@@ -1,4 +1,4 @@
-.PHONY: build install test
+.PHONY: build install test format
 SHELL=/bin/bash
 
 install: vendor/bundle-darwin
@@ -8,7 +8,7 @@ vendor/bundle-darwin: vendor/oracle/Darwin/instantclient_12_2
 	@echo "-> Bundle install" && \
 		OCI_DIR="$(shell pwd)/vendor/oracle/Darwin/instantclient_12_2" \
 		BUNDLE_PATH="vendor/bundle-darwin" \
-		bundle install 1>/dev/null
+		bundle install
 
 vendor/bundle: create_bundler_image vendor/lib
 	@echo "-> Installing dependencies" && \
@@ -119,3 +119,6 @@ test_all_lambda: vendor/bundle
 clean:
 	@echo "-> Cleaning up dependencies" && \
 		rm -rf vendor/lib && rm -rf vendor/bundle && rm -rf vendor/bundle-darwin
+
+format:
+	@BUNDLE_PATH=vendor/bundle-darwin bundle exec rbprettier --write `find . -name '*.rb' -not -path './vendor*'`
