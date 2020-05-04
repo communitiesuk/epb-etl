@@ -99,7 +99,7 @@ describe UseCase::Transform do
               "rules": [
                 {
                   "from": ['data', 'QUALIFICATIONS', '*', %w[TYPE STATUS]],
-                  "to": %w[data qualifications]
+                  "to": ['data', 'qualifications', '*', %w[type status]]
                 }
               ]
             }
@@ -238,15 +238,15 @@ describe UseCase::Transform do
                 "rules": [
                   {
                     "from": ['data', 'QUALIFICATIONS', '*', %w[TYPE STATUS]],
-                    "to": %w[data qualifications]
+                    "to": ['data', 'qualifications', '*', %w[type status]]
                   }
                 ]
               }
             },
             "data": {
               "qualifications": [
-                { TYPE: 'Level 1', STATUS: 'ACTIVE' },
-                { TYPE: 'Level 2', STATUS: 'INACTIVE' }
+                { type: 'Level 1', status: 'ACTIVE' },
+                { type: 'Level 2', status: 'INACTIVE' }
               ]
             }
           }.to_json

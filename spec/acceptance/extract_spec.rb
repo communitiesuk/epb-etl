@@ -60,7 +60,7 @@ describe 'Acceptance::Extract' do
       )
 
       adapter.stub_query(
-        "SELECT TYPE, STATUS FROM assessor_qualifications WHERE ASSESSOR_KEY = '23456789'",
+        "SELECT TYPE, STATUS FROM ASSESSOR_QUALIFICATIONS WHERE ASSESSOR_KEY = '23456789'",
         [
           { "TYPE": 'Level 1', "STATUS": 'ACTIVE' },
           { "TYPE": 'Level 2', "STATUS": 'INACTIVE' }

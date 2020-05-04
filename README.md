@@ -210,7 +210,7 @@ An example of the output following the above transformation rules:
   "data": {
     "firstName": "John",
     "lastName": "Smith",
-    "dateOfBirth": "1980-11-01"
+    "dateOfBirth": "1980-11-01",
     "emails": ["john@example.com", "jsmith@example.com"]
   },
   "configuration": {

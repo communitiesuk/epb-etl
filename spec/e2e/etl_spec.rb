@@ -36,11 +36,19 @@ describe 'E2E::Etl', order: :defined do
           conn.exec 'create table ASSESSORS (ASSESSOR_KEY varchar(20), FIRST_NAME varchar(20), SURNAME varchar(20), DATE_OF_BIRTH varchar(30), ASSESSOR_ID varchar(20), ORGANISATION_KEY integer)'
           conn.exec "insert into ASSESSORS values ('12345678', 'Joe', 'Testerton', '1980-11-01 00:00:00.000000', 'TEST000001', 142)"
           conn.exec "insert into ASSESSORS values ('23456789', 'Joe', 'Testerton', '1980-11-01 00:00:00.000000', 'TEST/000000', 144)"
+
           conn.exec 'create table ASSESSOR_COVERAGE (ASSESSOR_KEY varchar(20), POSTCODE varchar(20))'
           conn.exec "insert into ASSESSOR_COVERAGE values ('12345678', 'SW1A 2AA')"
           conn.exec "insert into ASSESSOR_COVERAGE values ('12345678', 'SW2A 3AA')"
           conn.exec "insert into ASSESSOR_COVERAGE values ('23456789', 'SW2A 3AA')"
           conn.exec "insert into ASSESSOR_COVERAGE values ('23456789', 'SW3A 4AA')"
+
+          conn.exec 'create table ASSESSOR_QUALIFICATIONS (ASSESSOR_KEY varchar(20), TYPE varchar(20), STATUS varchar(20))'
+          conn.exec "insert into ASSESSOR_QUALIFICATIONS values ('12345678', 'Level 1', 'INACTIVE')"
+          conn.exec "insert into ASSESSOR_QUALIFICATIONS values ('12345678', 'Level 2', 'INACTIVE')"
+          conn.exec "insert into ASSESSOR_QUALIFICATIONS values ('23456789', 'Level 1', 'ACTIVE')"
+          conn.exec "insert into ASSESSOR_QUALIFICATIONS values ('23456789', 'Level 2', 'INACTIVE')"
+
           conn.commit
         rescue OCIError => e
           @container.kill
@@ -121,7 +129,8 @@ describe 'E2E::Etl', order: :defined do
                   data: {
                     job: {
                       "ASSESSOR": %w[23456789],
-                      "POSTCODE_COVERAGE": %w[23456789]
+                      "POSTCODE_COVERAGE": %w[23456789],
+                      "QUALIFICATIONS": %w[23456789]
                     }
                   }
                 }
@@ -133,11 +142,13 @@ describe 'E2E::Etl', order: :defined do
                   data: {
                     job: {
                       "ASSESSOR": %w[23456789],
-                      "POSTCODE_COVERAGE": %w[23456789]
+                      "POSTCODE_COVERAGE": %w[23456789],
+                      "QUALIFICATIONS": %w[23456789]
                     }
                   }
                 }
               )
+      expect(@logit_adapter.data).not_to include 'fail'
     end
 
     it 'transforms the data to the correct format' do
@@ -155,7 +166,8 @@ describe 'E2E::Etl', order: :defined do
                   data: {
                     job: {
                       "ASSESSOR": %w[23456789],
-                      "POSTCODE_COVERAGE": %w[23456789]
+                      "POSTCODE_COVERAGE": %w[23456789],
+                      "QUALIFICATIONS": %w[23456789]
                     }
                   }
                 }
@@ -167,11 +179,13 @@ describe 'E2E::Etl', order: :defined do
                   data: {
                     job: {
                       "ASSESSOR": %w[23456789],
-                      "POSTCODE_COVERAGE": %w[23456789]
+                      "POSTCODE_COVERAGE": %w[23456789],
+                      "QUALIFICATIONS": %w[23456789]
                     }
                   }
                 }
               )
+      expect(@logit_adapter.data).not_to include 'fail'
     end
 
     it 'sends the data to the endpoint in the correct format' do
@@ -194,7 +208,11 @@ describe 'E2E::Etl', order: :defined do
             lastName: 'Testerton',
             dateOfBirth: '1980-11-01',
             assessments: [],
-            postcodeCoverage: ['SW2A 3AA', 'SW3A 4AA']
+            postcodeCoverage: ['SW2A 3AA', 'SW3A 4AA'],
+            qualifications: [
+                { type: 'Level 1', status: 'ACTIVE' },
+                { type: 'Level 2', status: 'INACTIVE' }
+            ]
           )
       )
 
@@ -205,7 +223,8 @@ describe 'E2E::Etl', order: :defined do
                   data: {
                     job: {
                       "ASSESSOR": %w[23456789],
-                      "POSTCODE_COVERAGE": %w[23456789]
+                      "POSTCODE_COVERAGE": %w[23456789],
+                      "QUALIFICATIONS": %w[23456789]
                     }
                   }
                 }
@@ -217,11 +236,13 @@ describe 'E2E::Etl', order: :defined do
                   data: {
                     job: {
                       "ASSESSOR": %w[23456789],
-                      "POSTCODE_COVERAGE": %w[23456789]
+                      "POSTCODE_COVERAGE": %w[23456789],
+                      "QUALIFICATIONS": %w[23456789]
                     }
                   }
                 }
               )
+      expect(@logit_adapter.data).not_to include 'fail'
 
       remove_request_stub(http_stub)
     end

@@ -25,24 +25,24 @@ module UseCase
         unless rule['from'].nil?
           if rule['from'].include? '*'
             wildcard = rule['from'].index('*')
-            before, after = rule['from'].each_slice(wildcard).to_a
+            from_before, from_after = rule['from'].each_slice(wildcard).to_a
 
-            after.shift
+            from_after.shift
 
             source_data = []
 
-            before_source = @request.body.dig(*before)
+            before_source = @request.body.dig(*from_before)
 
             selects_multiple =
-              after.filter { |value| value.is_a? Array }.length > 0
+              from_after.filter { |value| value.is_a? Array }.length > 0
 
             before_source.each do |value|
               if selects_multiple
                 object = {}
-                after[0].each { |key| object[key] = value.dig(*key) }
+                from_after[0].each { |key| object[key] = value.dig(*key) }
                 source_data << object
               else
-                source_data << value.dig(*after)
+                source_data << value.dig(*from_after)
               end
             end
           else
@@ -59,7 +59,28 @@ module UseCase
           end
         end
 
-        Helper.bury(response, *rule['to'], source_data)
+        if rule['to'].include? '*'
+          wildcard = rule['to'].index('*')
+          to_before, to_after = rule['to'].each_slice(wildcard).to_a
+
+          to_after.shift
+
+          source_data =
+            source_data.map do |values|
+              new_values = {}
+
+              values.each do |key, value|
+                idx = from_after[0].index(key)
+                new_values[to_after[0][idx]] = values.delete key
+              end
+
+              new_values
+            end
+
+          Helper.bury(response, *to_before, source_data)
+        else
+          Helper.bury(response, *rule['to'], source_data)
+        end
       end
 
       @message_gateway.write(ENV['NEXT_SQS_URL'], response)

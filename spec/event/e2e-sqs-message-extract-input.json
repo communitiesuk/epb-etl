@@ -6,7 +6,8 @@
       "body": {
         "job": {
           "ASSESSOR": ["23456789"],
-          "POSTCODE_COVERAGE": ["23456789"]
+          "POSTCODE_COVERAGE": ["23456789"],
+          "QUALIFICATIONS": ["23456789"]
         },
         "configuration": {
           "trigger": {
@@ -19,6 +20,10 @@
               "POSTCODE_COVERAGE": {
                 "query": "SELECT POSTCODE FROM assessor_coverage WHERE ASSESSOR_KEY = '<%= primary_key %>'",
                 "multiple": true
+              },
+              "QUALIFICATIONS": {
+                "query": "SELECT TYPE, STATUS FROM ASSESSOR_QUALIFICATIONS WHERE ASSESSOR_KEY = '<%= primary_key %>'",
+                "multiple": true
               }
             }
           },
@@ -30,6 +35,10 @@
               },
               "POSTCODE_COVERAGE": {
                 "query": "SELECT POSTCODE FROM assessor_coverage WHERE ASSESSOR_KEY = '23456789'",
+                "multiple": true
+              },
+              "QUALIFICATIONS": {
+                "query": "SELECT TYPE, STATUS FROM ASSESSOR_QUALIFICATIONS WHERE ASSESSOR_KEY = '23456789'",
                 "multiple": true
               }
             }
@@ -81,6 +90,10 @@
               {
                 "from": ["data", "POSTCODE_COVERAGE", "*", "POSTCODE"],
                 "to": ["data", "postcodeCoverage"]
+              },
+              {
+                "from": ["data", "QUALIFICATIONS", "*", ["TYPE", "STATUS"]],
+                "to": ["data", "qualifications", "*", ["type" , "status"]]
               }
             ]
           },

@@ -23,7 +23,7 @@
                   "multiple": true
                 },
                 "QUALIFICATIONS": {
-                  "query": "SELECT TYPE, STATUS FROM assessor_qualifications WHERE ASSESSOR_KEY = '<%= primary_key %>'",
+                  "query": "SELECT TYPE, STATUS FROM ASSESSOR_QUALIFICATIONS WHERE ASSESSOR_KEY = '<%= primary_key %>'",
                   "multiple": true
                 }
               }
@@ -81,7 +81,7 @@
                 },
                 {
                   "from": ["data", "QUALIFICATIONS", "*", ["TYPE", "STATUS"]],
-                  "to": ["data", "qualifications"]
+                  "to": ["data", "qualifications", "*", ["type" , "status"]]
                 }
               ]
             },

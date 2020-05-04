@@ -16,11 +16,11 @@
           "postcodeCoverage": ["SW2A 3AA", "SW3A 4AA"],
           "assessments": [],
           "qualifications": [{
-            "TYPE": "Level 1",
-            "STATUS": "ACTIVE"
+            "type": "Level 1",
+            "status": "ACTIVE"
           },{
-            "TYPE": "Level 2",
-            "STATUS": "INACTIVE"
+            "type": "Level 2",
+            "status": "INACTIVE"
           }]
         },
         "configuration": {
@@ -36,7 +36,7 @@
                 "multiple": true
               },
               "QUALIFICATIONS": {
-                "query": "SELECT TYPE, STATUS FROM assessor_qualifications WHERE ASSESSOR_KEY = '<%= primary_key %>'",
+                "query": "SELECT TYPE, STATUS FROM ASSESSOR_QUALIFICATIONS WHERE ASSESSOR_KEY = '<%= primary_key %>'",
                 "multiple": true
               }
             }
@@ -52,7 +52,7 @@
                 "multiple": true
               },
               "QUALIFICATIONS": {
-                "query": "SELECT TYPE, STATUS FROM assessor_qualifications WHERE ASSESSOR_KEY = '23456789'",
+                "query": "SELECT TYPE, STATUS FROM ASSESSOR_QUALIFICATIONS WHERE ASSESSOR_KEY = '23456789'",
                 "multiple": true
               }
             }
@@ -107,7 +107,7 @@
               },
               {
                 "from": ["data", "QUALIFICATIONS", "*", ["TYPE", "STATUS"]],
-                "to": ["data", "qualifications"]
+                "to": ["data", "qualifications", "*", ["type" , "status"]]
               }
             ]
           },

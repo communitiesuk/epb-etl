@@ -75,8 +75,8 @@ describe 'Acceptance::Load' do
               postcodeCoverage: ['SW2A 3AA', 'SW3A 4AA'],
               assessments: [],
               qualifications: [
-                { TYPE: 'Level 1', STATUS: 'ACTIVE' },
-                { TYPE: 'Level 2', STATUS: 'INACTIVE' }
+                { type: 'Level 1', status: 'ACTIVE' },
+                { type: 'Level 2', status: 'INACTIVE' }
               ]
             )
         )
@@ -137,8 +137,8 @@ describe 'Acceptance::Load' do
               postcodeCoverage: ['SW2A 3AA', 'SW3A 4AA'],
               assessments: [],
               qualifications: [
-                { TYPE: 'Level 1', STATUS: 'ACTIVE' },
-                { TYPE: 'Level 2', STATUS: 'INACTIVE' }
+                { type: 'Level 1', status: 'ACTIVE' },
+                { type: 'Level 2', status: 'INACTIVE' }
               ]
             )
         )
