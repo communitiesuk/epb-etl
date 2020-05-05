@@ -34,8 +34,12 @@ module Helper
     def self.cast(value, type)
       return nil if value.nil?
 
-      casting_method = "to_#{type}"
-      value.send(casting_method)
+      if %w[s f i].include? type
+        casting_method = "to_#{type}"
+        return value.send(casting_method)
+      end
+
+      if type == 'b'
+        return !(value.empty? || !value)
+      end
     end
-  end
-end

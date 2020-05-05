@@ -78,5 +78,16 @@ describe Helper::Transform do
 
       expect(output).to eq 1.45
     end
+
+    it 'outputs a boolean false when given an empty string' do
+      output = described_class.cast('', 'b')
+
+      expect(output).to eq false
+    end
+
+    it 'outputs a boolean false when given truthy string' do
+      output = described_class.cast('Y', 'b')
+
+      expect(output).to eq true
+    end
   end
-end
