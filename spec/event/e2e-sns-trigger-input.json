@@ -81,7 +81,20 @@
                 },
                 {
                   "from": ["data", "QUALIFICATIONS", "*", ["TYPE", "STATUS"]],
-                  "to": ["data", "qualifications", "*", ["type" , "status"]]
+                  "to": ["data", "qualifications", "*", ["type" , "status"]],
+                  "convert": [{
+                    "type": "wildcard",
+                    "args": [{
+                      "TYPE": [{
+                        "type": "cast",
+                        "args": ["s"]
+                      }],
+                      "STATUS": [{
+                        "type": "cast",
+                        "args": ["s"]
+                      }]
+                    }]
+                  }]
                 }
               ]
             },
