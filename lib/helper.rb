@@ -43,3 +43,22 @@ module Helper
         return !(value.empty? || !value)
       end
     end
+
+    def self.wildcard(input, input_conversions)
+      input.dup.map do |item|
+        input_conversions.each do |input_key, conversions|
+          conversions.each do |conversion|
+            args = conversion['args'].dup
+
+            args.unshift item[input_key]
+
+            item[input_key] = Helper::Transform.send conversion['type'],
+                                                     *args
+          end
+        end
+
+        item
+      end
+    end
+  end
+end

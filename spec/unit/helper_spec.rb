@@ -91,3 +91,28 @@ describe Helper::Transform do
       expect(output).to eq true
     end
   end
+
+  context 'when transforming a wildcard value' do
+    it 'applies the given conversions to each key of the wildcard values' do
+      input_value = JSON.parse(JSON.generate([{
+          "castToInt": "76",
+      },{
+          "castToInt": "392",
+      }]))
+
+      output = described_class.wildcard(input_value,
+                                        JSON.parse(JSON.generate({
+                                           "castToInt": [{
+                                                             "type": "cast",
+                                                             "args": ["i"]
+                                                         }]
+                                       })))
+
+      expect(output).to eq JSON.parse(JSON.generate([{
+                                "castToInt": 76,
+                            },{
+                                "castToInt": 392,
+                            }]))
+    end
+  end
+end
