@@ -44,6 +44,11 @@ module Helper
       end
     end
 
+    def self.replace(string, replaceable_value, replacement)
+      new_string = string.gsub! replaceable_value, replacement
+      new_string
+    end
+
     def self.wildcard(input, input_conversions)
       input.dup.map do |item|
         input_conversions.each do |input_key, conversions|

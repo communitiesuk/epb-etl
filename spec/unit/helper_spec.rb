@@ -34,19 +34,19 @@ describe Helper::Transform do
 
   context 'when transforming a value to another in a map' do
     it 'outputs the expected value from the map' do
-      output = described_class.map('100', { 100 => '101' })
+      output = described_class.map('100', {100 => '101'})
 
       expect(output).to eq '101'
     end
 
     it 'outputs the expected value from the map when the map has a symbol' do
-      output = described_class.map('test_sym', { test_sym: '5000' })
+      output = described_class.map('test_sym', {test_sym: '5000'})
 
       expect(output).to eq '5000'
     end
 
     it 'outputs the expected value when the key is an integer but the input is keyed on strings' do
-      output = described_class.map('100', { '100' => 800 })
+      output = described_class.map('100', {'100' => 800})
 
       expect(output).to eq 800
     end
@@ -89,6 +89,20 @@ describe Helper::Transform do
       output = described_class.cast('Y', 'b')
 
       expect(output).to eq true
+    end
+  end
+
+  context 'when replacing instances of a value in a string' do
+    it 'replaces a single instance' do
+      output = described_class.replace('hello world', 'world', 'you')
+
+      expect(output).to eq 'hello you'
+    end
+
+    it 'replaces multiple instances' do
+      output = described_class.replace('the fox jumps over the other fox', 'fox', 'acrobat')
+
+      expect(output).to eq 'the acrobat jumps over the other acrobat'
     end
   end
 
