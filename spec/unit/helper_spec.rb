@@ -1,6 +1,20 @@
 require 'rspec'
 
 describe Helper::Transform do
+  context 'when transforming a nil value' do
+    it 'outputs nil for a nil date' do
+      output_date = described_class.date_format(nil, '%Y-%m-%d')
+
+      expect(output_date).to eq nil
+    end
+
+    it 'outputs nil when type casting it' do
+      output_date = described_class.cast(nil, 'i')
+
+      expect(output_date).to eq nil
+    end
+  end
+
   context 'when transforming a date to another format' do
     it 'outputs in the expected format' do
       input_date = '1985-10-15 03:00:00.0000'

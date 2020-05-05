@@ -15,6 +15,7 @@ module Helper
 
   class Transform
     def self.date_format(date, format)
+      return nil if date.nil?
       Date.parse(date).strftime(format)
     end
 
@@ -31,6 +32,8 @@ module Helper
     end
 
     def self.cast(value, type)
+      return nil if value.nil?
+
       casting_method = "to_#{type}"
       value.send(casting_method)
     end
