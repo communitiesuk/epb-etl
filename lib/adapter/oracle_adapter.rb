@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ruby-oci8'
+require "ruby-oci8"
 
 module Adapter
   class OracleAdapter < Adapter::BaseAdapter
@@ -20,7 +20,7 @@ module Adapter
     end
 
     def connect
-      @oracle = OCI8.new ENV['DATABASE_URL']
+      @oracle = OCI8.new ENV["DATABASE_URL"]
     end
 
     def connected?

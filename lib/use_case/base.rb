@@ -8,7 +8,7 @@ module UseCase
       validate
     end
 
-    private
+  private
 
     def validate
       if @request.body.nil? || @request.body.empty?

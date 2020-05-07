@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-describe 'Acceptance::Transform' do
-  context 'when all required data is present' do
-    it 'converts data to target hash' do
+describe "Acceptance::Transform" do
+  context "when all required data is present" do
+    it "converts data to target hash" do
       event =
-        JSON.parse File.open('spec/event/sqs-message-transform-input.json').read
+        JSON.parse File.open("spec/event/sqs-message-transform-input.json").read
 
-      ENV['ETL_STAGE'] = 'transform'
+      ENV["ETL_STAGE"] = "transform"
 
       sqs_adapter = SqsAdapterFake.new
       logit_adapter = LogitAdapterFake.new
@@ -22,18 +22,18 @@ describe 'Acceptance::Transform' do
       handler.process event: event
 
       expected_transform_output =
-        JSON.parse File.open('spec/event/sqs-message-load-input.json').read
+        JSON.parse File.open("spec/event/sqs-message-load-input.json").read
 
       expect(sqs_adapter.read).to eq(expected_transform_output)
     end
   end
 
-  context 'when invalid data is supplied in the message body' do
-    context 'when the data present is invalid' do
-      it 'handles the event by logging the error' do
-        event = JSON.parse File.open('spec/event/sqs-message-invalid.json').read
+  context "when invalid data is supplied in the message body" do
+    context "when the data present is invalid" do
+      it "handles the event by logging the error" do
+        event = JSON.parse File.open("spec/event/sqs-message-invalid.json").read
 
-        ENV['ETL_STAGE'] = 'transform'
+        ENV["ETL_STAGE"] = "transform"
 
         sqs_adapter = SqsAdapterFake.new
         logit_adapter = LogitAdapterFake.new
@@ -49,24 +49,24 @@ describe 'Acceptance::Transform' do
         handler.process event: event
 
         expect(logit_adapter.data).to include JSON.generate(
-                  {
-                    stage: 'transform',
-                    event: 'fail',
-                    data: {
-                      error: 'undefined method `unshift\' for nil:NilClass',
-                      job: { "ASSESSOR": %w[23456789] }
-                    }
-                  }
-                )
+          {
+            stage: "transform",
+            event: "fail",
+            data: {
+              error: "undefined method `unshift' for nil:NilClass",
+              job: { "ASSESSOR": %w[23456789] },
+            },
+          },
+        )
       end
     end
   end
 
-  context 'when no data is supplied in the message body' do
-    it 'raises an error' do
-      event = JSON.parse File.open('spec/event/sqs-empty-message.json').read
+  context "when no data is supplied in the message body" do
+    it "raises an error" do
+      event = JSON.parse File.open("spec/event/sqs-empty-message.json").read
 
-      ENV['ETL_STAGE'] = 'transform'
+      ENV["ETL_STAGE"] = "transform"
 
       expect do
         handler = Handler.new Container.new false

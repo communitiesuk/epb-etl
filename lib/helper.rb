@@ -1,7 +1,7 @@
 module Helper
   def self.bury(hash, *args)
     if args.count < 2
-      raise ArgumentError, '2 or more arguments required'
+      raise ArgumentError, "2 or more arguments required"
     elsif args.count == 2
       hash[args[0]] = args[1]
     else
@@ -16,6 +16,7 @@ module Helper
   class Transform
     def self.date_format(date, format)
       return nil if date.nil?
+
       Date.parse(date).strftime(format)
     end
 
@@ -39,8 +40,8 @@ module Helper
         return value.send(casting_method)
       end
 
-      if type == 'b'
-        return !(value.empty? || !value)
+      if type == "b"
+        !(value.empty? || !value)
       end
     end
 
@@ -53,11 +54,11 @@ module Helper
       input.dup.map do |item|
         input_conversions.each do |input_key, conversions|
           conversions.each do |conversion|
-            args = conversion['args'].dup
+            args = conversion["args"].dup
 
             args.unshift item[input_key]
 
-            item[input_key] = Helper::Transform.send conversion['type'],
+            item[input_key] = Helper::Transform.send conversion["type"],
                                                      *args
           end
         end

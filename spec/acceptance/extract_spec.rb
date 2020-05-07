@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-describe 'Acceptance::Extract' do
-  context 'when no data is supplied in the message body' do
-    it 'raises an error' do
-      event = JSON.parse File.open('spec/event/sqs-empty-message.json').read
+describe "Acceptance::Extract" do
+  context "when no data is supplied in the message body" do
+    it "raises an error" do
+      event = JSON.parse File.open("spec/event/sqs-empty-message.json").read
 
-      ENV['ETL_STAGE'] = 'extract'
+      ENV["ETL_STAGE"] = "extract"
 
       expect do
         handler = Handler.new Container.new false
@@ -14,13 +14,13 @@ describe 'Acceptance::Extract' do
     end
   end
 
-  context 'when invalid data is supplied in the message body' do
+  context "when invalid data is supplied in the message body" do
     let(:oracle_adapter) { OracleAdapterFake.new OracleAdapterStub.data }
 
-    it 'handles the event by logging the error' do
-      event = JSON.parse File.open('spec/event/sqs-message-invalid.json').read
+    it "handles the event by logging the error" do
+      event = JSON.parse File.open("spec/event/sqs-message-invalid.json").read
 
-      ENV['ETL_STAGE'] = 'extract'
+      ENV["ETL_STAGE"] = "extract"
 
       sqs_adapter = SqsAdapterFake.new
       logit_adapter = LogitAdapterFake.new
@@ -38,43 +38,43 @@ describe 'Acceptance::Extract' do
       handler.process event: event
 
       expect(logit_adapter.data).to include JSON.generate(
-                {
-                  stage: 'extract',
-                  event: 'fail',
-                  data: {
-                    error: 'undefined method `each\' for nil:NilClass',
-                    job: { "ASSESSOR": %w[23456789] }
-                  }
-                }
-              )
+        {
+          stage: "extract",
+          event: "fail",
+          data: {
+            error: "undefined method `each' for nil:NilClass",
+            job: { "ASSESSOR": %w[23456789] },
+          },
+        },
+      )
     end
   end
 
-  context 'when data is supplied in the message body' do
+  context "when data is supplied in the message body" do
     let(:oracle_adapter) do
       adapter = OracleAdapterFake.new OracleAdapterStub.data
 
       adapter.stub_query(
         "SELECT POSTCODE FROM assessor_coverage WHERE ASSESSOR_KEY = '23456789'",
-        [{ "POSTCODE": 'SW2A 3AA' }, { "POSTCODE": 'SW3A 4AA' }]
+        [{ "POSTCODE": "SW2A 3AA" }, { "POSTCODE": "SW3A 4AA" }],
       )
 
       adapter.stub_query(
         "SELECT TYPE, STATUS FROM ASSESSOR_QUALIFICATIONS WHERE ASSESSOR_KEY = '23456789'",
         [
-          { "TYPE": 'Level 1', "STATUS": 'ACTIVE' },
-          { "TYPE": 'Level 2', "STATUS": 'INACTIVE' }
-        ]
+          { "TYPE": "Level 1", "STATUS": "ACTIVE" },
+          { "TYPE": "Level 2", "STATUS": "INACTIVE" },
+        ],
       )
 
       adapter
     end
 
-    it 'extracts the data' do
+    it "extracts the data" do
       event =
-        JSON.parse File.open('spec/event/sqs-message-extract-input.json').read
+        JSON.parse File.open("spec/event/sqs-message-extract-input.json").read
 
-      ENV['ETL_STAGE'] = 'extract'
+      ENV["ETL_STAGE"] = "extract"
 
       sqs_adapter = SqsAdapterFake.new
       logit_adapter = LogitAdapterFake.new
@@ -92,7 +92,7 @@ describe 'Acceptance::Extract' do
       handler.process event: event
 
       expected_extract_output =
-        JSON.parse File.open('spec/event/sqs-message-transform-input.json').read
+        JSON.parse File.open("spec/event/sqs-message-transform-input.json").read
 
       expect(sqs_adapter.read).to eq(expected_extract_output)
     end

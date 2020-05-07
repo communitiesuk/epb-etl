@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require 'epb_auth_tools'
-require 'erb'
+require "epb_auth_tools"
+require "erb"
 
 module UseCase
   class Load < UseCase::Base
     def execute
-      body = JSON.generate(@request.body['data'])
+      body = JSON.generate(@request.body["data"])
       params, method, uri =
-        @request.body['configuration']['load']['endpoint'].values_at(
-          'params',
-          'method',
-          'uri'
+        @request.body["configuration"]["load"]["endpoint"].values_at(
+          "params",
+          "method",
+          "uri",
         )
 
       begin
@@ -26,10 +26,10 @@ module UseCase
       end
 
       http_client =
-        Auth::HttpClient.new ENV['EPB_AUTH_CLIENT_ID'],
-                             ENV['EPB_AUTH_CLIENT_SECRET'],
-                             ENV['EPB_AUTH_SERVER'],
-                             ENV['EPB_API_URL'],
+        Auth::HttpClient.new ENV["EPB_AUTH_CLIENT_ID"],
+                             ENV["EPB_AUTH_CLIENT_SECRET"],
+                             ENV["EPB_AUTH_SERVER"],
+                             ENV["EPB_API_URL"],
                              OAuth2::Client
 
       response =
@@ -37,8 +37,8 @@ module UseCase
                             uri.path,
                             body: body,
                             headers: {
-                              'Content-Length' => body.length.to_s,
-                              'Content-Type' => 'application/json'
+                              "Content-Length" => body.length.to_s,
+                              "Content-Type" => "application/json",
                             }
 
       unless response.status > 199 && response.status < 300

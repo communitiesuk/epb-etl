@@ -1,12 +1,12 @@
-require 'rspec'
+require "rspec"
 
-describe 'Acceptance::Trigger' do
-  context 'when an empty trigger notification is received' do
-    it 'raises an error' do
+describe "Acceptance::Trigger" do
+  context "when an empty trigger notification is received" do
+    it "raises an error" do
       event =
-        JSON.parse File.open('spec/event/sns-empty-trigger-input.json').read
+        JSON.parse File.open("spec/event/sns-empty-trigger-input.json").read
 
-      ENV['ETL_STAGE'] = 'trigger'
+      ENV["ETL_STAGE"] = "trigger"
 
       expect do
         handler = Handler.new Container.new false
@@ -15,23 +15,23 @@ describe 'Acceptance::Trigger' do
     end
   end
 
-  context 'when a trigger notification is received with invalid data' do
+  context "when a trigger notification is received with invalid data" do
     let(:oracle_adapter) do
       adapter = OracleAdapterFake.new OracleAdapterStub.data
 
       adapter.stub_query(
-        'SELECT ASSESSOR_KEY FROM assessors',
-        [{ "ASSESSOR_KEY": '23456789' }]
+        "SELECT ASSESSOR_KEY FROM assessors",
+        [{ "ASSESSOR_KEY": "23456789" }],
       )
 
       adapter
     end
 
-    it 'handles the event by logging the error' do
+    it "handles the event by logging the error" do
       event =
-        JSON.parse File.open('spec/event/sns-trigger-input-invalid.json').read
+        JSON.parse File.open("spec/event/sns-trigger-input-invalid.json").read
 
-      ENV['ETL_STAGE'] = 'trigger'
+      ENV["ETL_STAGE"] = "trigger"
 
       sqs_adapter = SqsAdapterFake.new
       logit_adapter = LogitAdapterFake.new
@@ -49,34 +49,34 @@ describe 'Acceptance::Trigger' do
       handler.process event: event
 
       expect(logit_adapter.data).to include JSON.generate(
-                {
-                  stage: 'trigger',
-                  event: 'fail',
-                  data: {
-                    error: 'undefined method `each_pair\' for nil:NilClass',
-                    job: nil
-                  }
-                }
-              )
+        {
+          stage: "trigger",
+          event: "fail",
+          data: {
+            error: "undefined method `each_pair' for nil:NilClass",
+            job: nil,
+          },
+        },
+      )
     end
   end
 
-  context 'when a trigger notification is received' do
+  context "when a trigger notification is received" do
     let(:oracle_adapter) do
       adapter = OracleAdapterFake.new OracleAdapterStub.data
 
       adapter.stub_query(
-        'SELECT ASSESSOR_KEY FROM assessors',
-        [{ "ASSESSOR_KEY": '23456789' }]
+        "SELECT ASSESSOR_KEY FROM assessors",
+        [{ "ASSESSOR_KEY": "23456789" }],
       )
 
       adapter
     end
 
-    it 'handles the event without raising an error' do
-      event = JSON.parse File.open('spec/event/sns-trigger-input.json').read
+    it "handles the event without raising an error" do
+      event = JSON.parse File.open("spec/event/sns-trigger-input.json").read
 
-      ENV['ETL_STAGE'] = 'trigger'
+      ENV["ETL_STAGE"] = "trigger"
 
       sqs_adapter = SqsAdapterFake.new
       logit_adapter = LogitAdapterFake.new
@@ -94,7 +94,7 @@ describe 'Acceptance::Trigger' do
       handler.process event: event
 
       expected_extract_output =
-        JSON.parse File.open('spec/event/sqs-message-extract-input.json').read
+        JSON.parse File.open("spec/event/sqs-message-extract-input.json").read
 
       expect(sqs_adapter.read).to eq(expected_extract_output)
     end

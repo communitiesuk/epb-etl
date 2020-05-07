@@ -6,39 +6,39 @@ describe UseCase::Load do
       JSON.parse(
         {
           "data": {
-            "firstName": 'Joe',
-            "lastName": 'Testerton',
-            "dateOfBirth": '1985-11-25'
+            "firstName": "Joe",
+            "lastName": "Testerton",
+            "dateOfBirth": "1985-11-25",
           },
           "configuration": {
             "load": {
               "endpoint": {
-                "method": 'put',
+                "method": "put",
                 "uri":
-                  'http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>',
-                "params": { "scheme_id": 1, "scheme_assessor_id": 'TEST000000' }
-              }
-            }
-          }
-        }.to_json
+                  "http://test-endpoint/api/schemes/<%= scheme_id %>/assessors/<%= scheme_assessor_id %>",
+                "params": { "scheme_id": 1, "scheme_assessor_id": "TEST000000" },
+              },
+            },
+          },
+        }.to_json,
       )
     end
   end
 
-  context 'when making an api request' do
+  context "when making an api request" do
     before do
       stub_request(
         :put,
-        'http://test-endpoint/api/schemes/1/assessors/TEST000000'
+        "http://test-endpoint/api/schemes/1/assessors/TEST000000",
       ).with(
         body:
           JSON.generate(
-            firstName: 'Joe', lastName: 'Testerton', dateOfBirth: '1985-11-25'
-          )
+            firstName: "Joe", lastName: "Testerton", dateOfBirth: "1985-11-25",
+          ),
       ).to_return(status: 200)
     end
 
-    it 'sends data to the API endpoint' do
+    it "sends data to the API endpoint" do
       request = LoadRequestStub.new
       load = described_class.new(request, nil)
       response = load.execute

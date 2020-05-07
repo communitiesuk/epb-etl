@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'aws-sdk-sqs'
+require "aws-sdk-sqs"
 
 module Adapter
   class SqsAdapter < Adapter::BaseAdapter
@@ -14,10 +14,10 @@ module Adapter
       end
 
       @sqs.send_message(
-        queue_url: queue_url, message_body: JSON.generate(message_body)
+        queue_url: queue_url, message_body: JSON.generate(message_body),
       )
     rescue ArgumentError => e
-      if e.message.include?('invalid endpoint')
+      if e.message.include?("invalid endpoint")
         raise Errors::SqsClientHasInvalidQueueUrl
       end
 

@@ -7,30 +7,30 @@ describe UseCase::Trigger do
         {
           'configuration': {
             'trigger': {
-              'scan': 'SELECT ASSESSOR_KEY FROM assessors',
+              'scan': "SELECT ASSESSOR_KEY FROM assessors",
               'extract': {
                 'ASSESSOR': {
                   'query':
                     "SELECT * FROM assessors WHERE ASSESSOR_KEY = '<%= primary_key %>'",
-                  'multiple': false
-                }
-              }
+                  'multiple': false,
+                },
+              },
             },
-            'extract': { 'queries': {} }
-          }
-        }.to_json
+            'extract': { 'queries': {} },
+          },
+        }.to_json,
       )
     end
   end
 
-  context 'when receiving an SNS notification' do
+  context "when receiving an SNS notification" do
     let(:database_gateway_fake) do
       DatabaseGatewayFake.new JSON.parse(
-                                [
-                                  { ASSESSOR_KEY: 'TEST000001' },
-                                  { ASSESSOR_KEY: 'TEST000002' }
-                                ].to_json
-                              )
+        [
+          { ASSESSOR_KEY: "TEST000001" },
+          { ASSESSOR_KEY: "TEST000002" },
+        ].to_json,
+      )
     end
     let(:message_gateway_fake) { MessageGatewayFake.new }
     let(:trigger) do
@@ -42,17 +42,17 @@ describe UseCase::Trigger do
       described_class.new(request, container)
     end
 
-    it 'scans the database' do
+    it "scans the database" do
       allow(database_gateway_fake).to receive(:read).and_call_original
 
       trigger.execute
 
       expect(database_gateway_fake).to have_received(:read).with(
-        { 'query' => 'SELECT ASSESSOR_KEY FROM assessors', 'multiple' => true }
+        { "query" => "SELECT ASSESSOR_KEY FROM assessors", "multiple" => true },
       )
     end
 
-    it 'gives the expected response' do
+    it "gives the expected response" do
       allow(database_gateway_fake).to receive(:read).and_call_original
       allow(message_gateway_fake).to receive(:write).and_call_original
 
@@ -62,11 +62,11 @@ describe UseCase::Trigger do
       expect(message_gateway_fake).to have_received(:write).exactly(2).times
 
       expect(
-        message_gateway_fake.data['configuration']['extract']['queries'][
-          'ASSESSOR'
+        message_gateway_fake.data["configuration"]["extract"]["queries"][
+          "ASSESSOR"
         ][
-          'query'
-        ]
+          "query"
+        ],
       ).to eq "SELECT * FROM assessors WHERE ASSESSOR_KEY = 'TEST000002'"
     end
   end

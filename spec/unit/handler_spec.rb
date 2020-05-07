@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 describe Handler do
-  context 'when invoking processor with event' do
-    it 'does not raise an error' do
-      ENV['ETL_STAGE'] = 'extract'
+  context "when invoking processor with event" do
+    it "does not raise an error" do
+      ENV["ETL_STAGE"] = "extract"
 
       expect do
         handler = described_class.new Container.new false
@@ -12,9 +12,9 @@ describe Handler do
     end
   end
 
-  context 'when invoking processor without configuring a stage' do
-    it 'raises an error' do
-      ENV['ETL_STAGE'] = ''
+  context "when invoking processor without configuring a stage" do
+    it "raises an error" do
+      ENV["ETL_STAGE"] = ""
 
       expect do
         handler = described_class.new Container.new false
@@ -23,9 +23,9 @@ describe Handler do
     end
   end
 
-  context 'when invoking processor with invalid stage configuration' do
-    it 'raises an error' do
-      ENV['ETL_STAGE'] = 'asdf'
+  context "when invoking processor with invalid stage configuration" do
+    it "raises an error" do
+      ENV["ETL_STAGE"] = "asdf"
 
       expect do
         handler = described_class.new Container.new false

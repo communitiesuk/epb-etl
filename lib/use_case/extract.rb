@@ -13,19 +13,19 @@ module UseCase
       response =
         JSON.parse(
           {
-            job: @request.body['job'],
-            configuration: @request.body['configuration'],
-            data: {}
-          }.to_json
+            job: @request.body["job"],
+            configuration: @request.body["configuration"],
+            data: {},
+          }.to_json,
         )
 
-      queries = @request.body['configuration']['extract']['queries']
+      queries = @request.body["configuration"]["extract"]["queries"]
 
       queries.each do |key, query|
-        response['data'][key] = @database_gateway.read(query)
+        response["data"][key] = @database_gateway.read(query)
       end
 
-      @message_gateway.write(ENV['NEXT_SQS_URL'], response)
+      @message_gateway.write(ENV["NEXT_SQS_URL"], response)
     end
   end
 end
