@@ -121,4 +121,4 @@ clean:
 		rm -rf vendor/lib && rm -rf vendor/bundle && rm -rf vendor/bundle-darwin
 
 format:
-	@BUNDLE_PATH=vendor/bundle-darwin bundle exec rbprettier --write `find . -name '*.rb' -not -path './vendor*'`
+	@BUNDLE_PATH=vendor/bundle-darwin bundle exec rubocop -c .rubocop.yml --auto-correct --format offenses || true

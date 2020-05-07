@@ -8,7 +8,7 @@ source 'https://rubygems.org' do
   end
 
   group :dev do
-    gem "prettier", "~> 0.18.1"
+    gem 'rubocop-govuk', '~> 3.8'
   end
 
   group :staging do
