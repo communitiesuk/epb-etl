@@ -16,6 +16,6 @@ source "https://rubygems.org" do
   end
 
   gem "aws-sdk-sqs", "~> 1.23"
-  gem "epb-auth-tools", "~> 1.0"
+  gem "epb-auth-tools", "~> 1.0.4"
   gem "zeitwerk", "~> 2.2"
 end
