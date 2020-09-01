@@ -1,9 +1,9 @@
-data "remotefile_read" "handler" {
-  source = "file://${abspath(path.module)}/../dist/handler.zip"
+data "local_file" "handler" {
+  filename = "${path.module}/../dist/handler.zip"
 }
 
-data "remotefile_read" "lib_layer" {
-  source = "file://${abspath(path.module)}/../dist/lib-layer.zip"
+data "local_file" "lib_layer" {
+  filename = "${path.module}/../dist/lib-layer.zip"
 }
 
 resource "aws_s3_bucket" "s3_deployment_artefacts" {
@@ -15,16 +15,16 @@ resource "aws_s3_bucket" "s3_deployment_artefacts" {
 
 resource "aws_s3_bucket_object" "handler" {
   bucket = aws_s3_bucket.s3_deployment_artefacts.bucket
-  key    = "handler-${data.remotefile_read.handler.actual_sha256}.zip"
-  source = data.remotefile_read.handler.local_path
+  key    = "handler-${filebase64sha256(data.local_file.handler.filename)}.zip"
+  source = data.local_file.handler.filename
   acl    = "private"
   tags   = var.service_tags
 }
 
 resource "aws_s3_bucket_object" "lib_layer" {
   bucket = aws_s3_bucket.s3_deployment_artefacts.bucket
-  key    = "lib-layer-${data.remotefile_read.lib_layer.actual_sha256}.zip"
-  source = data.remotefile_read.lib_layer.local_path
+  key    = "lib-layer-${filebase64sha256(data.local_file.lib_layer.filename)}.zip"
+  source = data.local_file.lib_layer.filename
   acl    = "private"
   tags   = var.service_tags
 }

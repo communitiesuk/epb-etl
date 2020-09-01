@@ -2,7 +2,7 @@ resource "aws_lambda_function" "trigger" {
   function_name                  = "${local.resource_prefix}-trigger-processor"
   role                           = aws_iam_role.trigger_role.arn
   handler                        = "lib/bootstrap.handler"
-  source_code_hash               = base64encode(data.remotefile_read.handler.actual_sha256)
+  source_code_hash               = filebase64sha256(data.local_file.handler.filename)
   runtime                        = "ruby2.7"
   tags                           = var.service_tags
   timeout                        = 900
@@ -28,7 +28,7 @@ resource "aws_lambda_layer_version" "lib_layer" {
   layer_name       = "${local.resource_prefix}-trigger-processor-lib-layer"
   s3_bucket        = aws_s3_bucket.s3_deployment_artefacts.bucket
   s3_key           = aws_s3_bucket_object.lib_layer.key
-  source_code_hash = base64encode(data.remotefile_read.lib_layer.actual_sha256)
+  source_code_hash = filebase64sha256(data.local_file.lib_layer.filename)
 }
 
 resource "aws_lambda_permission" "with_sns" {

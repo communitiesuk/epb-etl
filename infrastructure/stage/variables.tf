@@ -9,11 +9,11 @@ variable "stage" {
 }
 
 variable "handler" {
-  description = "A remotefiles_read output of the zipped codebase that will be used as the handler code"
+  description = "Output of the zipped codebase that will be used as the handler code"
   type = object({
-    actual_sha256 = string
-    s3_bucket     = string
-    s3_key        = string
+    sha256    = string
+    s3_bucket = string
+    s3_key    = string
   })
 }
 
@@ -22,9 +22,9 @@ variable "layers" {
   default     = {}
   type = map(
     object({
-      actual_sha256 = string
-      s3_bucket     = string
-      s3_key        = string
+      sha256    = string
+      s3_bucket = string
+      s3_key    = string
     })
   )
 }
