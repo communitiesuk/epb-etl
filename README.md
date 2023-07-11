@@ -1,6 +1,15 @@
 # ETL Pipeline
 
-![](https://github.com/communitiesuk/epb-etl/workflows/Test/badge.svg)
+## ARCHIVED
+
+This repository is archived and no longer maintained.  It may still serve as the 
+basis of a generic ETL implementation in AWS - data sources and destinations are
+configurable, and arbitrary transformation rules can be defined.
+
+The original README follows, and has instructions for how to setup and configure
+an ETL pipleine.
+
+---
 
 This repository is responsible for the Extract, Transform, Load (ETL) pipeline
 for the Energy Performance of Buildings Register (EPBR) data migration.
